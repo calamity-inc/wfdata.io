@@ -2097,5 +2097,8 @@
     },
     "/Lotus/Types/StoreItems/AvatarImages/AvatarImageConqueraGlyphVII": {
         "promo_code": "CONQUERA2024"
+    },
+    "/Lotus/Types/StoreItems/AvatarImages/AvatarImageMovember": {
+        "promo_code": "MOVEMBER2024"
     }
 }
