@@ -40,6 +40,27 @@ if (localStorage.getItem("lang"))
 	setLanguageIndicator(localStorage.getItem("lang"));
 }
 
+// Images
+
+function setImageSource(img, icon)
+{
+	if (icon in ExportImages)
+	{
+		img.src = "https://content.warframe.com/PublicExport" + icon + "!" + ExportImages[icon].contentHash;
+
+		// Fix for /Lotus/Interface/Icons/Player/ContentCreators/DeathMa666ot.png
+		img.onerror = function()
+		{
+			console.warn("Failed to load icon from content.warframe.com:", icon);
+			img.src = "https://browse.wf" + icon;
+		};
+	}
+	else
+	{
+		img.src = "https://browse.wf" + icon;
+	}
+}
+
 // Text icons
 
 function resolveTextIcons(text)

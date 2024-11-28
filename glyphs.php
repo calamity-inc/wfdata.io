@@ -63,11 +63,13 @@
 		Promise.all([
 			getDictPromise(),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportFlavour.json").then(res => res.json()),
+			fetch("https://browse.wf/warframe-public-export-plus/ExportImages.json").then(res => res.json()),
 			fetch("supplemental-data/glyphs.json").then(res => res.json())
-			]).then(([ dict, ExportFlavour, supplementalGlyphData ]) =>
+			]).then(([ dict, ExportFlavour, ExportImages, supplementalGlyphData ]) =>
 		{
 			window.dict = dict;
 			window.ExportFlavour = ExportFlavour;
+			window.ExportImages = ExportImages;
 			window.supplementalGlyphData = supplementalGlyphData;
 
 			updateList();
@@ -113,7 +115,7 @@
 				{
 					const img = document.createElement("img");
 					img.alt = img.title = (dict[item.name] ?? b[1].name);
-					img.src = "https://browse.wf" + item.icon;
+					setImageSource(img, item.icon);
 					glyph.appendChild(img);
 				}
 				document.getElementById("list").appendChild(glyph);

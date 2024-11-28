@@ -51,6 +51,7 @@
 			fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportEnemies.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportRecipes.json").then(res => res.json()),
+			fetch("https://browse.wf/warframe-public-export-plus/ExportImages.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportTextIcons.json").then(res => res.json()),
 			fetch("supplemental-data/glyphs.json").then(res => res.json())
 			]).then(([
@@ -68,6 +69,7 @@
 				ExportRegions,
 				ExportEnemies,
 				ExportRecipes,
+				ExportImages,
 				ExportTextIcons,
 				supplementalGlyphData
 			]) =>
@@ -86,6 +88,7 @@
 			window.ExportRewards = ExportRewards;
 			window.ExportRegions = ExportRegions;
 			window.ExportEnemies = ExportEnemies;
+			window.ExportImages = ExportImages;
 			window.ExportTextIcons = ExportTextIcons;
 			window.supplementalGlyphData = supplementalGlyphData;
 
@@ -237,7 +240,7 @@
 						{
 							const img = document.createElement("img");
 							img.className = "img-fluid rounded-start";
-							img.src = "https://browse.wf" + result.value.icon;
+							setImageSource(img, result.value.icon);
 							col.appendChild(img);
 						}
 						row.appendChild(col);
