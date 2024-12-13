@@ -343,6 +343,7 @@
 			"EntratiSyndicate",
 			"NecraloidSyndicate",
 			"EntratiLabSyndicate",
+			"HexSyndicate",
 
 			"KahlSyndicate",
 			"NIGHTWAVE",
