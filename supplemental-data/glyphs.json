@@ -2100,5 +2100,11 @@
     },
     "/Lotus/Types/StoreItems/AvatarImages/AvatarImageMovember": {
         "promo_code": "MOVEMBER2024"
+    },
+    "/Lotus/Types/StoreItems/AvatarImages/AvatarImagePartyCDGlyph": {
+        "promo_code": "1999-QUINCY"
+    },
+    "/Lotus/Types/StoreItems/AvatarImages/AvatarImageBigBytesPizzaGlyph": {
+        "promo_code": "1999-VOICEPLAY"
     }
 }
