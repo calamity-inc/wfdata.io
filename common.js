@@ -44,16 +44,13 @@ if (localStorage.getItem("lang"))
 
 function setImageSource(img, icon)
 {
-	if (icon in ExportImages)
+	if (ExportImages[icon]?.forumName)
+	{
+		img.src = "https://media.invisioncic.com/Mwarframe/pages_media/" + ExportImages[icon].forumName + ".png";
+	}
+	else if (ExportImages[icon]?.contentHash)
 	{
 		img.src = "https://content.warframe.com/PublicExport" + icon + "!" + ExportImages[icon].contentHash;
-
-		// Fix for /Lotus/Interface/Icons/Player/ContentCreators/DeathMa666ot.png
-		img.onerror = function()
-		{
-			console.warn("Failed to load icon from content.warframe.com:", icon);
-			img.src = "https://browse.wf" + icon;
-		};
 	}
 	else
 	{
