@@ -321,6 +321,7 @@
 			this.select();
 		};*/
 
+		const guideTiers = [0, "Junior Guide of the Lotus", "Senior Guide of the Lotus"];
 		const founderTiers = [0, "Disciple", "Hunter", "Master", "Grand Master"];
 		const clanTiers = [0, "Ghost", "Shadow", "Storm", "Mountain", "Moon"];
 		const syndicateTags = [
@@ -535,23 +536,30 @@
 			const accolades = [];
 			if (profile.Results[0].Staff)
 			{
-				accolades.push("Staff");
+				accolades.push("Digital Extremes Staff");
 			}
-			if (profile.Results[0].Moderator)
+			else
 			{
-				accolades.push("Moderator");
-			}
-			if (profile.Results[0].Partner)
-			{
-				accolades.push("Partner");
-			}
-			if (profile.Results[0].Founder)
-			{
-				accolades.push("Founder (" + founderTiers[profile.Results[0].Founder] + ")");
-			}
-			if (profile.Results[0].Accolades?.Heirloom)
-			{
-				accolades.push("Heirloom");
+				if (profile.Results[0].Founder)
+				{
+					accolades.push("Founder (" + founderTiers[profile.Results[0].Founder] + ")");
+				}
+				if (profile.Results[0].Guide)
+				{
+					accolades.push(guideTiers[profile.Results[0].Guide]);
+				}
+				if (profile.Results[0].Moderator)
+				{
+					accolades.push("Moderator");
+				}
+				if (profile.Results[0].Partner)
+				{
+					accolades.push("Warframe Creator");
+				}
+				if (profile.Results[0].Accolades?.Heirloom)
+				{
+					accolades.push("Ten Year Supporter");
+				}
 			}
 			if (accolades.length != 0)
 			{
