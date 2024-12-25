@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
 <head>
-	<title>Warframe Omni Tool</title>
+	<title>browse.wf</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="icon" href="https://browse.wf/Lotus/Interface/Icons/Categories/GrimoireModIcon.png">
@@ -17,7 +17,7 @@
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
 	<div class="container p-3">
-		<p>It's like a search engine, but for space ninjas.<!-- Powered by <a href="https://browse.wf" target="_blank">browse.wf</a>.--></p>
+		<p>It's like a search engine, but for space ninjas.</p>
 		<input id="query" class="form-control" autofocus />
 		<div id="results" class="mt-3"></div>
 	</div>
@@ -366,7 +366,7 @@
 							p.textContent = "If the promo code no longer works, ";
 							{
 								let a = document.createElement("a");
-								a.href = "https://github.com/calamity-inc/omni.wf/issues";
+								a.href = "https://github.com/calamity-inc/browse.wf/issues";
 								a.target = "_blank";
 								a.textContent = "please let us know.";
 								p.appendChild(a);
@@ -389,7 +389,7 @@
 							p.textContent = "The following information is user-contributed. ";
 							{
 								let a = document.createElement("a");
-								a.href = "https://github.com/calamity-inc/omni.wf/issues";
+								a.href = "https://github.com/calamity-inc/browse.wf/issues";
 								a.target = "_blank";
 								a.textContent = "Report issues you find here.";
 								p.appendChild(a);
@@ -490,7 +490,7 @@
 						p.textContent = "If you know how to obtain this glyph, ";
 						{
 							let a = document.createElement("a");
-							a.href = "https://github.com/calamity-inc/omni.wf/issues";
+							a.href = "https://github.com/calamity-inc/browse.wf/issues";
 							a.target = "_blank";
 							a.textContent = "please let us know.";
 							p.appendChild(a);

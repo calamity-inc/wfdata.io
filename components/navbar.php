@@ -1,9 +1,9 @@
 <?php
-$ext = empty($_DYNSTAT) ? ".php" : "";
+$ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 ?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="/" <?php if ($_SERVER["REQUEST_URI"] == "/"): ?> onclick="event.preventDefault();" <?php endif; ?>>Warframe Omni Tool</a>
+		<a class="navbar-brand" href="/" <?php if ($_SERVER["REQUEST_URI"] == "/"): ?> onclick="event.preventDefault();" <?php endif; ?>>browse.wf</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -12,17 +12,18 @@ $ext = empty($_DYNSTAT) ? ".php" : "";
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 6) == "/arbys" ? " active" : ""); ?>" href="/arbys<?=$ext;?>">Arbitration Schedule</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 10) == "/rivencalc" ? " active" : ""); ?>" href="/rivencalc<?=$ext;?>">Riven Calculator</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 8) == "/profile" ? " active" : ""); ?>" href="/profile<?=$ext;?>">Profile Viewer</a>
-				<?php if (true): ?>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 7) == "/glyphs" ? " active" : ""); ?>" href="/glyphs<?=$ext;?>">Glyphs</a>
+				<?php if (true): ?>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" ? " active" : ""); ?>" href="/prime-vault<?=$ext;?>">Prime Vault</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" ? " active" : ""); ?>" href="/text-icons<?=$ext;?>">Text Icons</a>
+				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data" ? " active" : ""); ?>" href="/raw-data<?=$ext;?>">Raw Data</a>
 				<?php else: ?>
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle <?=((substr($_SERVER["REQUEST_URI"], 0, 7) == "/glyphs" || substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons") ? " active" : ""); ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Misc</a>
+					<a class="nav-link dropdown-toggle <?=((substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" || substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" || substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data") ? " active" : ""); ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 7) == "/glyphs" ? " active" : ""); ?>" href="/glyphs<?=$ext;?>">Glyphs</a></li>
 						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" ? " active" : ""); ?>" href="/prime-vault<?=$ext;?>">Prime Vault</a></li>
 						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" ? " active" : ""); ?>" href="/text-icons<?=$ext;?>">Text Icons</a></li>
+						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data" ? " active" : ""); ?>" href="/raw-data<?=$ext;?>">Raw Data</a></li>
 					</ul>
 				</li>
 				<?php endif; ?>
