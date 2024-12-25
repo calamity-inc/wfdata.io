@@ -53,6 +53,7 @@
 			fetch("https://browse.wf/warframe-public-export-plus/ExportRecipes.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportImages.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportTextIcons.json").then(res => res.json()),
+			fetch("https://browse.wf/warframe-public-export-plus/ExportRelics.json").then(res => res.json()),
 			fetch("supplemental-data/glyphs.json").then(res => res.json())
 			]).then(([
 				dict,
@@ -71,6 +72,7 @@
 				ExportRecipes,
 				ExportImages,
 				ExportTextIcons,
+				ExportRelics,
 				supplementalGlyphData
 			]) =>
 		{
@@ -90,6 +92,7 @@
 			window.ExportEnemies = ExportEnemies;
 			window.ExportImages = ExportImages;
 			window.ExportTextIcons = ExportTextIcons;
+			window.ExportRelics = ExportRelics;
 			window.supplementalGlyphData = supplementalGlyphData;
 
 			window.ExportWarframes_entries = Object.entries(ExportWarframes);
@@ -165,6 +168,9 @@
 					window.missionDeckNames[region.cacheRewardManifest] ??= [];
 					window.missionDeckNames[region.cacheRewardManifest].push("Caches on " + dict[region.name] + " (" + dict[region.systemName] + ")");
 				}
+			});
+			Object.values(ExportRelics).forEach(relic => {
+				window.missionDeckNames[relic.rewardManifest] = [dict["/Lotus/Language/Relics/VoidProjectionName"].split("|ERA|").join(relic.era).split("|CATEGORY|").join(relic.category)];
 			});
 
 			window.droptableNames = {};
@@ -533,18 +539,25 @@
 						{
 							for (const reward of tiers[i])
 							{
-								if (reward.type == storeItem
-									&& reward.probability // ignoring relics for now
-									)
+								if (reward.type == storeItem)
 								{
 									if (deckName in missionDeckNames)
 									{
-										sources.push({
+										const source = {
 											name: missionDeckNames[deckName] ?? [deckName],
 											rotation: tiers.length > 1 ? i : undefined,
-											itemCount: reward.itemCount,
-											probability: reward.probability
-										});
+											itemCount: reward.itemCount
+										};
+										if (reward.probability)
+										{
+											source.probability = reward.probability
+										}
+										else
+										{
+											source.probability = { COMMON: 0.76, UNCOMMON: 0.40, RARE: 0.10 }[reward.rarity];
+											source.probabilityWorstCase = { COMMON: 0.50, UNCOMMON: 0.22, RARE: 0.02 }[reward.rarity];
+										}
+										sources.push(source);
 									}
 									else
 									{
@@ -608,7 +621,15 @@
 								{
 									span.textContent += " blueprint";
 								}
-								span.textContent += " @ " + (source.probability * 100).toFixed(2) + "%";
+								span.textContent += " @ ";
+								if ("probabilityWorstCase" in source)
+								{
+									span.textContent += (source.probabilityWorstCase * 100).toFixed(0) + "-" + (source.probability * 100).toFixed(0) + "%";;
+								}
+								else
+								{
+									span.textContent += (source.probability * 100).toFixed(2) + "%";
+								}
 								li.appendChild(span);
 							}
 							ul.appendChild(li);
