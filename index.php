@@ -54,6 +54,7 @@
 			fetch("https://browse.wf/warframe-public-export-plus/ExportImages.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportTextIcons.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportRelics.json").then(res => res.json()),
+			fetch("https://browse.wf/warframe-public-export-plus/ExportAbilities.json").then(res => res.json()),
 			fetch("supplemental-data/glyphs.json").then(res => res.json())
 			]).then(([
 				dict,
@@ -73,6 +74,7 @@
 				ExportImages,
 				ExportTextIcons,
 				ExportRelics,
+				ExportAbilities,
 				supplementalGlyphData
 			]) =>
 		{
@@ -93,7 +95,17 @@
 			window.ExportImages = ExportImages;
 			window.ExportTextIcons = ExportTextIcons;
 			window.ExportRelics = ExportRelics;
+			window.ExportAbilities = ExportAbilities;
 			window.supplementalGlyphData = supplementalGlyphData;
+
+			for (const suit of Object.values(ExportWarframes))
+			{
+				for (const ability of suit.abilities)
+				{
+					ExportAbilities[ability.uniqueName] = ability;
+					delete ability.uniqueName;
+				}
+			}
 
 			window.ExportWarframes_entries = Object.entries(ExportWarframes);
 			window.ExportWeapons_entries = Object.entries(ExportWeapons);
@@ -105,6 +117,7 @@
 			window.ExportGear_entries = Object.entries(ExportGear);
 			window.ExportSentinels_entries = Object.entries(ExportSentinels)
 			window.ExportRewards_entries = Object.entries(ExportRewards);
+			window.ExportAbilities_entries = Object.entries(ExportAbilities);
 
 			window.itemToRecipeMap = {};
 			Object.entries(ExportRecipes).forEach(([uniqueName, recipe]) => {
@@ -504,6 +517,27 @@
 						root.appendChild(p);
 					}
 				}
+				else if (result.type == "ability")
+				{
+					let p = document.createElement("p");
+					if (result.value.energyRequiredToActivate)
+					{
+						p.textContent = "Requires " + result.value.energyRequiredToActivate + " Energy";
+					}
+					if (result.value.energyConsumptionOverTime)
+					{
+						if (p.textContent)
+						{
+							p.textContent += " • ";
+						}
+						p.textContent += "Consumes " + result.value.energyConsumptionOverTime + " Energy/s";
+					}
+					if (p.textContent)
+					{
+						p.className = "card-text";
+						root.appendChild(p);
+					}
+				}
 				else if (result.type == "tag")
 				{
 					let p = document.createElement("p");
@@ -719,6 +753,12 @@
 						res.push({ type: "sentinel", key: entry[0], value: entry[1] });
 						continue;
 					}
+					entry = ExportAbilities_entries.find(([uniqueName, item]) => item.name == result.key);
+					if (entry)
+					{
+						res.push({ type: "ability", key: entry[0], value: entry[1] });
+						continue;
+					}
 				}
 				res.push(result);
 			}
@@ -771,6 +811,11 @@
 			if (entry)
 			{
 				return { type: "sentinel", key: uniqueName, value: entry };
+			}
+			entry = ExportAbilities[uniqueName];
+			if (entry)
+			{
+				return { type: "ability", key: uniqueName, value: entry };
 			}
 		}
 	</script>
