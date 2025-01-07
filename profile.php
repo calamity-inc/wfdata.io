@@ -413,7 +413,7 @@
 		let initialDataUrl = "supplemental-data/profile-[DE]Rebecca.json";
 		if (params.has("account"))
 		{
-			initialDataUrl = "https://conduit.omni.wf/profile?account=" + encodeURIComponent(params.get("account"));
+			initialDataUrl = "https://conduit.browse.wf/profile?account=" + encodeURIComponent(params.get("account"));
 			window.hashprefix = "account=" + encodeURIComponent(params.get("account")) + "&";
 			if (params.has("platform"))
 			{
@@ -509,7 +509,7 @@
 			lookup_in_progress = true;
 			document.querySelector("#status span").textContent = "Fetching data for " + document.getElementById("username").value;
 			document.querySelector("#status").classList.remove("d-none");
-			fetch("https://conduit.omni.wf/profile?account=" + encodeURIComponent(document.getElementById("username").value) + "&platform=" + document.getElementById("platform").value).then(res => res.json()).then(data =>
+			fetch("https://conduit.browse.wf/profile?account=" + encodeURIComponent(document.getElementById("username").value) + "&platform=" + document.getElementById("platform").value).then(res => res.json()).then(data =>
 			{
 				if (data)
 				{
