@@ -9,6 +9,7 @@ $ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 		</button>
 		<div class="collapse navbar-collapse" id="navbar-content">
 			<div class="navbar-nav me-auto mb-2 mb-lg-0">
+				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 5) == "/live" ? " active" : ""); ?>" href="/live<?=$ext;?>">Live</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 6) == "/arbys" ? " active" : ""); ?>" href="/arbys<?=$ext;?>">Arbitration Schedule</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 10) == "/rivencalc" ? " active" : ""); ?>" href="/rivencalc<?=$ext;?>">Riven Calculator</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 8) == "/profile" ? " active" : ""); ?>" href="/profile<?=$ext;?>">Profile Viewer</a>

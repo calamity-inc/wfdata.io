@@ -141,11 +141,6 @@
 			return num;
 		}
 
-		function totit(str)
-		{
-			return str.replace(/[^\s\-]+/g, word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase());
-		}
-
 		function formattz(offset)
 		{
 			if (offset == 0)
@@ -223,17 +218,17 @@
 
 		function updateFilterNamesForLocale()
 		{
-			document.querySelector("label[for=filter-type-2]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Survival"]);
-			document.querySelector("label[for=filter-type-8]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Defense"]);
-			document.querySelector("label[for=filter-type-13]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Territory"]);
-			document.querySelector("label[for=filter-type-17]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Excavation"]);
-			document.querySelector("label[for=filter-type-21]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Purify"]);
-			document.querySelector("label[for=filter-type-27]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Evacuation"]);
-			document.querySelector("label[for=filter-type-33]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Artifact"]);
-			document.querySelector("label[for=filter-type-34]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Corruption"]);
-			document.querySelector("label[for=filter-type-35]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_VoidCascade"]);
-			document.querySelector("label[for=filter-type-36]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Armageddon"]);
-			document.querySelector("label[for=filter-type-38]").textContent = totit(dict["/Lotus/Language/Missions/MissionName_Alchemy"]);
+			document.querySelector("label[for=filter-type-2]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Survival"]);
+			document.querySelector("label[for=filter-type-8]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Defense"]);
+			document.querySelector("label[for=filter-type-13]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Territory"]);
+			document.querySelector("label[for=filter-type-17]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Excavation"]);
+			document.querySelector("label[for=filter-type-21]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Purify"]);
+			document.querySelector("label[for=filter-type-27]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Evacuation"]);
+			document.querySelector("label[for=filter-type-33]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Artifact"]);
+			document.querySelector("label[for=filter-type-34]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Corruption"]);
+			document.querySelector("label[for=filter-type-35]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_VoidCascade"]);
+			document.querySelector("label[for=filter-type-36]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Armageddon"]);
+			document.querySelector("label[for=filter-type-38]").textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_Alchemy"]);
 
 			document.querySelector("label[for=filter-fc-0]").textContent = dict["/Lotus/Language/Game/Faction_GrineerUC"];
 			document.querySelector("label[for=filter-fc-1]").textContent = dict["/Lotus/Language/Game/Faction_CorpusUC"];
@@ -297,7 +292,7 @@
 
 				let span = document.createElement(arr[0] == currentHour ? "b" : "span");
 				span.setAttribute("data-timestamp", arr[0]);
-				span.textContent = formathour(thisArbyHour) + " • " + totit(loc(node.missionName)) + " - " + dict[node.factionName] + " @ " + loc(node.name) + ", " + loc(node.systemName) + " (" + thisArbyGrade + " tier";
+				span.textContent = formathour(thisArbyHour) + " • " + toTitleCase(loc(node.missionName)) + " - " + dict[node.factionName] + " @ " + loc(node.name) + ", " + loc(node.systemName) + " (" + thisArbyGrade + " tier";
 				if ("darkSectorData" in node)
 				{
 					span.textContent += ", " + (node.darkSectorData.resourceBonus * 100).toFixed(0) + "% resource bonus";
@@ -339,7 +334,7 @@
 						tr.removeAttribute("data-starved");
 						tr.children[1].setAttribute("data-timestamp", arr[0]);
 						tr.children[1].textContent = days[thisArbyWeekDay] + ", " + months[thisArbyMonth] + " " + thisArbyDay + ", " + formathour(thisArbyHour);
-						tr.children[2].textContent = totit(loc(node.missionName)) + " - " + dict[node.factionName] + " @ " + loc(node.name) + ", " + loc(node.systemName);
+						tr.children[2].textContent = toTitleCase(loc(node.missionName)) + " - " + dict[node.factionName] + " @ " + loc(node.name) + ", " + loc(node.systemName);
 						if ("darkSectorData" in node)
 						{
 							tr.children[2].textContent += " (" + (node.darkSectorData.resourceBonus * 100).toFixed(0) + "% resource bonus)";
@@ -367,7 +362,7 @@
 						tr.removeAttribute("data-starved");
 						tr.children[1].setAttribute("data-timestamp", arr[0]);
 						tr.children[1].textContent = days[thisArbyWeekDay] + ", " + months[thisArbyMonth] + " " + thisArbyDay + ", " + formathour(thisArbyHour);
-						tr.children[2].textContent = totit(loc(node.missionName)) + " - " + loc(node.name) + ", " + loc(node.systemName);
+						tr.children[2].textContent = toTitleCase(loc(node.missionName)) + " - " + loc(node.name) + ", " + loc(node.systemName);
 						if ("darkSectorData" in node)
 						{
 							tr.children[2].textContent += " (" + (node.darkSectorData.resourceBonus * 100).toFixed(0) + "% resource bonus)";

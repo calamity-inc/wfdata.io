@@ -40,6 +40,11 @@ if (localStorage.getItem("lang"))
 	setLanguageIndicator(localStorage.getItem("lang"));
 }
 
+function toTitleCase(str)
+{
+	return str.replace(/[^\s\-]+/g, word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase());
+}
+
 // Images
 
 function setImageSource(img, icon)
