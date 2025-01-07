@@ -26,6 +26,7 @@
 			<li><a href="warframe-public-export-plus/ExportAvionics.json" target="_blank">ExportAvionics</a></li>
 			<li><a href="warframe-public-export-plus/ExportBoosterPacks.json" target="_blank">ExportBoosterPacks</a></li>
 			<li><a href="warframe-public-export-plus/ExportBundles.json" target="_blank">ExportBundles</a></li>
+			<li><a href="warframe-public-export-plus/ExportChallenges.json" target="_blank">ExportChallenges</a></li>
 			<li><a href="warframe-public-export-plus/ExportCustoms.json" target="_blank">ExportCustoms</a></li>
 			<li><a href="warframe-public-export-plus/ExportDrones.json" target="_blank">ExportDrones</a></li>
 			<li><a href="warframe-public-export-plus/ExportEnemies.json" target="_blank">ExportEnemies</a></li>

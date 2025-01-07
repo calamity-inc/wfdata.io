@@ -230,6 +230,14 @@ else if (substr($path, 0, 13) == "/Lotus/Types/")
 			finishWithData($ExportArcanes[$path]);
 		}
 	}
+	else if (substr($path, 0, 24) == "/Lotus/Types/Challenges/")
+	{
+		$ExportChallenges = json_decode(file_get_contents("warframe-public-export-plus/ExportChallenges.json"), true);
+		if (array_key_exists($path, $ExportChallenges))
+		{
+			finishWithData($ExportChallenges[$path]);
+		}
+	}
 
 	$ExportGear = json_decode(file_get_contents("warframe-public-export-plus/ExportGear.json"), true);
 	if (array_key_exists($path, $ExportGear))
