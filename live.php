@@ -36,12 +36,18 @@
 								</table>
 							</div>
 						</div>
-					</div>
-					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h4 class="card-header" id="arby-header">Arbitration</h4>
 							<div class="card-body">
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
+						<div class="card mb-3">
+							<h4 class="card-header">News</h4>
+							<div class="card-body overflow-auto" style="height:192px" id="news-body">
+								Loading...
 							</div>
 						</div>
 						<div class="card mb-3">
@@ -376,6 +382,106 @@
 			});
 		}
 
+		function updateNewsTicker()
+		{
+			if (window.events && window.redtext)
+			{
+				window.refresh_news_sources_at = new Date().getTime() + 60_000;
+			}
+
+			const items = [];
+			if (window.events)
+			{
+				const LanguageCode = (localStorage.getItem("lang") ?? "en");
+				for (const event of window.events)
+				{
+					let msg = event.Messages.find(x => x.LanguageCode == LanguageCode)?.Message;
+					msg ??= event.Msg;
+					if (msg && msg != "/Lotus/Language/CommunityMessages/JoinDiscord")
+					{
+						items.push({
+							type: event.Community ? "success" : "primary",
+							data: msg,
+							time: Math.trunc(event.Date.$date.$numberLong / 1000),
+							link: event.Prop
+						});
+					}
+				}
+			}
+			if (window.redtext)
+			{
+				for (const event of window.redtext)
+				{
+					items.push({
+						type: "danger",
+						data: event.data.split("WALLOPS :")[1],
+						time: event.time
+					});
+				}
+			}
+			items.sort((a, b) => b.time - a.time);
+			document.getElementById("news-body").innerHTML = "";
+			for (let i = 0; i != items.length; ++i)
+			{
+				const p = document.createElement("p");
+				p.className = "card-text mb-1 text-" + items[i].type;
+				if (items[i].link)
+				{
+					const a = document.createElement("a");
+					a.className = "text-" + items[i].type;
+					a.textContent = items[i].data;
+					a.href = items[i].link;
+					a.target = "_blank";
+					p.appendChild(a);
+				}
+				else
+				{
+					p.textContent = items[i].data;
+				}
+				document.getElementById("news-body").appendChild(p);
+			}
+			document.querySelector("#news-body > :last-child").classList.remove("mb-1");
+		}
+
+		async function updateNewsSources()
+		{
+			window.refresh_news_sources_at = undefined;
+
+			const sourcesToUpdate = {
+				events: true,
+				redtext: true,
+			};
+			if (window.events || window.redtext)
+			{
+				const meta = await fetch("https://oracle.browse.wf/news-meta").then(res => res.json());
+				if (window.events)
+				{
+					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent);
+				}
+				if (window.redtext)
+				{
+					sourcesToUpdate.redtext = (window.redtext[window.redtext.length - 1].time != meta.latestRedtext);
+				}
+			}
+			if (sourcesToUpdate.events)
+			{
+				fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
+				{
+					window.events_earmark = Math.trunc(worldState.Events[worldState.Events.length - 1].Date.$date.$numberLong / 1000);
+					window.events = worldState.Events;
+					updateNewsTicker();
+				});
+			}
+			if (sourcesToUpdate.redtext)
+			{
+				fetch("https://oracle.browse.wf/redtext.json?" + new Date().getTime()).then(res => res.json()).then(redtext =>
+				{
+					window.redtext = redtext;
+					updateNewsTicker();
+				});
+			}
+		}
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -432,6 +538,8 @@
 			updateWeekly();
 		});
 
+		updateNewsSources();
+
 		setInterval(function()
 		{
 			for (const elm of document.querySelectorAll(".badge[data-timestamp]"))
@@ -457,6 +565,10 @@
 			if (window.refresh_arby_at && new Date().getTime() >= window.refresh_arby_at)
 			{
 				updateArby();
+			}
+			if (window.refresh_news_sources_at && new Date().getTime() >= window.refresh_news_sources_at)
+			{
+				updateNewsSources();
 			}
 		}, 500);
 	</script>
