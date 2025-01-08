@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="icon" href="https://browse.wf/Lotus/Interface/Icons/Categories/GrimoireModIcon.png">
+	<style>abbr { text-decoration: underline dotted; cursor: help; text-decoration-skip-ink: none; }</style>
 </head>
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
@@ -185,6 +186,7 @@
 		</div>
 	</div>
 	<script src="common.js?os2"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script>
 		const dicts_promise = Promise.all([ getDictPromise(), getOSDictPromise() ]);
 		const ExportRegions_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json());
@@ -350,7 +352,9 @@
 					const td = document.createElement("td");
 					const abbr = document.createElement("abbr");
 					abbr.textContent = osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant];
-					abbr.title = osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant + "_Desc"];
+					abbr.setAttribute("data-bs-toggle", "tooltip");
+					abbr.setAttribute("data-bs-title", osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant + "_Desc"]);
+					new bootstrap.Tooltip(abbr);
 					td.appendChild(abbr);
 					tr.appendChild(td);
 				}
@@ -359,7 +363,9 @@
 					const td = document.createElement("td");
 					const abbr = document.createElement("abbr");
 					abbr.textContent = osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i]];
-					abbr.title = osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i] + "_Desc"];
+					abbr.setAttribute("data-bs-toggle", "tooltip");
+					abbr.setAttribute("data-bs-title", osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i] + "_Desc"]);
+					new bootstrap.Tooltip(abbr);
 					td.appendChild(abbr);
 					tr.appendChild(td);
 				}
@@ -373,7 +379,9 @@
 				const td = document.createElement("td");
 				const abbr = document.createElement("abbr");
 				abbr.textContent = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv];
-				abbr.title = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"];
+				abbr.setAttribute("data-bs-toggle", "tooltip");
+				abbr.setAttribute("data-bs-title", osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"]);
+				new bootstrap.Tooltip(abbr);
 				td.appendChild(abbr);
 				document.getElementById("labConquest-fv").appendChild(td);
 			}
@@ -669,6 +677,5 @@
 			}
 		}, 500);
 	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
