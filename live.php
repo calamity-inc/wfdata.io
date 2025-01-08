@@ -327,16 +327,20 @@
 			window.ExportRegions = ExportRegions;
 			window.ExportChallenges = ExportChallenges;
 			updateNames();
-			updateBountyCycle();
 			onLanguageUpdate = function()
 			{
 				updateNames();
-				updateBountyCycleLocalised();
+				if (window.bountyCycle)
+				{
+					updateBountyCycleLocalised();
+				}
 				if (window.arbys)
 				{
 					updateArby();
 				}
 			};
+
+			updateBountyCycle();
 
 			document.getElementById("arby-tier").textContent = "S";
 			Promise.all([
