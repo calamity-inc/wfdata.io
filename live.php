@@ -463,6 +463,7 @@
 					sourcesToUpdate.redtext = (window.redtext[window.redtext.length - 1].time != meta.latestRedtext);
 				}
 			}
+
 			if (sourcesToUpdate.events)
 			{
 				fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
@@ -479,6 +480,11 @@
 					window.redtext = redtext;
 					updateNewsTicker();
 				});
+			}
+
+			if (!sourcesToUpdate.events && !sourcesToUpdate.redtext)
+			{
+				window.refresh_news_sources_at = new Date().getTime() + 60_000;
 			}
 		}
 
