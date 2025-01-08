@@ -37,8 +37,9 @@
 			</div>
 			<div class="col-xl-8">
 				<div class="card mb-3">
-					<h4 class="card-header" id="HexSyndicate-header">Hex Bounties</h4>
+					<h4 class="card-header" id="bounties-header">Bounties</h4>
 					<div class="card-body">
+						<h5 id="HexSyndicate-name">The Hex</h5>
 						<table class="table table-hover table-borderless mb-0" id="HexSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
@@ -83,86 +84,72 @@
 								<td>6000/9000</td>
 							</tr>
 						</table>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xl-12 col-lg-6">
-						<div class="card mb-3">
-							<h4 class="card-header" id="EntratiLabSyndicate-header">Cavia Bounties</h4>
-							<div class="card-body">
-								<table class="table table-hover table-borderless mb-0" id="EntratiLabSyndicate-table">
-									<tr>
-										<th class="mission">Fetching data...</th>
-										<td class="challenge"></td>
-										<td>55-60</td>
-										<td>1000/1500</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>65-70</td>
-										<td>2000/3000</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>75-80</td>
-										<td>3000/4500</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>95-100</td>
-										<td>4000/6000</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>115-120</td>
-										<td>5000/7500</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-12 col-lg-6">
-						<div class="card mb-3">
-							<h4 class="card-header" id="ZarimanSyndicate-header">Holdfasts Bounties</h4>
-							<div class="card-body">
-								<table class="table table-hover table-borderless mb-0" id="ZarimanSyndicate-table">
-									<tr>
-										<th class="mission">Fetching data...</th>
-										<td class="challenge"></td>
-										<td>50-55</td>
-										<td>1/2&nbsp;VQ</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>60-65</td>
-										<td>2/3&nbsp;VQ</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>70-75</td>
-										<td>3/5&nbsp;VQ</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>90-95</td>
-										<td>4/6&nbsp;VQ</td>
-									</tr>
-									<tr>
-										<th class="mission"></th>
-										<td class="challenge"></td>
-										<td>110-115</td>
-										<td>5/8&nbsp;VQ</td>
-									</tr>
-								</table>
-							</div>
-						</div>
+						<h5 id="EntratiLabSyndicate-name" class="mt-3">Cavia</h5>
+						<table class="table table-hover table-borderless mb-0" id="EntratiLabSyndicate-table">
+							<tr>
+								<th class="mission">Fetching data...</th>
+								<td class="challenge"></td>
+								<td>55-60</td>
+								<td>1000/1500</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>65-70</td>
+								<td>2000/3000</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>75-80</td>
+								<td>3000/4500</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>95-100</td>
+								<td>4000/6000</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>115-120</td>
+								<td>5000/7500</td>
+							</tr>
+						</table>
+						<h5 id="ZarimanSyndicate-name" class="mt-3">The Holdfasts</h5>
+						<table class="table table-hover table-borderless mb-0" id="ZarimanSyndicate-table">
+							<tr>
+								<th class="mission">Fetching data...</th>
+								<td class="challenge"></td>
+								<td>50-55</td>
+								<td>1/2&nbsp;VQ</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>60-65</td>
+								<td>2/3&nbsp;VQ</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>70-75</td>
+								<td>3/5&nbsp;VQ</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>90-95</td>
+								<td>4/6&nbsp;VQ</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>110-115</td>
+								<td>5/8&nbsp;VQ</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -247,9 +234,7 @@
 		function updateBountyCycleLocalised()
 		{
 			setDatum("zariman", dict[bountyCycle.zarimanFaction == "FC_GRINEER" ? "/Lotus/Language/Game/Faction_GrineerUC" : "/Lotus/Language/Game/Faction_CorpusUC"], bountyCycle.expiry);
-			setDatum("HexSyndicate-header", "Hex Bounties", bountyCycle.expiry);
-			setDatum("EntratiLabSyndicate-header", "Cavia Bounties", bountyCycle.expiry);
-			setDatum("ZarimanSyndicate-header", "Holdfasts Bounties", bountyCycle.expiry);
+			setDatum("bounties-header", "Bounties", bountyCycle.expiry);
 			for (const syndicateTag of ["HexSyndicate", "EntratiLabSyndicate", "ZarimanSyndicate"])
 			{
 				const rows = document.getElementById(syndicateTag + "-table").querySelectorAll("tr");
@@ -289,6 +274,9 @@
 			document.getElementById("vallis-name").textContent = dict["/Lotus/Language/Locations/VenusLandscape"];
 			document.getElementById("deimos-name").textContent = dict["/Lotus/Language/InfestedMicroplanet/SolarMapDeimosLandscapeName"];
 			document.getElementById("zariman-name").textContent = dict["/Lotus/Language/Zariman/ZarimanRegionName"];
+			document.getElementById("HexSyndicate-name").textContent = dict["/Lotus/Language/1999/MessengerHexName"];
+			document.getElementById("EntratiLabSyndicate-name").textContent = dict["/Lotus/Language/EntratiLab/EntratiGeneral/EntratiLabSyndicateName"];
+			document.getElementById("ZarimanSyndicate-name").textContent = dict["/Lotus/Language/Syndicates/ZarimanName"];
 		}
 
 		Promise.all([
