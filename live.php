@@ -527,6 +527,10 @@
 				{
 					updateWeeklyLocalised();
 				}
+				if (window.events || window.redtext)
+				{
+					updateNewsTicker();
+				}
 			};
 
 			updateBountyCycle();
