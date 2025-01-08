@@ -295,7 +295,7 @@
 			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(bountyCycle =>
 			{
 				window.bountyCycle = bountyCycle;
-				window.refresh_bounty_cycle_at = bountyCycle.expiry + 3000;
+				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycle.expiry) + 3000;
 				updateDayNightCycle();
 				updateBountyCycleLocalised();
 			});
