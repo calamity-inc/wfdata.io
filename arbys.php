@@ -78,54 +78,10 @@
 		</div>
 	</div>
 	<script src="common.js"></script>
+	<script src="supplemental-data/arbyTiers.js"></script>
 	<script>
 		const days = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ];
 		const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-
-		// Credit to the Arbitration Goons for these tiers.
-		const tiers = {
-			ClanNode24: "A",
-			SolNode195: "A",
-			SolNode224: "A",
-			SolNode42: "A",
-			SolNode211: "B",
-			SolNode22: "B",
-			SolNode707: "B",
-			SolNode72: "B",
-			ClanNode15: "C",
-			ClanNode4: "C",
-			ClanNode6: "C",
-			SettlementNode11: "C",
-			SolNode106: "C",
-			SolNode122: "C",
-			SolNode125: "C",
-			SolNode130: "C",
-			SolNode164: "C",
-			SolNode212: "C",
-			SolNode25: "C",
-			SolNode26: "C",
-			SolNode43: "C",
-			SolNode46: "C",
-			SolNode64: "C",
-			ClanNode0: "D",
-			ClanNode18: "D",
-			ClanNode2: "D",
-			ClanNode8: "D",
-			SolNode167: "D",
-			SolNode172: "D",
-			SolNode17: "D",
-			SolNode185: "D",
-			SolNode18: "D",
-			SolNode23: "D",
-			SolNode305: "D",
-			SolNode402: "D",
-			SolNode412: "D",
-			SolNode85: "D",
-			SolNode907: "D",
-			ClanNode22: "S",
-			SolNode147: "S",
-			SolNode149: "S",
-		};
 
 		function loc(key)
 		{
@@ -257,7 +213,7 @@
 			{
 				const arr = arbys[i];
 
-				const thisArbyGrade = (tiers[arr[1]] ?? "F");
+				const thisArbyGrade = (arbyTiers[arr[1]] ?? "F");
 				if (!document.getElementById("filter-tier-" + thisArbyGrade).checked)
 				{
 					continue;
@@ -325,7 +281,7 @@
 				const thisArbyWeekDay = zulu ? date.getUTCDay() : date.getDay();
 				const thisArbyMonth = zulu ? date.getUTCMonth() : date.getMonth();
 
-				const thisArbyGrade = (tiers[arr[1]] ?? "F");
+				const thisArbyGrade = (arbyTiers[arr[1]] ?? "F");
 
 				{
 					const tr = document.getElementById("next-tier-" + thisArbyGrade);

@@ -10,28 +10,40 @@
 	<?php require "components/navbar.php"; ?>
 	<div class="container-fluid pt-3">
 		<div class="row">
-			<div class="col-xl-4 col-md-6">
-				<div class="card mb-3">
-					<h4 class="card-header">Environments</h4>
-					<div class="card-body">
-						<table class="table table-hover table-borderless mb-0">
-							<tr>
-								<th id="poe-name" class="w-50">Plains of Eidolon</th>
-								<td id="poe" class="w-50">Fetching data...</td>
-							</tr>
-							<tr>
-								<th id="vallis-name" class="w-50">Orb Vallis</th>
-								<td id="vallis" class="w-50"></td>
-							</tr>
-							<tr>
-								<th id="deimos-name" class="w-50">Cambion Drift</th>
-								<td id="deimos" class="w-50">Fetching data...</td>
-							</tr>
-							<tr>
-								<th id="zariman-name" class="w-50">Zariman</th>
-								<td id="zariman" class="w-50">Fetching data...</td>
-							</tr>
-						</table>
+			<div class="col-xl-4">
+				<div class="row">
+					<div class="col-xl-12 col-md-6">
+						<div class="card mb-3">
+							<h4 class="card-header">Environments</h4>
+							<div class="card-body">
+								<table class="table table-hover table-borderless mb-0">
+									<tr>
+										<th id="poe-name" class="w-50">Plains of Eidolon</th>
+										<td id="poe" class="w-50">Fetching data...</td>
+									</tr>
+									<tr>
+										<th id="vallis-name" class="w-50">Orb Vallis</th>
+										<td id="vallis" class="w-50"></td>
+									</tr>
+									<tr>
+										<th id="deimos-name" class="w-50">Cambion Drift</th>
+										<td id="deimos" class="w-50">Fetching data...</td>
+									</tr>
+									<tr>
+										<th id="zariman-name" class="w-50">Zariman</th>
+										<td id="zariman" class="w-50">Fetching data...</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
+						<div class="card mb-3">
+							<h4 class="card-header" id="arby-header">Arbitration</h4>
+							<div class="card-body">
+								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -279,6 +291,32 @@
 			document.getElementById("ZarimanSyndicate-name").textContent = dict["/Lotus/Language/Syndicates/ZarimanName"];
 		}
 
+		function updateArby()
+		{
+			const currentHour = parseInt((new Date().getTime() / 1000) / 3600) * 3600;
+			const epochHour = parseInt(arbys[0][0] / 3600) * 3600;
+			const currentHourIndex = (currentHour - epochHour) / 3600;
+			const arr = arbys[currentHourIndex];
+			const node = ExportRegions[arr[1]];
+			window.refresh_arby_at = (currentHour + 3600) * 1000;
+			setDatum("arby-header", "Arbitration", refresh_arby_at);
+			document.getElementById("arby-what").textContent = toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName];
+			document.getElementById("arby-where").textContent = "@ " + dict[node.name] + ", " + dict[node.systemName];
+			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
+		}
+
+		function loadScriptPromise(src)
+		{
+			return new Promise((resolve, reject) =>
+			{
+				const script = document.createElement("script");
+				script.src = src;
+				script.onload = resolve;
+				script.onerror = reject;
+				document.documentElement.appendChild(script);
+			});
+		}
+
 		Promise.all([
 			getDictPromise(),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json()),
@@ -294,7 +332,21 @@
 			{
 				updateNames();
 				updateBountyCycleLocalised();
+				if (window.arbys)
+				{
+					updateArby();
+				}
 			};
+
+			document.getElementById("arby-tier").textContent = "S";
+			Promise.all([
+				fetch("https://browse.wf/arbys.txt").then(res => res.text()),
+				loadScriptPromise("supplemental-data/arbyTiers.js")
+			]).then(([arbys]) =>
+			{
+				window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
+				updateArby();
+			});
 		});
 
 		setInterval(function()
@@ -318,6 +370,10 @@
 			if (window.refresh_bounty_cycle_at && new Date().getTime() >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
+			}
+			if (window.refresh_arby_at && new Date().getTime() >= window.refresh_arby_at)
+			{
+				updateArby();
 			}
 		}, 500);
 	</script>
