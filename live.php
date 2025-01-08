@@ -180,7 +180,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="common.js?r=osdict"></script>
+	<script src="common.js?2"></script>
 	<script>
 		function formatExpiry(expiry)
 		{
@@ -314,7 +314,7 @@
 			const arr = arbys[currentHourIndex];
 			const node = ExportRegions[arr[1]];
 			window.refresh_arby_at = (currentHour + 3600) * 1000;
-			setDatum("arby-header", "Arbitration", refresh_arby_at);
+			setDatum("arby-header", osdict["/Lotus/Language/Menu/AlertHardMode"], refresh_arby_at);
 			document.getElementById("arby-what").textContent = toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName];
 			document.getElementById("arby-where").textContent = "@ " + dict[node.name] + ", " + dict[node.systemName];
 			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
