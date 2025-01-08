@@ -501,6 +501,7 @@
 
 		function updateWorldState()
 		{
+			window.refresh_world_state_at = undefined;
 			fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
 			{
 				window.worldState = worldState;
