@@ -11,20 +11,29 @@ function getDictPromise()
 	return fetch("https://browse.wf/warframe-public-export-plus/dict." + (localStorage.getItem("lang") ?? "en") + ".json").then(res => res.json());
 }
 
+function getOSDictPromise()
+{
+	return fetch("https://oracle.browse.wf/dicts/" + (localStorage.getItem("lang") ?? "en") + ".json").then(res => res.json());
+}
+
 function setLanguage(code)
 {
 	setLanguageIndicator(code);
-
-	fetch("https://browse.wf/warframe-public-export-plus/dict." + code + ".json").then(res => res.json()).then(function(dict)
+	localStorage.setItem("lang", code);
+	const promises = [ getDictPromise() ];
+	if (window.osdict)
+	{
+		promises.push(getOSDictPromise());
+	}
+	Promise.all(promises).then(([ dict, osdict ]) =>
 	{
 		window.dict = dict;
+		window.osdict = osdict;
 		if ("onLanguageUpdate" in window)
 		{
 			onLanguageUpdate();
 		}
 	});
-
-	localStorage.setItem("lang", code);
 }
 
 function setLanguageIndicator(code)

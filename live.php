@@ -15,7 +15,7 @@
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h4 class="card-header">Environments</h4>
-							<div class="card-body">
+							<div class="card-body overflow-auto">
 								<table class="table table-hover table-borderless mb-0">
 									<tr>
 										<th id="poe-name" class="w-50">Plains of Eidolon</th>
@@ -44,13 +44,26 @@
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
 							</div>
 						</div>
+						<div class="card mb-3">
+							<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
+							<div class="card-body overflow-auto">
+								<table class="table table-borderless table-hover mb-2" id="labConquest-missions">
+									<tr><th>Fetching data...</th></tr>
+									<tr><td>&nbsp;</td></tr>
+									<tr><td>&nbsp;</td></tr>
+								</table>
+								<table class="table table-borderless mb-0">
+									<tr id="labConquest-fv"><td>&nbsp;</td></tr>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-xl-8">
 				<div class="card mb-3">
 					<h4 class="card-header" id="bounties-header">Bounties</h4>
-					<div class="card-body">
+					<div class="card-body overflow-auto">
 						<h5 id="HexSyndicate-name">The Hex</h5>
 						<table class="table table-hover table-borderless mb-0" id="HexSyndicate-table">
 							<tr>
@@ -179,20 +192,22 @@
 				return "Updating...";
 			}
 			let units = [];
-			if (delta >= 3_600_000)
+			if (delta >= 86_400_000)
+			{
+				units.push(Math.trunc(delta / 86_400_000) + "d");
+				delta %= 86_400_000;
+			}
+			if (delta >= 3_600_000 || units.length)
 			{
 				units.push(Math.trunc(delta / 3_600_000) + "h");
 				delta %= 3_600_000;
 			}
-			if (delta >= 60_000)
+			if (delta >= 60_000 || units.length)
 			{
 				units.push(Math.trunc(delta / 60_000) + "m");
 				delta %= 60_000;
 			}
-			if (delta >= 1_000)
-			{
-				units.push(Math.trunc(delta / 1_000) + "s");
-			}
+			units.push(Math.trunc(delta / 1_000).toString().padStart(2, "0") + "s");
 			return units.join(" ");
 		}
 
@@ -274,9 +289,9 @@
 			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(bountyCycle =>
 			{
 				window.bountyCycle = bountyCycle;
+				window.refresh_bounty_cycle_at = bountyCycle.expiry + 3000;
 				updateDayNightCycle();
 				updateBountyCycleLocalised();
-				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycle.expiry) + 3_000 + Math.random() * 10_000; // world state takes a bit to roll over plus network congestion and whatever
 			});
 		}
 
@@ -305,6 +320,62 @@
 			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
 		}
 
+		function updateWeeklyLocalised()
+		{
+			setDatum("labConquest-header", osdict["/Lotus/Language/Conquest/SolarMapLabConquestNode"], refresh_weekly_at);
+			const tbody = document.createElement("tbody");
+			for (const mission of weekly.labConquestMissions)
+			{
+				const tr = document.createElement("tr");
+				{
+					const th = document.createElement("th");
+					th.textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_" + mission.type] ?? mission.type);
+					tr.appendChild(th);
+				}
+				{
+					const td = document.createElement("td");
+					const abbr = document.createElement("abbr");
+					abbr.textContent = osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant];
+					abbr.title = osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant + "_Desc"];
+					td.appendChild(abbr);
+					tr.appendChild(td);
+				}
+				for (let i = 0; i != 2; ++i)
+				{
+					const td = document.createElement("td");
+					const abbr = document.createElement("abbr");
+					abbr.textContent = osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i]];
+					abbr.title = osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i] + "_Desc"];
+					td.appendChild(abbr);
+					tr.appendChild(td);
+				}
+				tbody.appendChild(tr);
+			}
+			document.getElementById("labConquest-missions").innerHTML = "";
+			document.getElementById("labConquest-missions").appendChild(tbody);
+			document.getElementById("labConquest-fv").innerHTML = "";
+			for (const fv of weekly.labConquestFrameVariables)
+			{
+				const td = document.createElement("td");
+				const abbr = document.createElement("abbr");
+				abbr.textContent = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv];
+				abbr.title = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"];
+				td.appendChild(abbr);
+				document.getElementById("labConquest-fv").appendChild(td);
+			}
+		}
+
+		function updateWeekly()
+		{
+			window.refresh_weekly_at = undefined;
+			fetch("https://oracle.browse.wf/weekly").then(res => res.json()).then(weekly =>
+			{
+				window.weekly = weekly;
+				window.refresh_weekly_at = weekly.expiry * 1000;
+				updateWeeklyLocalised();
+			});
+		}
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -319,11 +390,13 @@
 
 		Promise.all([
 			getDictPromise(),
+			getOSDictPromise(),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json()),
 			fetch("https://browse.wf/warframe-public-export-plus/ExportChallenges.json").then(res => res.json())
-		]).then(([dict, ExportRegions, ExportChallenges]) =>
+		]).then(([dict, osdict, ExportRegions, ExportChallenges]) =>
 		{
 			window.dict = dict;
+			window.osdict = osdict;
 			window.ExportRegions = ExportRegions;
 			window.ExportChallenges = ExportChallenges;
 			updateNames();
@@ -338,6 +411,10 @@
 				{
 					updateArby();
 				}
+				if (window.weekly)
+				{
+					updateWeeklyLocalised();
+				}
 			};
 
 			updateBountyCycle();
@@ -351,6 +428,8 @@
 				window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
 				updateArby();
 			});
+
+			updateWeekly();
 		});
 
 		setInterval(function()
