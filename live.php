@@ -16,7 +16,7 @@
 						<div class="card mb-3">
 							<h4 class="card-header">Environments</h4>
 							<div class="card-body overflow-auto">
-								<table class="table table-hover table-borderless mb-0">
+								<table class="table table-hover table-sm table-borderless mb-0">
 									<tr>
 										<th id="poe-name" class="w-50">Plains of Eidolon</th>
 										<td id="poe" class="w-50">Fetching data...</td>
@@ -53,12 +53,12 @@
 						<div class="card mb-3">
 							<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
 							<div class="card-body overflow-auto">
-								<table class="table table-borderless table-hover mb-2" id="labConquest-missions">
+								<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
 									<tr><th>Fetching data...</th></tr>
 									<tr><td>&nbsp;</td></tr>
 									<tr><td>&nbsp;</td></tr>
 								</table>
-								<table class="table table-borderless mb-0">
+								<table class="table table-sm table-borderless mb-0">
 									<tr id="labConquest-fv"><td>&nbsp;</td></tr>
 								</table>
 							</div>
@@ -71,7 +71,7 @@
 					<h4 class="card-header" id="bounties-header">Bounties</h4>
 					<div class="card-body overflow-auto">
 						<h5 id="HexSyndicate-name">The Hex</h5>
-						<table class="table table-hover table-borderless mb-0" id="HexSyndicate-table">
+						<table class="table table-hover table-sm table-borderless mb-0" id="HexSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
@@ -116,7 +116,7 @@
 							</tr>
 						</table>
 						<h5 id="EntratiLabSyndicate-name" class="mt-3">Cavia</h5>
-						<table class="table table-hover table-borderless mb-0" id="EntratiLabSyndicate-table">
+						<table class="table table-hover table-sm table-borderless mb-0" id="EntratiLabSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
@@ -149,7 +149,7 @@
 							</tr>
 						</table>
 						<h5 id="ZarimanSyndicate-name" class="mt-3">The Holdfasts</h5>
-						<table class="table table-hover table-borderless mb-0" id="ZarimanSyndicate-table">
+						<table class="table table-hover table-sm table-borderless mb-0" id="ZarimanSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
