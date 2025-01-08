@@ -51,15 +51,12 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
-							<div class="card-body overflow-auto">
-								<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
+							<h4 class="card-header" id="sortie-header">Sortie</h4>
+							<div class="card-body">
+								<table class="table table-sm table-borderless table-hover mb-0" id="sortie-table">
 									<tr><th>Fetching data...</th></tr>
 									<tr><td>&nbsp;</td></tr>
 									<tr><td>&nbsp;</td></tr>
-								</table>
-								<table class="table table-sm table-borderless mb-0">
-									<tr id="labConquest-fv"><td>&nbsp;</td></tr>
 								</table>
 							</div>
 						</div>
@@ -185,9 +182,35 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-xl-4">
+				<div class="card mb-3">
+					<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
+					<div class="card-body overflow-auto">
+						<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
+							<tr><th>Fetching data...</th></tr>
+							<tr><td>&nbsp;</td></tr>
+							<tr><td>&nbsp;</td></tr>
+						</table>
+						<table class="table table-sm table-borderless mb-0">
+							<tr id="labConquest-fv"><td>&nbsp;</td></tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<script src="common.js?2"></script>
+	<script src="common.js?os2"></script>
 	<script>
+		const dicts_promise = Promise.all([ getDictPromise(), getOSDictPromise() ]);
+		const ExportRegions_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json());
+		const ExportChallenges_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportChallenges.json").then(res => res.json());
+		const eMissionType_promise = fetch("https://browse.wf/warframe-public-export-plus/supplementals/eMissionType.json").then(res => res.json());
+
+		ExportRegions_promise.then(res => window.ExportRegions = res);
+		ExportChallenges_promise.then(res => window.ExportChallenges = res);
+		eMissionType_promise.then(res => window.eMissionType = res);
+
 		function formatExpiry(expiry)
 		{
 			expiry -= expiry % 1000; expiry += 1000; // normalise the ms so everything ticks at the same time
@@ -385,16 +408,16 @@
 
 		function updateNewsTicker()
 		{
-			if (window.events && window.redtext)
+			if (window.worldState && window.redtext)
 			{
 				window.refresh_news_sources_at = new Date().getTime() + 60_000;
 			}
 
 			const items = [];
-			if (window.events)
+			if (window.worldState)
 			{
 				const LanguageCode = (localStorage.getItem("lang") ?? "en");
-				for (const event of window.events)
+				for (const event of window.worldState.Events)
 				{
 					let msg = event.Messages.find(x => x.LanguageCode == LanguageCode)?.Message;
 					msg ??= event.Msg;
@@ -452,10 +475,10 @@
 				events: true,
 				redtext: true,
 			};
-			if (window.events || window.redtext)
+			if (window.worldState || window.redtext)
 			{
 				const meta = await fetch("https://oracle.browse.wf/news-meta").then(res => res.json());
-				if (window.events)
+				if (window.worldState)
 				{
 					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent);
 				}
@@ -467,17 +490,7 @@
 
 			if (sourcesToUpdate.events)
 			{
-				fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
-				{
-					window.events_earmark = Math.trunc(worldState.Events[worldState.Events.length - 1].Date.$date.$numberLong / 1000);
-					window.events = worldState.Events;
-					updateNewsTicker();
-					if (!window.bountyCycle)
-					{
-						window.bountyCycleExpiry = parseInt(worldState.SyndicateMissions.find(x => x.Tag == "HexSyndicate").Expiry.$date.$numberLong);
-						updateDayNightCycle();
-					}
-				});
+				updateWorldState();
 			}
 			if (sourcesToUpdate.redtext)
 			{
@@ -494,6 +507,88 @@
 			}
 		}
 
+		function updateWorldState()
+		{
+			fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
+			{
+				window.worldState = worldState;
+				window.events_earmark = Math.trunc(worldState.Events[worldState.Events.length - 1].Date.$date.$numberLong / 1000);
+				updateNewsTicker();
+
+				if (!window.bountyCycle)
+				{
+					window.bountyCycleExpiry = parseInt(worldState.SyndicateMissions.find(x => x.Tag == "HexSyndicate").Expiry.$date.$numberLong);
+					updateDayNightCycle();
+				}
+
+				updateSortie();
+			});
+		}
+
+		const sortieModifiers = {
+			"SORTIE_MODIFIER_LOW_ENERGY": "Energy Reduction",
+			"SORTIE_MODIFIER_IMPACT": "Enemy Physical Enhancement (Impact)",
+			"SORTIE_MODIFIER_SLASH": "Enemy Physical Enhancement (Slash)",
+			"SORTIE_MODIFIER_PUNCTURE": "Enemy Physical Enhancement (Puncture)",
+			"SORTIE_MODIFIER_EXIMUS": "Eximus Stronghold",
+			"SORTIE_MODIFIER_MAGNETIC": "Enemy Elemental Enhancement (Magnetic)",
+			"SORTIE_MODIFIER_CORROSIVE": "Enemy Elemental Enhancement (Corrosive)",
+			"SORTIE_MODIFIER_VIRAL": "Enemy Elemental Enhancement (Viral)",
+			"SORTIE_MODIFIER_ELECTRICITY": "Enemy Elemental Enhancement (Electricity)",
+			"SORTIE_MODIFIER_RADIATION": "Enemy Elemental Enhancement (Radiation)",
+			"SORTIE_MODIFIER_GAS": "Enemy Elemental Enhancement (Gas)",
+			"SORTIE_MODIFIER_FIRE": "Enemy Elemental Enhancement (Heat)",
+			"SORTIE_MODIFIER_EXPLOSION": "Enemy Elemental Enhancement (Blast)",
+			"SORTIE_MODIFIER_FREEZE": "Enemy Elemental Enhancement (Cold)",
+			"SORTIE_MODIFIER_TOXIN": "Enemy Elemental Enhancement (Toxin)",
+			"SORTIE_MODIFIER_POISON": "Enemy Elemental Enhancement (Toxin)",
+			"SORTIE_MODIFIER_HAZARD_RADIATION": "Radiation Hazard",
+			"SORTIE_MODIFIER_HAZARD_MAGNETIC": "Electromagnetic Anomalies",
+			"SORTIE_MODIFIER_HAZARD_FOG": "Dense Fog",
+			"SORTIE_MODIFIER_HAZARD_FIRE": "Fire",
+			"SORTIE_MODIFIER_HAZARD_ICE": "Cryogenic Leakage",
+			"SORTIE_MODIFIER_HAZARD_COLD": "Extreme Cold",
+			"SORTIE_MODIFIER_ARMOR": "Augmented Enemy Armor",
+			"SORTIE_MODIFIER_SHIELDS": "Enhanced Enemy Shields",
+			"SORTIE_MODIFIER_SECONDARY_ONLY": "Pistol Only",
+			"SORTIE_MODIFIER_SHOTGUN_ONLY": "Shotgun Only",
+			"SORTIE_MODIFIER_SNIPER_ONLY": "Sniper Only",
+			"SORTIE_MODIFIER_RIFLE_ONLY": "Assault Rifle Only",
+			"SORTIE_MODIFIER_MELEE_ONLY": "Melee Only",
+			"SORTIE_MODIFIER_BOW_ONLY": "Bow Only",
+		};
+
+		function setWorldStateExpiry(expiry)
+		{
+			if (!window.refresh_world_state_at || refresh_world_state_at > expiry)
+			{
+				window.refresh_world_state_at = expiry;
+			}
+		}
+
+		async function updateSortie()
+		{
+			await dicts_promise;
+			await eMissionType_promise;
+			const sortie = worldState.Sorties.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			setWorldStateExpiry(sortie.Expiry.$date.$numberLong);
+			setDatum("sortie-header", toTitleCase(osdict["/Lotus/Language/Menu/SortieMissionName"]), sortie.Expiry.$date.$numberLong);
+			const tbody = document.createElement("tbody");
+			for (const variant of sortie.Variants)
+			{
+				const tr = document.createElement("tr");
+				const th = document.createElement("th");
+				th.textContent = toTitleCase(dict[eMissionType.find(x => x.tag == variant.missionType).name]);
+				tr.appendChild(th);
+				const td = document.createElement("td");
+				td.textContent = sortieModifiers[variant.modifierType];
+				tr.appendChild(td);
+				tbody.appendChild(tr);
+			}
+			document.getElementById("sortie-table").innerHTML = "";
+			document.getElementById("sortie-table").appendChild(tbody);
+		}
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -505,13 +600,6 @@
 				document.documentElement.appendChild(script);
 			});
 		}
-
-		const dicts_promise = Promise.all([ getDictPromise(), getOSDictPromise() ]);
-		const ExportRegions_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json());
-		const ExportChallenges_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportChallenges.json").then(res => res.json());
-
-		ExportRegions_promise.then(res => window.ExportRegions = res);
-		ExportChallenges_promise.then(res => window.ExportChallenges = res);
 
 		Promise.all([dicts_promise, ExportRegions_promise, ExportChallenges_promise]).then(function()
 		{
@@ -549,16 +637,17 @@
 				{
 					updateWeeklyLocalised();
 				}
-				if (window.events || window.redtext)
+				if (window.worldState)
 				{
 					updateNewsTicker();
+					updateSortie();
 				}
 			};
 
 			updateWeekly();
 		});
 
-		updateNewsSources();
+		updateNewsSources(); // does updateWorldState
 
 		setInterval(function()
 		{
@@ -589,6 +678,10 @@
 			if (window.refresh_news_sources_at && new Date().getTime() >= window.refresh_news_sources_at)
 			{
 				updateNewsSources();
+			}
+			if (window.refresh_world_state_at && new Date().getTime() >= window.refresh_world_state_at)
+			{
+				updateWorldState();
 			}
 		}, 500);
 	</script>
