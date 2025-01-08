@@ -249,8 +249,8 @@
 		function updateDayNightCycle()
 		{
 			const time = new Date().getTime();
-			const cycleNightStart = bountyCycle.expiry - 3_000_000;
-			window.refresh_day_night_cycle_at = time > cycleNightStart ? bountyCycle.expiry : cycleNightStart;
+			const cycleNightStart = bountyCycleExpiry - 3_000_000;
+			window.refresh_day_night_cycle_at = time > cycleNightStart ? bountyCycleExpiry : cycleNightStart;
 			setDatum("poe", time > cycleNightStart ? "🌑 Night" : "☀️ Day", refresh_day_night_cycle_at);
 			setDatum("deimos", time > cycleNightStart ? "🌑 Vome" : "☀️ Fass", refresh_day_night_cycle_at);
 		}
@@ -295,7 +295,8 @@
 			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(bountyCycle =>
 			{
 				window.bountyCycle = bountyCycle;
-				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycle.expiry) + 3000;
+				window.bountyCycleExpiry = bountyCycle.expiry;
+				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycleExpiry) + 3000;
 				updateDayNightCycle();
 				updateBountyCycleLocalised();
 			});
@@ -471,6 +472,11 @@
 					window.events_earmark = Math.trunc(worldState.Events[worldState.Events.length - 1].Date.$date.$numberLong / 1000);
 					window.events = worldState.Events;
 					updateNewsTicker();
+					if (!window.bountyCycle)
+					{
+						window.bountyCycleExpiry = parseInt(worldState.SyndicateMissions.find(x => x.Tag == "HexSyndicate").Expiry.$date.$numberLong);
+						updateDayNightCycle();
+					}
 				});
 			}
 			if (sourcesToUpdate.redtext)
@@ -500,17 +506,33 @@
 			});
 		}
 
+		const dicts_promise = Promise.all([ getDictPromise(), getOSDictPromise() ]);
+		const ExportRegions_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json());
+		const ExportChallenges_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportChallenges.json").then(res => res.json());
+
+		ExportRegions_promise.then(res => window.ExportRegions = res);
+		ExportChallenges_promise.then(res => window.ExportChallenges = res);
+
+		Promise.all([dicts_promise, ExportRegions_promise, ExportChallenges_promise]).then(function()
+		{
+			updateBountyCycle();
+		});
+
 		Promise.all([
-			getDictPromise(),
-			getOSDictPromise(),
-			fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json()),
-			fetch("https://browse.wf/warframe-public-export-plus/ExportChallenges.json").then(res => res.json())
-		]).then(([dict, osdict, ExportRegions, ExportChallenges]) =>
+			fetch("https://browse.wf/arbys.txt").then(res => res.text()),
+			loadScriptPromise("supplemental-data/arbyTiers.js"),
+			ExportRegions_promise,
+			dicts_promise
+		]).then(([arbys]) =>
+		{
+			window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
+			updateArby();
+		});
+
+		dicts_promise.then(([dict, osdict]) =>
 		{
 			window.dict = dict;
 			window.osdict = osdict;
-			window.ExportRegions = ExportRegions;
-			window.ExportChallenges = ExportChallenges;
 			updateNames();
 			onLanguageUpdate = function()
 			{
@@ -532,18 +554,6 @@
 					updateNewsTicker();
 				}
 			};
-
-			updateBountyCycle();
-
-			document.getElementById("arby-tier").textContent = "S";
-			Promise.all([
-				fetch("https://browse.wf/arbys.txt").then(res => res.text()),
-				loadScriptPromise("supplemental-data/arbyTiers.js")
-			]).then(([arbys]) =>
-			{
-				window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
-				updateArby();
-			});
 
 			updateWeekly();
 		});
