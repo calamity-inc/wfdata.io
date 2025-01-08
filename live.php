@@ -135,31 +135,31 @@
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
 								<td>50-55</td>
-								<td>1/2&nbsp;VQ</td>
+								<td>1/2&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>60-65</td>
-								<td>2/3&nbsp;VQ</td>
+								<td>2/3&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>70-75</td>
-								<td>3/5&nbsp;VQ</td>
+								<td>3/5&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>90-95</td>
-								<td>4/6&nbsp;VQ</td>
+								<td>4/6&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>110-115</td>
-								<td>5/8&nbsp;VQ</td>
+								<td>5/8&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 						</table>
 					</div>
