@@ -180,7 +180,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="common.js"></script>
+	<script src="common.js?r=osdict"></script>
 	<script>
 		function formatExpiry(expiry)
 		{
