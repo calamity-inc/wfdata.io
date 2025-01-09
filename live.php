@@ -407,7 +407,10 @@
 		function updateWeekly()
 		{
 			window.refresh_weekly_at = undefined;
-			fetch("https://oracle.browse.wf/weekly").then(res => res.json()).then(weekly =>
+			Promise.all([
+				fetch("https://oracle.browse.wf/weekly").then(res => res.json()),
+				dicts_promise
+			]).then(([weekly]) =>
 			{
 				window.weekly = weekly;
 				window.refresh_weekly_at = weekly.expiry * 1000;
@@ -653,10 +656,9 @@
 					updateSortie();
 				}
 			};
-
-			updateWeekly();
 		});
 
+		updateWeekly();
 		updateNewsSources(); // does updateWorldState
 
 		setInterval(function()
