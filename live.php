@@ -448,12 +448,18 @@
 
 		function updateNewsTicker()
 		{
+			let highest_time = 0;
 			const items = [];
 			if (window.worldState)
 			{
 				const LanguageCode = (localStorage.getItem("lang") ?? "en");
 				for (const event of window.worldState.Events)
 				{
+					const time = Math.trunc(event.Date.$date.$numberLong / 1000);
+					if (time > highest_time)
+					{
+						highest_time = time;
+					}
 					let msg = event.Messages.find(x => x.LanguageCode == LanguageCode)?.Message;
 					msg ??= event.Msg;
 					if (msg && msg != "/Lotus/Language/CommunityMessages/JoinDiscord")
@@ -461,7 +467,7 @@
 						items.push({
 							type: event.Community ? "success" : "primary",
 							data: msg,
-							time: Math.trunc(event.Date.$date.$numberLong / 1000),
+							time: time,
 							link: event.Prop
 						});
 					}
@@ -471,6 +477,10 @@
 			{
 				for (const event of window.redtext)
 				{
+					if (event.time > highest_time)
+					{
+						highest_time = event.time;
+					}
 					items.push({
 						type: "danger",
 						data: event.data.split("WALLOPS :")[1],
@@ -493,7 +503,7 @@
 			if (window.worldState && window.redtext)
 			{
 				window.refresh_news_sources_at = new Date().getTime() + 60_000;
-				window.news_notify_after = items[0].time;
+				window.news_notify_after = highest_time;
 			}
 
 			document.getElementById("news-body").innerHTML = "";
