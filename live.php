@@ -76,36 +76,42 @@
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>65-70</td>
+								<td>1000/1500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>75-80</td>
+								<td>2000/3000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>85-90</td>
+								<td>3000/4500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>95-100</td>
+								<td>4000/6000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>105-110</td>
+								<td>5000/7500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>115-120</td>
+								<td>6000/9000</td>
 							</tr>
 						</table>
 						<h5 id="EntratiLabSyndicate-name" class="mt-3">Cavia</h5>
@@ -114,26 +120,31 @@
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
 								<td>55-60</td>
+								<td>1000/1500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>65-70</td>
+								<td>2000/3000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>75-80</td>
+								<td>3000/4500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>95-100</td>
+								<td>4000/6000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>115-120</td>
+								<td>5000/7500</td>
 							</tr>
 						</table>
 						<h5 id="ZarimanSyndicate-name" class="mt-3">The Holdfasts</h5>
@@ -142,26 +153,31 @@
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
 								<td>50-55</td>
+								<td>1/2&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>60-65</td>
+								<td>2/3&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>70-75</td>
+								<td>3/5&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>90-95</td>
+								<td>4/6&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>110-115</td>
+								<td>5/8&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
 							</tr>
 						</table>
 					</div>
