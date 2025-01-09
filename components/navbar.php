@@ -1,7 +1,7 @@
 <?php
 $ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 ?>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="/" <?php if ($_SERVER["REQUEST_URI"] == "/"): ?> onclick="event.preventDefault();" <?php endif; ?>>browse.wf</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,3 +52,4 @@ $ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 		</div>
 	</div>
 </nav>
+<div style="height:56px"></div>
