@@ -76,42 +76,42 @@
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>65-70</td>
-								<td>1000/1500</td>
+								<td>1000/<wbr/>1500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>75-80</td>
-								<td>2000/3000</td>
+								<td>2000/<wbr/>3000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>85-90</td>
-								<td>3000/4500</td>
+								<td>3000/<wbr/>4500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>95-100</td>
-								<td>4000/6000</td>
+								<td>4000/<wbr/>6000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>105-110</td>
-								<td>5000/7500</td>
+								<td>5000/<wbr/>7500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td class="ally"></td>
 								<td>115-120</td>
-								<td>6000/9000</td>
+								<td>6000/<wbr/>9000</td>
 							</tr>
 						</table>
 						<h5 id="EntratiLabSyndicate-name" class="mt-3">Cavia</h5>
@@ -120,31 +120,31 @@
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
 								<td>55-60</td>
-								<td>1000/1500</td>
+								<td>1000/<wbr/>1500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>65-70</td>
-								<td>2000/3000</td>
+								<td>2000/<wbr/>3000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>75-80</td>
-								<td>3000/4500</td>
+								<td>3000/<wbr/>4500</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>95-100</td>
-								<td>4000/6000</td>
+								<td>4000/<wbr/>6000</td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>115-120</td>
-								<td>5000/7500</td>
+								<td>5000/<wbr/>7500</td>
 							</tr>
 						</table>
 						<h5 id="ZarimanSyndicate-name" class="mt-3">The Holdfasts</h5>
