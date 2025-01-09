@@ -5,14 +5,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="icon" href="https://browse.wf/Lotus/Interface/Icons/Categories/GrimoireModIcon.png">
-	<style>abbr { text-decoration: underline dotted; cursor: help; text-decoration-skip-ink: none; }</style>
+	<style>
+		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
+		[data-bs-toggle=tooltip] { cursor: help; }
+		#news-body { height:200px } @media (min-width: 1200px) { #news-body { height:677px } }
+	</style>
 </head>
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
 	<div class="container-fluid pt-3">
 		<p>This tool shows you everything that's going on in Warframe <i>right now</i> in a hopefully useful way. It is still in active development, so, if you have feedback, <a href="https://github.com/calamity-inc/browse.wf/issues/15" target="_blank">please let us know</a>.</p>
 		<div class="row">
-			<div class="col-xl-4">
+			<div class="col-xl-3">
 				<div class="row">
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
@@ -38,18 +42,12 @@
 								</table>
 							</div>
 						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h4 class="card-header" id="arby-header">Arbitration</h4>
 							<div class="card-body">
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-12 col-md-6">
-						<div class="card mb-3">
-							<h4 class="card-header">News</h4>
-							<div class="card-body overflow-auto" style="height:192px" id="news-body">
-								Loading...
 							</div>
 						</div>
 						<div class="card mb-3">
@@ -65,7 +63,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-8">
+			<div class="col-xl-6">
 				<div class="card mb-3">
 					<h4 class="card-header" id="bounties-header">Bounties</h4>
 					<div class="card-body overflow-auto">
@@ -153,39 +151,47 @@
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
 								<td>50-55</td>
-								<td>1/2&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
+								<td>1/2&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>60-65</td>
-								<td>2/3&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
+								<td>2/3&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>70-75</td>
-								<td>3/5&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
+								<td>3/5&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>90-95</td>
-								<td>4/6&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
+								<td>4/6&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
 							</tr>
 							<tr>
 								<th class="mission"></th>
 								<td class="challenge"></td>
 								<td>110-115</td>
-								<td>5/8&nbsp;<abbr title="Voidplume Quills">VQ</abbr></td>
+								<td>5/8&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>
+			<div class="col-xl-3">
+				<div class="card mb-3">
+					<h4 class="card-header">News</h4>
+					<div class="card-body overflow-auto" id="news-body">
+						Loading...
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="row">
-			<div class="col-xl-4">
+			<div class="col-xl-4 col-lg-5">
 				<div class="card mb-3">
 					<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
 					<div class="card-body overflow-auto">
@@ -197,6 +203,14 @@
 						<table class="table table-sm table-borderless mb-0">
 							<tr id="labConquest-fv"><td>&nbsp;</td></tr>
 						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-8 col-lg-7">
+				<div class="card mb-3">
+					<h4 class="card-header" id="invasions-header">Invasions</h4>
+					<div class="card-body overflow-auto">
+						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tbody><tr><td>Loading...</td></tr></tbody></table>
 					</div>
 				</div>
 			</div>
@@ -310,7 +324,11 @@
 						rows[i].querySelector(".ally").textContent = allyNames[bountyCycle.bounties[syndicateTag][i].ally];
 					}
 					const challenge = ExportChallenges[bountyCycle.bounties[syndicateTag][i].challenge];
-					rows[i].querySelector(".challenge").textContent = dict[challenge.description].split("\r\n").pop().split("|COUNT|").join(challenge.requiredCount);
+					const span = document.createElement("span");
+					span.textContent = dict[challenge.description].split("\r\n").pop().split("|COUNT|").join(challenge.requiredCount);
+					addTooltip(span, dict[challenge.name]);
+					rows[i].querySelector(".challenge").innerHTML = "";
+					rows[i].querySelector(".challenge").appendChild(span);
 				}
 			}
 		}
@@ -353,6 +371,13 @@
 			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
 		}
 
+		function addTooltip(elm, title)
+		{
+			elm.setAttribute("data-bs-toggle", "tooltip");
+			elm.setAttribute("data-bs-title", title);
+			new bootstrap.Tooltip(elm);
+		}
+
 		function updateWeeklyLocalised()
 		{
 			setDatum("labConquest-header", osdict["/Lotus/Language/Conquest/SolarMapLabConquestNode"], refresh_weekly_at);
@@ -369,9 +394,7 @@
 					const td = document.createElement("td");
 					const abbr = document.createElement("abbr");
 					abbr.textContent = osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant];
-					abbr.setAttribute("data-bs-toggle", "tooltip");
-					abbr.setAttribute("data-bs-title", osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant + "_Desc"]);
-					new bootstrap.Tooltip(abbr);
+					addTooltip(abbr, osdict["/Lotus/Language/Conquest/MissionVariant_LabConquest_" + mission.variant + "_Desc"]);
 					td.appendChild(abbr);
 					tr.appendChild(td);
 				}
@@ -380,9 +403,7 @@
 					const td = document.createElement("td");
 					const abbr = document.createElement("abbr");
 					abbr.textContent = osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i]];
-					abbr.setAttribute("data-bs-toggle", "tooltip");
-					abbr.setAttribute("data-bs-title", osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i] + "_Desc"]);
-					new bootstrap.Tooltip(abbr);
+					addTooltip(abbr, osdict["/Lotus/Language/Conquest/Condition_" + mission.conditions[i] + "_Desc"]);
 					td.appendChild(abbr);
 					tr.appendChild(td);
 				}
@@ -396,9 +417,7 @@
 				const td = document.createElement("td");
 				const abbr = document.createElement("abbr");
 				abbr.textContent = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv];
-				abbr.setAttribute("data-bs-toggle", "tooltip");
-				abbr.setAttribute("data-bs-title", osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"]);
-				new bootstrap.Tooltip(abbr);
+				addTooltip(abbr, osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"]);
 				td.appendChild(abbr);
 				document.getElementById("labConquest-fv").appendChild(td);
 			}
@@ -614,6 +633,84 @@
 			});
 		}
 
+		const item_name_promises = {};
+		function getItemNamePromise(uniqueName)
+		{
+			if (!item_name_promises[uniqueName])
+			{
+				item_name_promises[uniqueName] = fetch("https://browse.wf" + uniqueName).then(res => res.json()).then(res => res.name);
+			}
+			return item_name_promises[uniqueName];
+		}
+
+		async function updateInvasionsLocalised()
+		{
+			const tbody = document.createElement("tbody");
+			let last_node = "";
+			for (const invasion of invasions)
+			{
+				const tr = document.createElement("tr");
+				{
+					const th = document.createElement("th");
+					if (last_node != invasion.node)
+					{
+						const node = ExportRegions[invasion.node];
+						th.textContent = dict[node.name] + ", " + dict[node.systemName];
+						last_node = invasion.node;
+					}
+					tr.appendChild(th);
+				}
+				{
+					const td = document.createElement("td");
+					const span = document.createElement("span");
+					span.textContent = dict[invasion.ally == "FC_GRINEER" ? "/Lotus/Language/Game/Faction_GrineerUC" : "/Lotus/Language/Game/Faction_CorpusUC"];
+					addTooltip(span, "Your ally");
+					td.appendChild(span);
+					tr.appendChild(td);
+				}
+				{
+					const td = document.createElement("td");
+					const span = document.createElement("span");
+					span.textContent = toTitleCase(dict["/Lotus/Language/Missions/MissionName_" + invasion.missions[0]]);
+					addTooltip(span, "Next: " + toTitleCase(dict["/Lotus/Language/Missions/MissionName_" + invasion.missions[1]]));
+					td.appendChild(span);
+					tr.appendChild(td);
+				}
+				{
+					const td = document.createElement("td");
+					td.textContent = invasion.allyPay[0].ItemCount + "x " + dict[await getItemNamePromise(invasion.allyPay[0].ItemType)];
+					tr.appendChild(td);
+				}
+				tbody.appendChild(tr);
+			}
+			setDatum("invasions-header", "Invasions", refresh_invasions_at * 1000);
+			document.getElementById("invasions-table").innerHTML = "";
+			document.getElementById("invasions-table").appendChild(tbody);
+		}
+
+		function updateInvasions()
+		{
+			window.refresh_invasions_at = undefined;
+			Promise.all([
+				fetch("https://oracle.browse.wf/invasions").then(res => res.json()),
+				dicts_promise,
+				ExportRegions_promise
+			]).then(async ([res]) =>
+			{
+				const name_promises = [];
+				for (const invasion of res.invasions)
+				{
+					name_promises.push(getItemNamePromise(invasion.allyPay[0].ItemType));
+				}
+				await Promise.all(name_promises);
+
+				window.invasions = res.invasions;
+				window.refresh_invasions_at = res.expiry;
+
+				updateInvasionsLocalised();
+			});
+		}
+
 		Promise.all([dicts_promise, ExportRegions_promise, ExportChallenges_promise]).then(function()
 		{
 			updateBountyCycle();
@@ -655,11 +752,16 @@
 					updateNewsTicker();
 					updateSortie();
 				}
+				if (window.invasions)
+				{
+					updateInvasionsLocalised();
+				}
 			};
 		});
 
 		updateWeekly();
 		updateNewsSources(); // does updateWorldState
+		updateInvasions();
 
 		setInterval(function()
 		{
@@ -696,6 +798,8 @@
 				updateWorldState();
 			}
 		}, 500);
+
+		document.querySelectorAll(".vq-abbr").forEach(elm => addTooltip(elm, "Voidplume Quills"));
 	</script>
 </body>
 </html>
