@@ -9,6 +9,7 @@
 		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
 		[data-bs-toggle=tooltip] { cursor: help; }
 		#news-body { height:200px } @media (min-width: 1200px) { #news-body { height:556px } }
+		[data-notif-toggle], [data-notif-toggle] > span { text-decoration:none;cursor:pointer }
 	</style>
 </head>
 <body data-bs-theme="dark">
@@ -183,7 +184,10 @@
 			</div>
 			<div class="col-xl-3">
 				<div class="card mb-3">
-					<h4 class="card-header">News</h4>
+					<div class="card-header d-flex">
+						<h4 class="mb-0">News</h4>
+						<a class="m-auto me-2" data-notif-toggle="news"></a>
+					</div>
 					<div class="card-body overflow-auto" id="news-body">
 						Loading...
 					</div>
@@ -219,6 +223,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 	</div>
 	<script src="common.js?os2"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -443,11 +448,6 @@
 
 		function updateNewsTicker()
 		{
-			if (window.worldState && window.redtext)
-			{
-				window.refresh_news_sources_at = new Date().getTime() + 60_000;
-			}
-
 			const items = [];
 			if (window.worldState)
 			{
@@ -479,6 +479,23 @@
 				}
 			}
 			items.sort((a, b) => b.time - a.time);
+
+			if (window.news_notify_after && localStorage.getItem("live.notif.news"))
+			{
+				for (let i = items.length; i-- != 0; )
+				{
+					if (items[i].time > news_notify_after)
+					{
+						sendNotification(items[i].data);
+					}
+				}
+			}
+			if (window.worldState && window.redtext)
+			{
+				window.refresh_news_sources_at = new Date().getTime() + 60_000;
+				window.news_notify_after = items[0].time;
+			}
+
 			document.getElementById("news-body").innerHTML = "";
 			for (let i = 0; i != items.length; ++i)
 			{
@@ -822,6 +839,64 @@
 				updateInvasions();
 			}
 		}, 500);
+
+		function sendNotification(text)
+		{
+			const toast = document.createElement("div");
+			toast.className = "toast align-items-center text-bg-primary border-0";
+			const div = document.createElement("div");
+			div.className = "d-flex";
+			const body = document.createElement("div");
+			body.className = "toast-body";
+			body.textContent = text;
+			div.appendChild(body);
+			const button = document.createElement("button");
+			button.className = "btn-close btn-close-white me-2 m-auto";
+			button.setAttribute("data-bs-dismiss", "toast");
+			div.appendChild(button);
+			toast.appendChild(div);
+			new bootstrap.Toast(document.querySelector(".toast-container").appendChild(toast)).show();
+
+			if (Notification.permission == "granted")
+			{
+				new Notification(text);
+			}
+		}
+
+		function refreshNotifStatus(elm)
+		{
+			const enabled = localStorage.getItem("live.notif." + elm.getAttribute("data-notif-toggle"));
+			const span = document.createElement("span");
+			span.textContent = enabled ? "🔕" : "🔔";
+			addTooltip(span, enabled ? "Disable Notifications" : "Enable Notifications");
+			elm.querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			elm.innerHTML = "";
+			elm.appendChild(span);
+		}
+
+		document.querySelectorAll("[data-notif-toggle]").forEach(elm =>
+		{
+			refreshNotifStatus(elm);
+			elm.onclick = function()
+			{
+				if (localStorage.getItem("live.notif." + elm.getAttribute("data-notif-toggle")))
+				{
+					localStorage.removeItem("live.notif." + elm.getAttribute("data-notif-toggle"));
+				}
+				else
+				{
+					localStorage.setItem("live.notif." + elm.getAttribute("data-notif-toggle"), "1");
+					if (Notification.permission != "granted")
+					{
+						Notification.requestPermission().then((permission) =>
+						{
+							sendNotification("This is an example notification.");
+						});
+					}
+				}
+				refreshNotifStatus(elm);
+			};
+		});
 
 		document.querySelectorAll(".vq-abbr").forEach(elm => addTooltip(elm, "Voidplume Quills"));
 	</script>
