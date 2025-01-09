@@ -8,7 +8,7 @@
 	<style>
 		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
 		[data-bs-toggle=tooltip] { cursor: help; }
-		#news-body { height:200px } @media (min-width: 1200px) { #news-body { height:677px } }
+		#news-body { height:200px } @media (min-width: 1200px) { #news-body { height:556px } }
 	</style>
 </head>
 <body data-bs-theme="dark">
@@ -187,6 +187,10 @@
 					<div class="card-body overflow-auto" id="news-body">
 						Loading...
 					</div>
+				</div>
+				<div class="card mb-3">
+					<h4 class="card-header">KinePage</h4>
+					<div class="card-body" id="pgr">No new messages. Scanning...</div>
 				</div>
 			</div>
 		</div>
@@ -538,6 +542,13 @@
 			}
 		}
 
+		function updateWorldStateLocalised()
+		{
+			updateNewsTicker();
+			updateSortie();
+			updateKinePage();
+		}
+
 		function updateWorldState()
 		{
 			window.refresh_world_state_at = undefined;
@@ -545,7 +556,6 @@
 			{
 				window.worldState = worldState;
 				window.events_earmark = Math.trunc(worldState.Events[worldState.Events.length - 1].Date.$date.$numberLong / 1000);
-				updateNewsTicker();
 
 				if (!window.bountyCycle)
 				{
@@ -553,7 +563,7 @@
 					updateDayNightCycle();
 				}
 
-				updateSortie();
+				updateWorldStateLocalised();
 			});
 		}
 
@@ -619,6 +629,16 @@
 			}
 			document.getElementById("sortie-table").innerHTML = "";
 			document.getElementById("sortie-table").appendChild(tbody);
+		}
+
+		function updateKinePage()
+		{
+			const Tmp = JSON.parse(worldState.Tmp ?? "{}");
+			const lang_code = (localStorage.getItem("lang") ?? "en");
+			if (Tmp.pgr && Tmp.pgr[lang_code])
+			{
+				document.getElementById("pgr").textContent = Tmp.pgr[lang_code];
+			}
 		}
 
 		function loadScriptPromise(src)
@@ -749,8 +769,7 @@
 				}
 				if (window.worldState)
 				{
-					updateNewsTicker();
-					updateSortie();
+					updateWorldStateLocalised();
 				}
 				if (window.invasions)
 				{
