@@ -683,7 +683,7 @@
 				}
 				tbody.appendChild(tr);
 			}
-			setDatum("invasions-header", "Invasions", refresh_invasions_at * 1000);
+			setDatum("invasions-header", "Invasions", refresh_invasions_at);
 			document.getElementById("invasions-table").innerHTML = "";
 			document.getElementById("invasions-table").appendChild(tbody);
 		}
@@ -705,7 +705,7 @@
 				await Promise.all(name_promises);
 
 				window.invasions = res.invasions;
-				window.refresh_invasions_at = res.expiry;
+				window.refresh_invasions_at = res.expiry * 1000;
 
 				updateInvasionsLocalised();
 			});
@@ -796,6 +796,10 @@
 			if (window.refresh_world_state_at && new Date().getTime() >= window.refresh_world_state_at)
 			{
 				updateWorldState();
+			}
+			if (window.refresh_invasions_at && new Date().getTime() >= window.refresh_invasions_at)
+			{
+				updateInvasions();
 			}
 		}, 500);
 
