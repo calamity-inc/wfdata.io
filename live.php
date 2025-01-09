@@ -750,17 +750,6 @@
 			updateBountyCycle();
 		});
 
-		Promise.all([
-			fetch("https://browse.wf/arbys.txt").then(res => res.text()),
-			loadScriptPromise("supplemental-data/arbyTiers.js"),
-			ExportRegions_promise,
-			dicts_promise
-		]).then(([arbys]) =>
-		{
-			window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
-			updateArby();
-		});
-
 		dicts_promise.then(([dict, osdict]) =>
 		{
 			window.dict = dict;
@@ -790,6 +779,16 @@
 					updateInvasionsLocalised();
 				}
 			};
+
+			Promise.all([
+				fetch("https://browse.wf/arbys.txt").then(res => res.text()),
+				loadScriptPromise("supplemental-data/arbyTiers.js"),
+				ExportRegions_promise
+			]).then(([arbys]) =>
+			{
+				window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
+				updateArby();
+			});
 		});
 
 		updateWeekly();
