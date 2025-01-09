@@ -704,6 +704,7 @@
 				tbody.appendChild(tr);
 			}
 			setDatum("invasions-header", "Invasions", refresh_invasions_at);
+			document.getElementById("invasions-table").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("invasions-table").innerHTML = "";
 			document.getElementById("invasions-table").appendChild(tbody);
 		}
