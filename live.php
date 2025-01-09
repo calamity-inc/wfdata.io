@@ -729,18 +729,14 @@
 		function updateInvasions()
 		{
 			window.refresh_invasions_at = undefined;
-			Promise.all([
-				fetch("https://oracle.browse.wf/invasions").then(res => res.json()),
-				dicts_promise,
-				ExportRegions_promise
-			]).then(async ([res]) =>
+			fetch("https://oracle.browse.wf/invasions").then(res => res.json()).then(async (res) =>
 			{
-				const name_promises = [];
+				const promises = [dicts_promise, ExportRegions_promise];
 				for (const invasion of res.invasions)
 				{
-					name_promises.push(getItemNamePromise(invasion.allyPay[0].ItemType));
+					promises.push(getItemNamePromise(invasion.allyPay[0].ItemType));
 				}
-				await Promise.all(name_promises);
+				await Promise.all(promises);
 
 				window.invasions = res.invasions;
 				window.refresh_invasions_at = res.expiry * 1000;
