@@ -199,9 +199,9 @@
 
 			const zulu = (document.getElementById("select-tz").value == "zulu");
 
-			window.currentHour = parseInt((new Date().getTime() / 1000) / 3600) * 3600;
+			window.currentHour = Math.trunc((new Date().getTime() / 1000) / 3600) * 3600;
 
-			const epochHour = parseInt(arbys[0][0] / 3600) * 3600;
+			const epochHour = arbys[0][0];
 			const currentHourIndex = (currentHour - epochHour) / 3600;
 
 			// Update log

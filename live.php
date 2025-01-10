@@ -368,8 +368,8 @@
 
 		function updateArby()
 		{
-			const currentHour = parseInt((new Date().getTime() / 1000) / 3600) * 3600;
-			const epochHour = parseInt(arbys[0][0] / 3600) * 3600;
+			const currentHour = Math.trunc((new Date().getTime() / 1000) / 3600) * 3600;
+			const epochHour = arbys[0][0];
 			const currentHourIndex = (currentHour - epochHour) / 3600;
 			const arr = arbys[currentHourIndex];
 			const node = ExportRegions[arr[1]];
