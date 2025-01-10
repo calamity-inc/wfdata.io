@@ -554,7 +554,7 @@
 			};
 			if (window.worldState || window.redtext)
 			{
-				const meta = await fetch("https://oracle.browse.wf/news-meta").then(res => res.json());
+				const meta = await fetch("https://oracle.browse.wf/min").then(res => res.json());
 				if (window.worldState)
 				{
 					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent);
@@ -562,6 +562,10 @@
 				if (window.redtext)
 				{
 					sourcesToUpdate.redtext = (window.redtext[window.redtext.length - 1].time != meta.latestRedtext);
+				}
+				if (window.dailyDeal)
+				{
+					document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - meta.darvoSold);
 				}
 			}
 
@@ -699,7 +703,7 @@
 
 		async function updateDarvosDeal()
 		{
-			const dailyDeal = worldState.DailyDeals.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			window.dailyDeal = worldState.DailyDeals.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
 			setDatum("darvo-header", "Darvo's Deal", dailyDeal.Expiry.$date.$numberLong);
 			setWorldStateExpiry(dailyDeal.Expiry.$date.$numberLong);
 			const item_data = await getItemDataPromise(dailyDeal.StoreItem);
