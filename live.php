@@ -567,6 +567,10 @@
 				{
 					document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - meta.darvoSold);
 				}
+				if (window.num_invasions && window.num_invasions != meta.invasions)
+				{
+					updateInvasions();
+				}
 			}
 
 			if (sourcesToUpdate.events)
@@ -756,6 +760,7 @@
 		{
 			const tbody = document.createElement("tbody");
 			let last_node = "";
+			window.num_invasions = 0;
 			for (const invasion of invasions)
 			{
 				const tr = document.createElement("tr");
@@ -763,6 +768,7 @@
 					const th = document.createElement("th");
 					if (last_node != invasion.node)
 					{
+						++num_invasions;
 						const node = ExportRegions[invasion.node];
 						th.textContent = dict[node.name] + ", " + dict[node.systemName];
 						last_node = invasion.node;
