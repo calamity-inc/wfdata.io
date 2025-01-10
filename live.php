@@ -707,6 +707,7 @@
 			setDatum("darvo-header", "Darvo's Deal", dailyDeal.Expiry.$date.$numberLong);
 			setWorldStateExpiry(dailyDeal.Expiry.$date.$numberLong);
 			const item_data = await getItemDataPromise(dailyDeal.StoreItem);
+			await dicts_promise;
 			document.getElementById("darvo-item").textContent = dict[item_data.name];
 			document.getElementById("darvo-icon").src = "https://browse.wf/" + item_data.icon;
 			document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - dailyDeal.AmountSold);
