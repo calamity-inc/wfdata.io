@@ -9,6 +9,7 @@
 		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
 		[data-bs-toggle=tooltip] { cursor: help; }
 		[data-notif-toggle], [data-notif-toggle] > span { text-decoration:none;cursor:pointer }
+		.card-block:not(:last-child) { margin-bottom: .5rem; }
 	</style>
 </head>
 <body data-bs-theme="dark">
@@ -58,6 +59,12 @@
 							</div>
 						</div>
 						<div class="card mb-3">
+							<h4 class="card-header">Alerts</h4>
+							<div class="card-body" id="alerts-body">Loading...</div>
+						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
+						<div class="card mb-3">
 							<h4 class="card-header" id="darvo-header">Darvo's Deal</h4>
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
@@ -67,8 +74,6 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h4 class="card-header" id="sortie-header">Sortie</h4>
 							<div class="card-body">
@@ -553,7 +558,7 @@
 				const meta = await fetch("https://oracle.browse.wf/min").then(res => res.json());
 				if (window.worldState)
 				{
-					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent);
+					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent || worldState.Alerts.length != meta.alerts);
 				}
 				if (window.redtext)
 				{
@@ -595,6 +600,7 @@
 			updateKinePage();
 			updateDarvosDeal();
 			updateBaro();
+			updateAlerts();
 		}
 
 		function updateWorldState()
@@ -791,6 +797,61 @@
 			}
 		}
 
+		async function updateAlerts()
+		{
+			if (worldState.Alerts.length != 0)
+			{
+				const promises = [eMissionType_promise];
+				for (const alert of worldState.Alerts)
+				{
+					promises.push(getFactionNamePromise(alert.MissionInfo.faction));
+					for (const reward of alert.MissionInfo.missionReward.items)
+					{
+						promises.push(getItemNamePromise(reward));
+					}
+				}
+				await Promise.all(promises);
+
+				document.getElementById("alerts-body").innerHTML = "";
+				for (const alert of worldState.Alerts)
+				{
+					const block = document.createElement("div");
+					block.className = "card-block";
+					{
+						const span = document.createElement("span");
+						span.className = "d-block";
+						{
+							const b = document.createElement("b");
+							b.textContent = toTitleCase(dict[eMissionType.find(x => x.tag == alert.MissionInfo.missionType).name]) + " - " + (await getFactionNamePromise(alert.MissionInfo.faction));
+							span.appendChild(b);
+						}
+						span.innerHTML += " (" + alert.MissionInfo.minEnemyLevel + "-" + alert.MissionInfo.maxEnemyLevel + ") @ "+ dict[ExportRegions[alert.MissionInfo.location].name] + ", " + dict[ExportRegions[alert.MissionInfo.location].systemName] + " ";
+						span.appendChild(createExpiryBadge(alert.Expiry.$date.$numberLong));
+						setWorldStateExpiry(alert.Expiry.$date.$numberLong);
+						block.appendChild(span);
+					}
+					{
+						const span = document.createElement("span");
+						span.className = "d-block";
+						span.textContent = alert.MissionInfo.missionReward.credits.toLocaleString() + " Credits";
+						block.appendChild(span);
+					}
+					for (const reward of alert.MissionInfo.missionReward.items)
+					{
+						const span = document.createElement("span");
+						span.className = "d-block";
+						span.textContent = await getItemNamePromise(reward);
+						block.appendChild(span);
+					}
+					document.getElementById("alerts-body").appendChild(block);
+				}
+			}
+			else
+			{
+				document.getElementById("alerts-body").textContent = "None right now.";
+			}
+		}
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -828,6 +889,15 @@
 			}
 			await dicts_promise;
 			return dict[item_data.name];
+		}
+
+		async function getFactionNamePromise(tag)
+		{
+			if (!window.eFaction_promise)
+			{
+				window.eFaction_promise = fetch("https://browse.wf/warframe-public-export-plus/supplementals/eFaction.json").then(res => res.json())
+			}
+			return dict[(await eFaction_promise).find(x => x.tag == tag).name];
 		}
 
 		async function updateInvasionsLocalised()
