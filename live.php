@@ -897,6 +897,7 @@
 			{
 				window.eFaction_promise = fetch("https://browse.wf/warframe-public-export-plus/supplementals/eFaction.json").then(res => res.json())
 			}
+			await dicts_promise;
 			return dict[(await eFaction_promise).find(x => x.tag == tag).name];
 		}
 
