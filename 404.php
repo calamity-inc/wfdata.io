@@ -62,15 +62,6 @@ if (substr($path, 0, 18) == "/Lotus/Syndicates/")
 	}
 	exit;
 }
-if (substr($path, 0, 18) == "/Lotus/Types/Keys/")
-{
-	$ExportKeys = json_decode(file_get_contents("warframe-public-export-plus/ExportKeys.json"), true);
-	if (array_key_exists($path, $ExportKeys))
-	{
-		finishWithData($ExportKeys[$path]);
-	}
-	exit;
-}
 if (substr($path, 0, 18) == "/Lotus/Types/Ship/")
 {
 	$ExportDrones = json_decode(file_get_contents("warframe-public-export-plus/ExportDrones.json"), true);
@@ -228,6 +219,14 @@ else if (substr($path, 0, 13) == "/Lotus/Types/")
 		if (array_key_exists($path, $ExportArcanes))
 		{
 			finishWithData($ExportArcanes[$path]);
+		}
+	}
+	else if (substr($path, 0, 18) == "/Lotus/Types/Keys/")
+	{
+		$ExportKeys = json_decode(file_get_contents("warframe-public-export-plus/ExportKeys.json"), true);
+		if (array_key_exists($path, $ExportKeys))
+		{
+			finishWithData($ExportKeys[$path]);
 		}
 	}
 	else if (substr($path, 0, 24) == "/Lotus/Types/Challenges/")
