@@ -582,12 +582,21 @@
 			fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
 			{
 				window.worldState = worldState;
-				window.events_earmark = Math.trunc(worldState.Events[worldState.Events.length - 1].Date.$date.$numberLong / 1000);
 
 				if (!window.bountyCycle)
 				{
 					window.bountyCycleExpiry = parseInt(worldState.SyndicateMissions.find(x => x.Tag == "HexSyndicate").Expiry.$date.$numberLong);
 					updateDayNightCycle();
+				}
+
+				window.events_earmark = 0;
+				for (const event of worldState.Events)
+				{
+					const time = Math.trunc(event.Date.$date.$numberLong / 1000);
+					if (time > events_earmark)
+					{
+						events_earmark = time;
+					}
 				}
 
 				updateWorldStateLocalised();
