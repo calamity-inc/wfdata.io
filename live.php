@@ -734,6 +734,16 @@
 			return item_data_promises[uniqueName];
 		}
 
+		async function getItemNamePromise(uniqueName)
+		{
+			const item_data = await getItemDataPromise(uniqueName);
+			if (item_data.resultType)
+			{
+				return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(dict[(await getItemDataPromise(item_data.resultType)).name]);
+			}
+			return dict[item_data.name];
+		}
+
 		async function updateInvasionsLocalised()
 		{
 			const tbody = document.createElement("tbody");
@@ -769,7 +779,7 @@
 				}
 				{
 					const td = document.createElement("td");
-					td.textContent = invasion.allyPay[0].ItemCount + "x " + dict[(await getItemDataPromise(invasion.allyPay[0].ItemType)).name];
+					td.textContent = invasion.allyPay[0].ItemCount + "x " + await getItemNamePromise(invasion.allyPay[0].ItemType);
 					tr.appendChild(td);
 				}
 				tbody.appendChild(tr);
@@ -788,7 +798,7 @@
 				const promises = [dicts_promise, ExportRegions_promise];
 				for (const invasion of res.invasions)
 				{
-					promises.push(getItemDataPromise(invasion.allyPay[0].ItemType));
+					promises.push(getItemNamePromise(invasion.allyPay[0].ItemType));
 				}
 				await Promise.all(promises);
 

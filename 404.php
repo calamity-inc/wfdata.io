@@ -296,6 +296,13 @@ else if (substr($path, 0, 13) == "/Lotus/Types/")
 		finishWithData($ExportWeapons[$path]);
 	}
 }
+{
+	$ExportRecipes = json_decode(file_get_contents("warframe-public-export-plus/ExportRecipes.json"), true);
+	if (array_key_exists($path, $ExportRecipes))
+	{
+		finishWithData($ExportRecipes[$path]);
+	}
+}
 
 // For StoreItems, try non-StoreItem equivalent.
 if (substr($path, 0, 18) == "/Lotus/StoreItems/")
