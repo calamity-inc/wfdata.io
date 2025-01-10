@@ -214,6 +214,14 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-xl-8 col-lg-7">
+				<div class="card mb-3">
+					<h4 class="card-header" id="invasions-header">Invasions</h4>
+					<div class="card-body overflow-auto">
+						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tbody><tr><td>Loading...</td></tr></tbody></table>
+					</div>
+				</div>
+			</div>
 			<div class="col-xl-4 col-lg-5">
 				<div class="card mb-3">
 					<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
@@ -226,14 +234,6 @@
 						<table class="table table-sm table-borderless mb-0">
 							<tr id="labConquest-fv"><td>&nbsp;</td></tr>
 						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-8 col-lg-7">
-				<div class="card mb-3">
-					<h4 class="card-header" id="invasions-header">Invasions</h4>
-					<div class="card-body overflow-auto">
-						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tbody><tr><td>Loading...</td></tr></tbody></table>
 					</div>
 				</div>
 			</div>
