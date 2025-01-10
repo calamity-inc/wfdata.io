@@ -8,13 +8,7 @@
 	<style>
 		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
 		[data-bs-toggle=tooltip] { cursor: help; }
-		#news-body { height:200px }
 		[data-notif-toggle], [data-notif-toggle] > span { text-decoration:none;cursor:pointer }
-
-		@media (min-width: 1200px) { /* xl */
-			#news-body { height:556px }
-			#bounties-body { max-height:672px }
-		}
 	</style>
 </head>
 <body data-bs-theme="dark">
@@ -22,7 +16,7 @@
 	<div class="container-fluid pt-3">
 		<p>This tool shows you everything that's going on in Warframe <i>right now</i> in a hopefully useful way. It is still in active development, so, if you have feedback, <a href="https://github.com/calamity-inc/browse.wf/issues/15" target="_blank">please let us know</a>.</p>
 		<div class="row">
-			<div class="col-xl-3">
+			<div class="col-xl-4">
 				<div class="row">
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
@@ -54,8 +48,15 @@
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
 							</div>
 						</div>
-					</div>
-					<div class="col-xl-12 col-md-6">
+						<div class="card mb-3">
+							<div class="card-header d-flex">
+								<h4 class="mb-0">News</h4>
+								<a class="m-auto me-2" data-notif-toggle="news"></a>
+							</div>
+							<div class="card-body overflow-auto" id="news-body" style="height:200px">
+								Loading...
+							</div>
+						</div>
 						<div class="card mb-3">
 							<h4 class="card-header" id="darvo-header">Darvo's Deal</h4>
 							<div class="d-flex">
@@ -66,6 +67,8 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h4 class="card-header" id="sortie-header">Sortie</h4>
 							<div class="card-body">
@@ -76,10 +79,24 @@
 								</table>
 							</div>
 						</div>
+						<div class="card mb-3">
+							<h4 class="card-header" id="baro-header">Baro Ki'Teer</h4>
+							<div class="card-body">
+								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
+								<div id="baro-now" class="d-none">
+									<p>Baro is currently at <b class="baro-where"></b>.</p>
+									<table class="table table-sm table-hover table-borderless mb-0" id="baro-table"></table>
+								</div>
+							</div>
+						</div>
+						<div class="card mb-3">
+							<h4 class="card-header">KinePage</h4>
+							<div class="card-body" id="pgr">No new messages. Scanning...</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-6">
+			<div class="col-xl-8">
 				<div class="card mb-3">
 					<h4 class="card-header" id="bounties-header">Bounties</h4>
 					<div class="card-body overflow-auto" id="bounties-body">
@@ -196,33 +213,12 @@
 						</table>
 					</div>
 				</div>
-			</div>
-			<div class="col-xl-3">
-				<div class="card mb-3">
-					<div class="card-header d-flex">
-						<h4 class="mb-0">News</h4>
-						<a class="m-auto me-2" data-notif-toggle="news"></a>
-					</div>
-					<div class="card-body overflow-auto" id="news-body">
-						Loading...
-					</div>
-				</div>
-				<div class="card mb-3">
-					<h4 class="card-header">KinePage</h4>
-					<div class="card-body" id="pgr">No new messages. Scanning...</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xl-8 col-lg-7">
 				<div class="card mb-3">
 					<h4 class="card-header" id="invasions-header">Invasions</h4>
 					<div class="card-body overflow-auto">
 						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tbody><tr><td>Loading...</td></tr></tbody></table>
 					</div>
 				</div>
-			</div>
-			<div class="col-xl-4 col-lg-5">
 				<div class="card mb-3">
 					<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
 					<div class="card-body overflow-auto">
@@ -598,6 +594,7 @@
 			updateSortie();
 			updateKinePage();
 			updateDarvosDeal();
+			updateBaro();
 		}
 
 		function updateWorldState()
@@ -720,6 +717,80 @@
 			document.getElementById("darvo-discount").textContent = dailyDeal.Discount;
 		}
 
+		async function updateBaro()
+		{
+			await dicts_promise;
+			await ExportRegions_promise;
+			document.querySelectorAll(".baro-where").forEach(x => x.textContent = dict[ExportRegions[worldState.VoidTraders[0].Node].name] + ", " + dict[ExportRegions[worldState.VoidTraders[0].Node].systemName]);
+			if (worldState.VoidTraders[0].Manifest)
+			{
+				document.getElementById("baro-soon").classList.add("d-none");
+				document.getElementById("baro-now").classList.remove("d-none");
+
+				setWorldStateExpiry(worldState.VoidTraders[0].Expiry.$date.$numberLong);
+				setDatum("baro-header", "Baro Ki'Teer", worldState.VoidTraders[0].Expiry.$date.$numberLong);
+
+				for (const item of worldState.VoidTraders[0].Manifest)
+				{
+					getItemNamePromise(item.ItemType);
+				}
+
+				const items = [];
+				for (const item of worldState.VoidTraders[0].Manifest)
+				{
+					const data = { ...item, ...(await getItemDataPromise(item.ItemType)) };
+					if (data.compatName)
+					{
+						data.__type = 0;
+					}
+					else if (data.damagePerShot)
+					{
+						data.__type = 1;
+					}
+					else
+					{
+						data.__type = 2;
+					}
+					items.push(data);
+				}
+				items.sort((a, b) => a.__type - b.__type);
+
+				const tbody = document.createElement("tbody");
+				for (const item of items)
+				{
+					const tr = document.createElement("tr");
+					{
+						const td = document.createElement("td");
+						td.textContent = await getItemNamePromise(item.ItemType);
+						tr.appendChild(td);
+					}
+					{
+						const td = document.createElement("td");
+						td.className = "text-end";
+						td.textContent = item.PrimePrice;
+						tr.appendChild(td);
+					}
+					{
+						const td = document.createElement("td");
+						td.className = "text-end";
+						td.textContent = item.RegularPrice.toLocaleString();
+						tr.appendChild(td);
+					}
+					tbody.appendChild(tr);
+				}
+				document.getElementById("baro-table").innerHTML = "";
+				document.getElementById("baro-table").appendChild(tbody);
+			}
+			else
+			{
+				document.getElementById("baro-soon").classList.remove("d-none");
+				document.getElementById("baro-now").classList.add("d-none");
+
+				setWorldStateExpiry(worldState.VoidTraders[0].Activation.$date.$numberLong);
+				setDatum("baro-header", "Baro Ki'Teer", worldState.VoidTraders[0].Activation.$date.$numberLong);				
+			}
+		}
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -748,9 +819,12 @@
 			const item_data = await getItemDataPromise(uniqueName);
 			if (item_data.resultType)
 			{
-				const result_item_data = await getItemDataPromise(item_data.resultType);
-				await dicts_promise;
-				return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(dict[result_item_data.name]);
+				const result_name = await getItemNamePromise(item_data.resultType);
+				return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(result_name);
+			}
+			if (item_data.category && item_data.era)
+			{
+				return dict["/Lotus/Language/Relics/VoidProjectionName"].split("|ERA|").join(item_data.era).split("|CATEGORY|").join(item_data.category);
 			}
 			await dicts_promise;
 			return dict[item_data.name];
