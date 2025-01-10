@@ -361,13 +361,16 @@
 		function updateBountyCycle()
 		{
 			window.refresh_bounty_cycle_at = undefined;
-			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(bountyCycle =>
+			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(async (bountyCycle) =>
 			{
 				window.bountyCycle = bountyCycle;
 				window.bountyCycleExpiry = bountyCycle.expiry;
-				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycleExpiry) + 3000;
 				updateDayNightCycle();
+				await dicts_promise;
+				await ExportRegions_promise;
+				await ExportChallenges_promise;
 				updateBountyCycleLocalised();
+				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycleExpiry) + 3000;
 			});
 		}
 
@@ -968,10 +971,7 @@
 			});
 		}
 
-		Promise.all([dicts_promise, ExportRegions_promise, ExportChallenges_promise]).then(function()
-		{
-			updateBountyCycle();
-		});
+		updateBountyCycle();
 
 		dicts_promise.then(([dict, osdict]) =>
 		{
