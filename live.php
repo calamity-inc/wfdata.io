@@ -8,8 +8,13 @@
 	<style>
 		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
 		[data-bs-toggle=tooltip] { cursor: help; }
-		#news-body { height:200px } @media (min-width: 1200px) { #news-body { height:556px } }
+		#news-body { height:200px }
 		[data-notif-toggle], [data-notif-toggle] > span { text-decoration:none;cursor:pointer }
+
+		@media (min-width: 1200px) { /* xl */
+			#news-body { height:556px }
+			#bounties-body { max-height:672px }
+		}
 	</style>
 </head>
 <body data-bs-theme="dark">
@@ -67,7 +72,7 @@
 			<div class="col-xl-6">
 				<div class="card mb-3">
 					<h4 class="card-header" id="bounties-header">Bounties</h4>
-					<div class="card-body overflow-auto">
+					<div class="card-body overflow-auto" id="bounties-body">
 						<h5 id="HexSyndicate-name">The Hex</h5>
 						<table class="table table-hover table-sm table-borderless mb-0" id="HexSyndicate-table">
 							<tr>
