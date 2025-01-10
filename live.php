@@ -739,8 +739,11 @@
 			const item_data = await getItemDataPromise(uniqueName);
 			if (item_data.resultType)
 			{
-				return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(dict[(await getItemDataPromise(item_data.resultType)).name]);
+				const result_item_data = await getItemDataPromise(item_data.resultType);
+				await dicts_promise;
+				return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(dict[result_item_data.name]);
 			}
+			await dicts_promise;
 			return dict[item_data.name];
 		}
 
