@@ -48,12 +48,22 @@
 								</table>
 							</div>
 						</div>
-					</div>
-					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h4 class="card-header" id="arby-header">Arbitration</h4>
 							<div class="card-body">
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
+						<div class="card mb-3">
+							<h4 class="card-header" id="darvo-header">Darvo's Deal</h4>
+							<div class="d-flex">
+								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
+								<div class="card-body ps-1">
+									<p class="mb-1"><b id="darvo-item">Loading...</b> &middot; <span id="darvo-stock">0</span> In Stock</p>
+									<p class="card-text"><del id="darvo-ogprice">0</del> <b id="darvo-price">0</b> Platinum (-<span id="darvo-discount">0</span>%)</p>
+								</div>
 							</div>
 						</div>
 						<div class="card mb-3">
@@ -579,6 +589,7 @@
 			updateNewsTicker();
 			updateSortie();
 			updateKinePage();
+			updateDarvosDeal();
 		}
 
 		function updateWorldState()
@@ -643,6 +654,10 @@
 
 		function setWorldStateExpiry(expiry)
 		{
+			if (new Date().getTime() > expiry)
+			{
+				expiry = new Date().getTime() + 3000;
+			}
 			if (!window.refresh_world_state_at || refresh_world_state_at > expiry)
 			{
 				window.refresh_world_state_at = expiry;
@@ -682,6 +697,20 @@
 			}
 		}
 
+		async function updateDarvosDeal()
+		{
+			const dailyDeal = worldState.DailyDeals.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			setDatum("darvo-header", "Darvo's Deal", dailyDeal.Expiry.$date.$numberLong);
+			setWorldStateExpiry(dailyDeal.Expiry.$date.$numberLong);
+			const item_data = await getItemDataPromise(dailyDeal.StoreItem);
+			document.getElementById("darvo-item").textContent = dict[item_data.name];
+			document.getElementById("darvo-icon").src = "https://browse.wf/" + item_data.icon;
+			document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - dailyDeal.AmountSold);
+			document.getElementById("darvo-ogprice").textContent = dailyDeal.OriginalPrice;
+			document.getElementById("darvo-price").textContent = dailyDeal.SalePrice;
+			document.getElementById("darvo-discount").textContent = dailyDeal.Discount;
+		}
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -694,14 +723,15 @@
 			});
 		}
 
-		const item_name_promises = {};
-		function getItemNamePromise(uniqueName)
+		const item_data_promises = {};
+		function getItemDataPromise(uniqueName)
 		{
-			if (!item_name_promises[uniqueName])
+			uniqueName = uniqueName.split("/Lotus/StoreItems/").join("/Lotus/");
+			if (!item_data_promises[uniqueName])
 			{
-				item_name_promises[uniqueName] = fetch("https://browse.wf" + uniqueName).then(res => res.json()).then(res => res.name);
+				item_data_promises[uniqueName] = fetch("https://browse.wf" + uniqueName).then(res => res.json());
 			}
-			return item_name_promises[uniqueName];
+			return item_data_promises[uniqueName];
 		}
 
 		async function updateInvasionsLocalised()
@@ -739,7 +769,7 @@
 				}
 				{
 					const td = document.createElement("td");
-					td.textContent = invasion.allyPay[0].ItemCount + "x " + dict[await getItemNamePromise(invasion.allyPay[0].ItemType)];
+					td.textContent = invasion.allyPay[0].ItemCount + "x " + dict[(await getItemDataPromise(invasion.allyPay[0].ItemType)).name];
 					tr.appendChild(td);
 				}
 				tbody.appendChild(tr);
@@ -758,7 +788,7 @@
 				const promises = [dicts_promise, ExportRegions_promise];
 				for (const invasion of res.invasions)
 				{
-					promises.push(getItemNamePromise(invasion.allyPay[0].ItemType));
+					promises.push(getItemDataPromise(invasion.allyPay[0].ItemType));
 				}
 				await Promise.all(promises);
 
