@@ -31,7 +31,7 @@
 		</div>
 		<table class="w-100 mt-3 mb-3"></table>
 	</div>
-	<script src="common.js"></script>
+	<?php require "components/commonjs.html"; ?>
 	<script>
 		fetch("https://browse.wf/warframe-public-export-plus/ExportTextIcons.json").then(res => res.json()).then(ExportTextIcons =>
 		{

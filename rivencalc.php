@@ -126,7 +126,7 @@
 		</div>
 	</div>
 	<datalist id="weapons-datalist"></datalist>
-	<script src="common.js"></script>
+	<?php require "components/commonjs.html"; ?>
 	<script src="https://calamity-inc.github.io/warframe-riven-info/RivenParser.js"></script>
 	<script>
 		let weaponConfig = "LotusRifleRandomModRare:1";

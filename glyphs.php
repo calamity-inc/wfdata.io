@@ -46,7 +46,7 @@
 		</div>
 		<div id="list" class="mt-3 mb-3"><p class="m-5">Loading...</p></div>
 	</div>
-	<script src="common.js"></script>
+	<?php require "components/commonjs.html"; ?>
 	<script>
 		const exclude = {
 			"/Lotus/Interface/Icons/Player/LavosAltAvatarBright.png": true,

@@ -77,7 +77,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="common.js"></script>
+	<?php require "components/commonjs.html"; ?>
 	<script src="supplemental-data/arbyTiers.js"></script>
 	<script>
 		const days = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ];

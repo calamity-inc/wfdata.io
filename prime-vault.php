@@ -16,7 +16,7 @@
 		<h3>Vaulted</h3>
 		<ul id="vaulted"></ul>
 	</div>
-	<script src="common.js"></script>
+	<?php require "components/commonjs.html"; ?>
 	<script>
 		const STATE_VAULTED = 0;
 		const STATE_RESURGENCE = 1;

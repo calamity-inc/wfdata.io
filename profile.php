@@ -314,7 +314,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="common.js"></script>
+	<?php require "components/commonjs.html"; ?>
 	<script>
 		/*document.getElementById("username").onfocus = function()
 		{
