@@ -353,6 +353,7 @@
 					const span = document.createElement("span");
 					span.textContent = dict[challenge.description].split("\r\n").pop().split("|COUNT|").join(challenge.requiredCount);
 					addTooltip(span, dict[challenge.name]);
+					rows[i].querySelector(".challenge").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 					rows[i].querySelector(".challenge").innerHTML = "";
 					rows[i].querySelector(".challenge").appendChild(span);
 				}
