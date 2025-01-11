@@ -8,7 +8,8 @@
 	<style>
 		abbr { text-decoration: underline dotted; text-decoration-skip-ink: none; }
 		[data-bs-toggle=tooltip] { cursor: help; }
-		[data-notif-toggle], [data-notif-toggle] > span { text-decoration:none;cursor:pointer }
+		[data-notif-toggle], [data-notif-toggle] > span, .completion-check { text-decoration:none;cursor:pointer;color:inherit }
+		.completion-check { display: inline-block; width: 15px }
 		.card-block:not(:last-child) { margin-bottom: .5rem; }
 	</style>
 </head>
@@ -403,7 +404,7 @@
 		{
 			elm.setAttribute("data-bs-toggle", "tooltip");
 			elm.setAttribute("data-bs-title", title);
-			new bootstrap.Tooltip(elm);
+			return new bootstrap.Tooltip(elm);
 		}
 
 		function updateWeeklyLocalised()
@@ -831,6 +832,8 @@
 						span.innerHTML += " (" + alert.MissionInfo.minEnemyLevel + "-" + alert.MissionInfo.maxEnemyLevel + ") @ "+ dict[ExportRegions[alert.MissionInfo.location].name] + ", " + dict[ExportRegions[alert.MissionInfo.location].systemName] + " ";
 						span.appendChild(createExpiryBadge(alert.Expiry.$date.$numberLong));
 						setWorldStateExpiry(alert.Expiry.$date.$numberLong);
+						span.innerHTML += " ";
+						span.appendChild(createCompletionToggle(alert._id.$oid));
 						block.appendChild(span);
 					}
 					{
@@ -904,6 +907,42 @@
 			return dict[(await eFaction_promise).find(x => x.tag == tag).name];
 		}
 
+		function isOidMarkedAsCompleted(oid)
+		{
+			const arr = JSON.parse(localStorage.getItem("oids_completed") ?? "[]");
+			return arr.findIndex(x => x == oid) != -1;
+		}
+
+		function toggleOidCompletion(oid)
+		{
+			const arr = JSON.parse(localStorage.getItem("oids_completed") ?? "[]");
+			const index = arr.findIndex(x => x == oid);
+			if (index != -1)
+			{
+				arr.splice(index, 1);
+			}
+			else
+			{
+				arr.push(oid);
+			}
+			localStorage.setItem("oids_completed", JSON.stringify(arr));
+		}
+
+		function createCompletionToggle(oid)
+		{
+			const a = document.createElement("a");
+			a.className = "completion-check";
+			a.textContent = isOidMarkedAsCompleted(oid) ? "🗹" : "☐";
+			const tooltip = addTooltip(a, isOidMarkedAsCompleted(oid) ? "Unmark as completed" : "Mark as completed");
+			a.onclick = function()
+			{
+				toggleOidCompletion(oid);
+				a.textContent = isOidMarkedAsCompleted(oid) ? "🗹" : "☐";
+				tooltip.setContent({ ".tooltip-inner": isOidMarkedAsCompleted(oid) ? "Unmark as completed" : "Mark as completed" });
+			};
+			return a;
+		}
+
 		async function updateInvasionsLocalised()
 		{
 			const tbody = document.createElement("tbody");
@@ -919,7 +958,6 @@
 						++num_invasions;
 						const node = ExportRegions[invasion.node];
 						th.textContent = dict[node.name] + ", " + dict[node.systemName];
-						last_node = invasion.node;
 					}
 					tr.appendChild(th);
 				}
@@ -944,7 +982,16 @@
 					td.textContent = invasion.allyPay[0].ItemCount + "x " + await getItemNamePromise(invasion.allyPay[0].ItemType);
 					tr.appendChild(td);
 				}
+				{
+					const td = document.createElement("td");
+					if (last_node != invasion.node)
+					{
+						td.appendChild(createCompletionToggle(invasion.id));
+					}
+					tr.appendChild(td);
+				}
 				tbody.appendChild(tr);
+				last_node = invasion.node;
 			}
 			setDatum("invasions-header", "Invasions", refresh_invasions_at);
 			document.getElementById("invasions-table").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
