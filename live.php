@@ -38,6 +38,10 @@
 										<td id="deimos" class="w-50">Fetching data...</td>
 									</tr>
 									<tr>
+										<th id="duviri-name" class="w-50">Duviri</th>
+										<td id="duviri" class="w-50">Fetching data...</td>
+									</tr>
+									<tr>
 										<th id="zariman-name" class="w-50">Zariman</th>
 										<td id="zariman" class="w-50">Fetching data...</td>
 									</tr>
@@ -249,11 +253,15 @@
 	<?php require "components/commonjs.html"; ?>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script>
-		const dicts_promise = Promise.all([ getDictPromise(), getOSDictPromise() ]);
+		const dict_promise = getDictPromise();
+		const osdict_promise = getOSDictPromise();
+		const dicts_promise = Promise.all([ dict_promise, osdict_promise ]);
 		const ExportRegions_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportRegions.json").then(res => res.json());
 		const ExportChallenges_promise = fetch("https://browse.wf/warframe-public-export-plus/ExportChallenges.json").then(res => res.json());
 		const eMissionType_promise = fetch("https://browse.wf/warframe-public-export-plus/supplementals/eMissionType.json").then(res => res.json());
 
+		dict_promise.then(dict => { window.dict = dict });
+		osdict_promise.then(osdict => { window.osdict = osdict });
 		ExportRegions_promise.then(res => window.ExportRegions = res);
 		ExportChallenges_promise.then(res => window.ExportChallenges = res);
 		eMissionType_promise.then(res => window.eMissionType = res);
@@ -315,6 +323,22 @@
 			setDatum("vallis", time > cycleColdStart ? "❄️ Cold" : "☀️ Warm", refresh_vallis_at);
 		}
 		updateVallis();
+
+		function updateDuviriMood()
+		{
+			const moodIndex = Math.trunc(Date.now() / 7200000);
+			const moodStart = moodIndex * 7200000;
+			const moodEnd = moodStart + 7200000;
+			window.refresh_duviri_at = moodEnd;
+			setDatum("duviri", osdict[[
+				"/Lotus/Language/Duviri/SadMoodTitleShort",
+				"/Lotus/Language/Duviri/ScaredMoodTitleShort",
+				"/Lotus/Language/Duviri/HappyMoodTitleShort",
+				"/Lotus/Language/Duviri/AngryMoodTitleShort",
+				"/Lotus/Language/Duviri/JealousMoodTitleShort"
+			][moodIndex % 5]], refresh_duviri_at);
+		}
+		osdict_promise.then(() => updateDuviriMood());
 
 		function updateDayNightCycle()
 		{
@@ -386,6 +410,7 @@
 			document.getElementById("vallis-name").textContent = dict["/Lotus/Language/Locations/VenusLandscape"];
 			document.getElementById("deimos-name").textContent = dict["/Lotus/Language/InfestedMicroplanet/SolarMapDeimosLandscapeName"];
 			document.getElementById("zariman-name").textContent = dict["/Lotus/Language/Zariman/ZarimanRegionName"];
+			document.getElementById("duviri-name").textContent = dict["/Lotus/Language/Locations/Duviri"];
 			document.getElementById("HexSyndicate-name").textContent = dict["/Lotus/Language/1999/MessengerHexName"];
 			document.getElementById("EntratiLabSyndicate-name").textContent = dict["/Lotus/Language/EntratiLab/EntratiGeneral/EntratiLabSyndicateName"];
 			document.getElementById("ZarimanSyndicate-name").textContent = dict["/Lotus/Language/Syndicates/ZarimanName"];
@@ -1041,14 +1066,13 @@
 
 		updateBountyCycle();
 
+		dict_promise.then(() => updateNames());
 		dicts_promise.then(([dict, osdict]) =>
 		{
-			window.dict = dict;
-			window.osdict = osdict;
-			updateNames();
 			onLanguageUpdate = function()
 			{
 				updateNames();
+				updateDuviriMood();
 				if (window.bountyCycle)
 				{
 					updateBountyCycleLocalised();
@@ -1099,6 +1123,10 @@
 			if (Date.now() >= window.refresh_vallis_at)
 			{
 				updateVallis();
+			}
+			if (window.refresh_duviri_at && Date.now() >= window.refresh_duviri_at)
+			{
+				updateDuviriMood();
 			}
 			if (window.refresh_day_night_cycle_at && Date.now() >= window.refresh_day_night_cycle_at)
 			{
