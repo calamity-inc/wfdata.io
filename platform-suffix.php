@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="card mb-3">
-					<h4 class="card-header">Name and Platform to Suffixed Name</h4>
+					<h5 class="card-header">Name and Platform to Suffixed Name</h5>
 					<div class="card-body">
 						<form class="input-group" onsubmit="event.preventDefault();partial2full();">
 							<input id="partial-name" type="text" class="form-control" value="" placeholder="[DE]Steve" />
@@ -32,7 +32,7 @@
 			</div>
 			<div class="col-lg-6">
 				<div class="card mb-3">
-					<h4 class="card-header">Suffixed Name to Platform</h4>
+					<h5 class="card-header">Suffixed Name to Platform</h5>
 					<div class="card-body">
 						<form class="input-group" onsubmit="event.preventDefault();full2platform();">
 							<input id="full-name" type="text" class="form-control" value="" placeholder="[DE]Steve#277" />
