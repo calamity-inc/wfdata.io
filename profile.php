@@ -39,6 +39,7 @@
 				<option value="ps4">PlayStation</option>
 				<option value="xb1">Xbox</option>
 				<option value="swi">Switch</option>
+				<option value="mob">Mobile</option>
 			</select>
 			<input type="submit" class="btn btn-primary" />
 		</form>
@@ -358,6 +359,7 @@
 			"ps4": "PlayStation",
 			"xb1": "Xbox",
 			"swi": "Switch",
+			"mob": "Mobile",
 		};
 
 		function peColourToHex(colour)
