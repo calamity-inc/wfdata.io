@@ -14,20 +14,20 @@ $ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 10) == "/rivencalc" ? " active" : ""); ?>" href="/rivencalc<?=$ext;?>">Riven Calculator</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 8) == "/profile" ? " active" : ""); ?>" href="/profile<?=$ext;?>">Profile Viewer</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 7) == "/glyphs" ? " active" : ""); ?>" href="/glyphs<?=$ext;?>">Glyphs</a>
-				<?php if (true): ?>
+				<?php if (false): ?>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" ? " active" : ""); ?>" href="/prime-vault<?=$ext;?>">Prime Vault</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" ? " active" : ""); ?>" href="/text-icons<?=$ext;?>">Text Icons</a>
-				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data" ? " active" : ""); ?>" href="/raw-data<?=$ext;?>">Raw Data</a>
 				<?php else: ?>
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle <?=((substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" || substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" || substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data") ? " active" : ""); ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
+					<a class="nav-link dropdown-toggle <?=((substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" || substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" || substr($_SERVER["REQUEST_URI"], 0, 16) == "/platform-suffix") ? " active" : ""); ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Misc Tools</a>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 12) == "/prime-vault" ? " active" : ""); ?>" href="/prime-vault<?=$ext;?>">Prime Vault</a></li>
 						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 11) == "/text-icons" ? " active" : ""); ?>" href="/text-icons<?=$ext;?>">Text Icons</a></li>
-						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data" ? " active" : ""); ?>" href="/raw-data<?=$ext;?>">Raw Data</a></li>
+						<li><a class="dropdown-item <?=(substr($_SERVER["REQUEST_URI"], 0, 16) == "/platform-suffix" ? " active" : ""); ?>" href="/platform-suffix<?=$ext;?>">Platform Suffix</a></li>
 					</ul>
 				</li>
 				<?php endif; ?>
+				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data" ? " active" : ""); ?>" href="/raw-data<?=$ext;?>">Raw Data</a>
 			</div>
 			<div class="nav-item dropdown mb-2 mb-lg-0">
 				<a id="lang-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>

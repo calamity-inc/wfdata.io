@@ -1,0 +1,6 @@
+local crypto = require"crypto"
+
+local magic_numbers = { 753, 639, 247, 37, 60 }
+function get_discriminator(name, platform_id)
+    return (crypto.crc32(name:lower().."595") + magic_numbers[1 + platform_id]) % 1000
+end
