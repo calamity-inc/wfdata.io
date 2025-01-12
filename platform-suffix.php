@@ -26,7 +26,7 @@
 							</select>
 							<input type="submit" class="btn btn-primary" />
 						</form>
-						<p id="partial2full-res" class="card-text text-center mt-3"></p>
+						<p id="partial2full-res" class="card-text text-center mt-3 d-none"></p>
 					</div>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 							<input id="full-name" type="text" class="form-control" value="" placeholder="[DE]Steve#277" />
 							<input type="submit" class="btn btn-primary" />
 						</form>
-						<p id="full2platform-res" class="card-text text-center mt-3"></p>
+						<p id="full2platform-res" class="card-text text-center mt-3 d-none"></p>
 					</div>
 				</div>
 			</div>
@@ -51,6 +51,7 @@
 	<script>
 		async function partial2full()
 		{
+			document.getElementById("partial2full-res").classList.remove("d-none");
 			document.getElementById("partial2full-res").textContent = document.getElementById("partial-name").value + "#" + (await pluto_invoke("get_discriminator", document.getElementById("partial-name").value, parseInt(document.getElementById("platform").value))).toString().padStart(3, "0");
 		}
 
@@ -66,6 +67,7 @@
 					break;
 				}
 			}
+			document.getElementById("full2platform-res").classList.remove("d-none");
 			document.getElementById("full2platform-res").textContent = platform_names[i];
 		}
 	</script>
