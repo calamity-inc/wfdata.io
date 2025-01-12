@@ -994,7 +994,7 @@
 				tbody.appendChild(tr);
 				last_node = invasion.node;
 			}
-			setDatum("invasions-header", "Invasions", refresh_invasions_at);
+			setDatum("invasions-header", toTitleCase(osdict["/Lotus/Language/Menu/WorldStatePanel_Invasions"]), refresh_invasions_at);
 			document.getElementById("invasions-table").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("invasions-table").innerHTML = "";
 			document.getElementById("invasions-table").appendChild(tbody);
