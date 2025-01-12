@@ -86,6 +86,10 @@
 							</div>
 						</div>
 						<div class="card mb-3">
+							<h4 class="card-header" id="litesortie-header">Archon Hunt</h4>
+							<div class="card-body" id="litesortie-body">Fetching data...</div>
+						</div>
+						<div class="card mb-3">
 							<h4 class="card-header" id="baro-header">Baro Ki'Teer</h4>
 							<div class="card-body">
 								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
@@ -601,7 +605,7 @@
 		function updateWorldStateLocalised()
 		{
 			updateNewsTicker();
-			updateSortie();
+			updateSorties();
 			updateKinePage();
 			updateDarvosDeal();
 			updateBaro();
@@ -680,10 +684,11 @@
 			}
 		}
 
-		async function updateSortie()
+		async function updateSorties()
 		{
 			await dicts_promise;
 			await eMissionType_promise;
+
 			const sortie = worldState.Sorties.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
 			setWorldStateExpiry(sortie.Expiry.$date.$numberLong);
 			setDatum("sortie-header", toTitleCase(osdict["/Lotus/Language/Menu/SortieMissionName"]), sortie.Expiry.$date.$numberLong);
@@ -701,6 +706,21 @@
 			}
 			document.getElementById("sortie-table").innerHTML = "";
 			document.getElementById("sortie-table").appendChild(tbody);
+
+			const litesortie = worldState.LiteSorties.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			setWorldStateExpiry(litesortie.Expiry.$date.$numberLong);
+			setDatum("litesortie-header", osdict["/Lotus/Language/WorldStateWindow/LiteSortieMissionName"], litesortie.Expiry.$date.$numberLong);
+			const mission_names = [];
+			for (const mission of litesortie.Missions)
+			{
+				mission_names.push(toTitleCase(dict[eMissionType.find(x => x.tag == mission.missionType).name]));
+			}
+			const span = document.createElement("span");
+			span.textContent = toTitleCase(litesortie.Boss.substr(12));
+			span.className = "text-" + { "Amar": "danger", "Nira": "warning", "Boreal": "info" }[span.textContent];
+			document.getElementById("litesortie-body").innerHTML = "";
+			document.getElementById("litesortie-body").appendChild(span);
+			document.getElementById("litesortie-body").innerHTML += " • " + mission_names.join(", ");
 		}
 
 		function updateKinePage()
