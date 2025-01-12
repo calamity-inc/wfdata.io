@@ -17,9 +17,9 @@
 	<?php require "components/navbar.php"; ?>
 	<div class="container-fluid pt-3">
 		<p>This tool shows you everything that's going on in Warframe <i>right now</i> in a hopefully useful way. It is still in active development, so, if you have feedback, <a href="https://github.com/calamity-inc/browse.wf/issues/15" target="_blank">please let us know</a>.</p>
-		<div class="row">
+		<div class="row g-3 mb-xl-3">
 			<div class="col-xl-4">
-				<div class="row">
+				<div class="row g-3">
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h5 class="card-header">Environments</h5>
@@ -59,7 +59,7 @@
 								Loading...
 							</div>
 						</div>
-						<div class="card mb-3">
+						<div class="card">
 							<h5 class="card-header">Alerts</h5>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
@@ -99,7 +99,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="card mb-3">
+						<div class="card">
 							<h5 class="card-header">KinePage</h5>
 							<div class="card-body" id="pgr">No new messages. Scanning...</div>
 						</div>
