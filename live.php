@@ -22,7 +22,7 @@
 				<div class="row">
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
-							<h4 class="card-header">Environments</h4>
+							<h5 class="card-header">Environments</h5>
 							<div class="card-body overflow-auto">
 								<table class="table table-hover table-sm table-borderless mb-0">
 									<tr>
@@ -45,14 +45,14 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header" id="arby-header">Arbitration</h4>
+							<h5 class="card-header" id="arby-header">Arbitration</h5>
 							<div class="card-body">
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
 							</div>
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h4 class="mb-0">News</h4>
+								<h5 class="mb-0">News</h5>
 								<a class="m-auto me-2" data-notif-toggle="news"></a>
 							</div>
 							<div class="card-body overflow-auto" id="news-body" style="height:200px">
@@ -60,13 +60,13 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header">Alerts</h4>
+							<h5 class="card-header">Alerts</h5>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
 					</div>
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
-							<h4 class="card-header" id="darvo-header">Darvo's Deal</h4>
+							<h5 class="card-header" id="darvo-header">Darvo's Deal</h5>
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
 								<div class="card-body ps-1">
@@ -76,7 +76,7 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header" id="sortie-header">Sortie</h4>
+							<h5 class="card-header" id="sortie-header">Sortie</h5>
 							<div class="card-body">
 								<table class="table table-sm table-borderless table-hover mb-0" id="sortie-table">
 									<tr><th>Fetching data...</th></tr>
@@ -86,11 +86,11 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header" id="litesortie-header">Archon Hunt</h4>
+							<h5 class="card-header" id="litesortie-header">Archon Hunt</h5>
 							<div class="card-body" id="litesortie-body">Fetching data...</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header" id="baro-header">Baro Ki'Teer</h4>
+							<h5 class="card-header" id="baro-header">Baro Ki'Teer</h5>
 							<div class="card-body">
 								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
 								<div id="baro-now" class="d-none">
@@ -100,7 +100,7 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h4 class="card-header">KinePage</h4>
+							<h5 class="card-header">KinePage</h5>
 							<div class="card-body" id="pgr">No new messages. Scanning...</div>
 						</div>
 					</div>
@@ -108,7 +108,7 @@
 			</div>
 			<div class="col-xl-8">
 				<div class="card mb-3">
-					<h4 class="card-header" id="bounties-header">Bounties</h4>
+					<h5 class="card-header" id="bounties-header">Bounties</h5>
 					<div class="card-body overflow-auto" id="bounties-body">
 						<h5 id="HexSyndicate-name">The Hex</h5>
 						<table class="table table-hover table-sm table-borderless mb-0" id="HexSyndicate-table">
@@ -224,13 +224,13 @@
 					</div>
 				</div>
 				<div class="card mb-3">
-					<h4 class="card-header" id="invasions-header">Invasions</h4>
+					<h5 class="card-header" id="invasions-header">Invasions</h5>
 					<div class="card-body overflow-auto">
 						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tbody><tr><td>Loading...</td></tr></tbody></table>
 					</div>
 				</div>
 				<div class="card mb-3">
-					<h4 class="card-header" id="labConquest-header">Deep Archimedea</h4>
+					<h5 class="card-header" id="labConquest-header">Deep Archimedea</h5>
 					<div class="card-body overflow-auto">
 						<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
 							<tr><th>Fetching data...</th></tr>
