@@ -10,10 +10,10 @@
 	<?php require "components/navbar.php"; ?>
 	<div class="container p-3">
 		<p>Every stat (buff and curse) on your Riven has a random multiplier between 0.9x and 1.1x (or -10% to +10%). This tool helps you see the impact on the final numbers.</p>
-		<div class="row g-3 mb-3">
+		<div class="row g-3 mb-4">
 			<div class="col-md-6">
 				<div class="card">
-					<h4 class="card-header">Weapon</h4>
+					<h5 class="card-header">Weapon</h5>
 					<div class="card-body">
 						<input class="form-control" placeholder="Enter name..." id="weapon-name" list="weapons-datalist" />
 						<hr>
@@ -90,7 +90,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="card">
-					<h4 class="card-header">Stats</h4>
+					<h5 class="card-header">Stats</h5>
 					<div class="card-body">
 						<div class="row">
 							<div class="col-4">
@@ -113,13 +113,13 @@
 		<div class="row g-3">
 			<div class="col-md-6">
 				<div class="card">
-					<h4 class="card-header">Buffs</h4>
+					<h5 class="card-header">Buffs</h5>
 					<div class="card-body" id="buffs-body">Loading...</div>
 				</div>
 			</div>
 			<div class="col-md-6" id="hide-if-no-curses">
 				<div class="card">
-					<h4 class="card-header">Curses</h4>
+					<h5 class="card-header">Curses</h5>
 					<div class="card-body" id="curses-body">Loading...</div>
 				</div>
 			</div>
