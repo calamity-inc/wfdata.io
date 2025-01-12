@@ -199,7 +199,7 @@
 
 			const zulu = (document.getElementById("select-tz").value == "zulu");
 
-			window.currentHour = Math.trunc((new Date().getTime() / 1000) / 3600) * 3600;
+			window.currentHour = Math.trunc((Date.now() / 1000) / 3600) * 3600;
 
 			const epochHour = arbys[0][0];
 			const currentHourIndex = (currentHour - epochHour) / 3600;
@@ -332,7 +332,7 @@
 			{
 				window.updater = setInterval(function()
 				{
-					if (window.currentHour != (parseInt((new Date().getTime() / 1000) / 3600) * 3600))
+					if (window.currentHour != (parseInt((Date.now() / 1000) / 3600) * 3600))
 					{
 						updateLog();
 					}

@@ -261,7 +261,7 @@
 		function formatExpiry(expiry)
 		{
 			expiry -= expiry % 1000; expiry += 1000; // normalise the ms so everything ticks at the same time
-			const time = new Date().getTime();
+			const time = Date.now();
 			let delta = expiry - time;
 			if (delta < 1_000)
 			{
@@ -306,7 +306,7 @@
 		function updateVallis()
 		{
 			const EPOCH = new Date("November 10, 2018 08:13:48 UTC").getTime();
-			const time = new Date().getTime();
+			const time = Date.now();
 			const cycle = Math.trunc((time - EPOCH) / 1600000);
 			const cycleStart = EPOCH + cycle * 1600000;
 			const cycleEnd = cycleStart + 1600000;
@@ -318,7 +318,7 @@
 
 		function updateDayNightCycle()
 		{
-			const time = new Date().getTime();
+			const time = Date.now();
 			const cycleNightStart = bountyCycleExpiry - 3_000_000;
 			window.refresh_day_night_cycle_at = time > cycleNightStart ? bountyCycleExpiry : cycleNightStart;
 			setDatum("poe", time > cycleNightStart ? "🌑 Night" : "☀️ Day", refresh_day_night_cycle_at);
@@ -376,7 +376,7 @@
 				await ExportRegions_promise;
 				await ExportChallenges_promise;
 				updateBountyCycleLocalised();
-				window.refresh_bounty_cycle_at = Math.max(new Date().getTime(), bountyCycleExpiry) + 3000;
+				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry) + 3000;
 			});
 		}
 
@@ -393,7 +393,7 @@
 
 		function updateArby()
 		{
-			const currentHour = Math.trunc((new Date().getTime() / 1000) / 3600) * 3600;
+			const currentHour = Math.trunc((Date.now() / 1000) / 3600) * 3600;
 			const epochHour = arbys[0][0];
 			const currentHourIndex = (currentHour - epochHour) / 3600;
 			const arr = arbys[currentHourIndex];
@@ -527,7 +527,7 @@
 			}
 			if (window.worldState && window.redtext)
 			{
-				window.refresh_news_sources_at = new Date().getTime() + 60_000;
+				window.refresh_news_sources_at = Date.now() + 60_000;
 				window.news_notify_after = highest_time;
 			}
 
@@ -589,7 +589,7 @@
 			}
 			if (sourcesToUpdate.redtext)
 			{
-				fetch("https://oracle.browse.wf/redtext.json?" + new Date().getTime()).then(res => res.json()).then(redtext =>
+				fetch("https://oracle.browse.wf/redtext.json?" + Date.now()).then(res => res.json()).then(redtext =>
 				{
 					window.redtext = redtext;
 					updateNewsTicker();
@@ -598,7 +598,7 @@
 
 			if (!sourcesToUpdate.events && !sourcesToUpdate.redtext)
 			{
-				window.refresh_news_sources_at = new Date().getTime() + 60_000;
+				window.refresh_news_sources_at = Date.now() + 60_000;
 			}
 		}
 
@@ -615,7 +615,7 @@
 		function updateWorldState()
 		{
 			window.refresh_world_state_at = undefined;
-			fetch("https://oracle.browse.wf/worldState.json?" + new Date().getTime()).then(res => res.json()).then(worldState =>
+			fetch("https://oracle.browse.wf/worldState.json?" + Date.now()).then(res => res.json()).then(worldState =>
 			{
 				window.worldState = worldState;
 
@@ -674,9 +674,9 @@
 
 		function setWorldStateExpiry(expiry)
 		{
-			if (new Date().getTime() > expiry)
+			if (Date.now() > expiry)
 			{
-				expiry = new Date().getTime() + 3000;
+				expiry = Date.now() + 3000;
 			}
 			if (!window.refresh_world_state_at || refresh_world_state_at > expiry)
 			{
@@ -689,7 +689,7 @@
 			await dicts_promise;
 			await eMissionType_promise;
 
-			const sortie = worldState.Sorties.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			const sortie = worldState.Sorties.find(x => Date.now() >= x.Activation.$date.$numberLong && Date.now() < x.Expiry.$date.$numberLong);
 			setWorldStateExpiry(sortie.Expiry.$date.$numberLong);
 			setDatum("sortie-header", toTitleCase(osdict["/Lotus/Language/Menu/SortieMissionName"]), sortie.Expiry.$date.$numberLong);
 			const tbody = document.createElement("tbody");
@@ -707,7 +707,7 @@
 			document.getElementById("sortie-table").innerHTML = "";
 			document.getElementById("sortie-table").appendChild(tbody);
 
-			const litesortie = worldState.LiteSorties.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			const litesortie = worldState.LiteSorties.find(x => Date.now() >= x.Activation.$date.$numberLong && Date.now() < x.Expiry.$date.$numberLong);
 			setWorldStateExpiry(litesortie.Expiry.$date.$numberLong);
 			setDatum("litesortie-header", osdict["/Lotus/Language/WorldStateWindow/LiteSortieMissionName"], litesortie.Expiry.$date.$numberLong);
 			const mission_names = [];
@@ -735,7 +735,7 @@
 
 		async function updateDarvosDeal()
 		{
-			window.dailyDeal = worldState.DailyDeals.find(x => new Date().getTime() >= x.Activation.$date.$numberLong && new Date().getTime() < x.Expiry.$date.$numberLong);
+			window.dailyDeal = worldState.DailyDeals.find(x => Date.now() >= x.Activation.$date.$numberLong && Date.now() < x.Expiry.$date.$numberLong);
 			setDatum("darvo-header", "Darvo's Deal", dailyDeal.Expiry.$date.$numberLong);
 			setWorldStateExpiry(dailyDeal.Expiry.$date.$numberLong);
 			const item_data = await getItemDataPromise(dailyDeal.StoreItem);
@@ -1096,31 +1096,31 @@
 
 		setInterval(function()
 		{
-			if (new Date().getTime() >= window.refresh_vallis_at)
+			if (Date.now() >= window.refresh_vallis_at)
 			{
 				updateVallis();
 			}
-			if (window.refresh_day_night_cycle_at && new Date().getTime() >= window.refresh_day_night_cycle_at)
+			if (window.refresh_day_night_cycle_at && Date.now() >= window.refresh_day_night_cycle_at)
 			{
 				updateDayNightCycle();
 			}
-			if (window.refresh_bounty_cycle_at && new Date().getTime() >= window.refresh_bounty_cycle_at)
+			if (window.refresh_bounty_cycle_at && Date.now() >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
 			}
-			if (window.refresh_arby_at && new Date().getTime() >= window.refresh_arby_at)
+			if (window.refresh_arby_at && Date.now() >= window.refresh_arby_at)
 			{
 				updateArby();
 			}
-			if (window.refresh_news_sources_at && new Date().getTime() >= window.refresh_news_sources_at)
+			if (window.refresh_news_sources_at && Date.now() >= window.refresh_news_sources_at)
 			{
 				updateNewsSources();
 			}
-			if (window.refresh_world_state_at && new Date().getTime() >= window.refresh_world_state_at)
+			if (window.refresh_world_state_at && Date.now() >= window.refresh_world_state_at)
 			{
 				updateWorldState();
 			}
-			if (window.refresh_invasions_at && new Date().getTime() >= window.refresh_invasions_at)
+			if (window.refresh_invasions_at && Date.now() >= window.refresh_invasions_at)
 			{
 				updateInvasions();
 			}
