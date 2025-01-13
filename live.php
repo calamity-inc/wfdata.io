@@ -440,18 +440,24 @@
 			document.getElementById("ZarimanSyndicate-name").textContent = dict["/Lotus/Language/Syndicates/ZarimanName"];
 		}
 
+		function updateArbyLocalised()
+		{
+			setDatum("arby-header", osdict["/Lotus/Language/Menu/AlertHardMode"], arby_expiry);
+			document.getElementById("arby-what").textContent = toTitleCase(dict[arby_node.missionName]) + " - " + dict[arby_node.factionName];
+			document.getElementById("arby-where").textContent = "@ " + dict[arby_node.name] + ", " + dict[arby_node.systemName];
+		}
+
 		function updateArby()
 		{
 			const currentHour = Math.trunc((Date.now() / 1000) / 3600) * 3600;
 			const epochHour = arbys[0][0];
 			const currentHourIndex = (currentHour - epochHour) / 3600;
 			const arr = arbys[currentHourIndex];
-			const node = ExportRegions[arr[1]];
-			window.refresh_arby_at = (currentHour + 3600) * 1000;
-			setDatum("arby-header", osdict["/Lotus/Language/Menu/AlertHardMode"], refresh_arby_at);
-			document.getElementById("arby-what").textContent = toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName];
-			document.getElementById("arby-where").textContent = "@ " + dict[node.name] + ", " + dict[node.systemName];
+			window.arby_node = ExportRegions[arr[1]];
+			window.arby_expiry = (currentHour + 3600) * 1000;
+			updateArbyLocalised();
 			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
+			setTimeout(updateArby, arby_expiry - Date.now());
 		}
 
 		function addTooltip(elm, title)
@@ -1131,7 +1137,7 @@
 				}
 				if (window.arbys)
 				{
-					updateArby();
+					updateArbyLocalised();
 				}
 				if (window.weekly)
 				{
@@ -1175,10 +1181,6 @@
 			if (window.refresh_bounty_cycle_at && Date.now() >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
-			}
-			if (window.refresh_arby_at && Date.now() >= window.refresh_arby_at)
-			{
-				updateArby();
 			}
 			if (window.refresh_news_sources_at && Date.now() >= window.refresh_news_sources_at)
 			{
