@@ -74,7 +74,7 @@
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
 								<div class="card-body ps-1">
-									<p class="mb-1"><b id="darvo-item">Loading...</b> &middot; <span id="darvo-stock">0</span> In Stock</p>
+									<p class="mb-1"><b id="darvo-item">Loading...</b> &middot; <span id="darvo-stock">0/0</span> In Stock</p>
 									<p class="card-text"><del id="darvo-ogprice">0</del> <b id="darvo-price">0</b> Platinum (-<span id="darvo-discount">0</span>%)</p>
 								</div>
 							</div>
@@ -609,7 +609,7 @@
 				}
 				if (window.dailyDeal)
 				{
-					document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - meta.darvoSold);
+					document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - meta.darvoSold) + "/" + dailyDeal.AmountTotal;
 				}
 				if (window.num_invasions && window.num_invasions != meta.invasions)
 				{
@@ -777,7 +777,7 @@
 			await dicts_promise;
 			document.getElementById("darvo-item").textContent = dict[item_data.name];
 			document.getElementById("darvo-icon").src = "https://browse.wf/" + item_data.icon;
-			document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - dailyDeal.AmountSold);
+			document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - dailyDeal.AmountSold) + "/" + dailyDeal.AmountTotal;
 			document.getElementById("darvo-ogprice").textContent = dailyDeal.OriginalPrice;
 			document.getElementById("darvo-price").textContent = dailyDeal.SalePrice;
 			document.getElementById("darvo-discount").textContent = dailyDeal.Discount;
