@@ -354,13 +354,23 @@
 		}
 		osdict_promise.then(() => updateDuviriMood());
 
+		let sundown_update_queued = false;
 		function updateDayNightCycle()
 		{
 			const time = Date.now();
 			const cycleNightStart = bountyCycleExpiry - 3_000_000;
-			window.refresh_day_night_cycle_at = time > cycleNightStart ? bountyCycleExpiry : cycleNightStart;
-			setDatum("poe", time > cycleNightStart ? "🌑 Night" : "☀️ Day", refresh_day_night_cycle_at);
-			setDatum("deimos", time > cycleNightStart ? "🌑 Vome" : "☀️ Fass", refresh_day_night_cycle_at);
+			const stateEnd = time >= cycleNightStart ? bountyCycleExpiry : cycleNightStart;
+			setDatum("poe", time >= cycleNightStart ? "🌑 Night" : "☀️ Day", stateEnd);
+			setDatum("deimos", time >= cycleNightStart ? "🌑 Vome" : "☀️ Fass", stateEnd);
+			if (time >= cycleNightStart)
+			{
+				sundown_update_queued = false;
+			}
+			else if (!sundown_update_queued)
+			{
+				sundown_update_queued = true;
+				setTimeout(updateDayNightCycle, cycleNightStart - Date.now());
+			}
 		}
 
 		const allyNames = {
@@ -667,11 +677,8 @@
 			{
 				window.worldState = worldState;
 
-				if (!window.bountyCycle)
-				{
-					window.bountyCycleExpiry = parseInt(worldState.SyndicateMissions.find(x => x.Tag == "HexSyndicate").Expiry.$date.$numberLong);
-					updateDayNightCycle();
-				}
+				window.bountyCycleExpiry = parseInt(worldState.SyndicateMissions.find(x => x.Tag == "HexSyndicate").Expiry.$date.$numberLong);
+				updateDayNightCycle();
 
 				window.events_earmark = 0;
 				for (const event of worldState.Events)
@@ -1165,10 +1172,6 @@
 
 		setInterval(function()
 		{
-			if (window.refresh_day_night_cycle_at && Date.now() >= window.refresh_day_night_cycle_at)
-			{
-				updateDayNightCycle();
-			}
 			if (window.refresh_bounty_cycle_at && Date.now() >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
