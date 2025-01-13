@@ -476,7 +476,16 @@
 				const td = document.createElement("td");
 				const abbr = document.createElement("abbr");
 				abbr.textContent = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv];
-				addTooltip(abbr, osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"].replaceAll(/<[^>]+>/g, ""));
+				let desc = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"].replaceAll(/<[^>]+>/g, "");
+				if (fv == "ShieldDelay")
+				{
+					desc = desc.split("|val|").join("500");
+				}
+				else if (fv == "TimeDilation")
+				{
+					desc = desc.split("|val|").join("50");
+				}
+				addTooltip(abbr, desc);
 				td.appendChild(abbr);
 				document.getElementById("labConquest-fv").appendChild(td);
 			}
