@@ -323,24 +323,34 @@
 			const cycleStart = EPOCH + cycle * 1600000;
 			const cycleEnd = cycleStart + 1600000;
 			const cycleColdStart = cycleStart + 400000;
-			window.refresh_vallis_at = time > cycleColdStart ? cycleEnd : cycleColdStart;
-			setDatum("vallis", time > cycleColdStart ? "❄️ Cold" : "☀️ Warm", refresh_vallis_at);
+			const stateEnd = (time > cycleColdStart ? cycleEnd : cycleColdStart);
+			setDatum("vallis", time > cycleColdStart ? "❄️ Cold" : "☀️ Warm", stateEnd);
+			setTimeout(updateVallis, stateEnd - Date.now());
 		}
 		updateVallis();
 
-		function updateDuviriMood()
+		function updateDuviriMoodLocalised()
 		{
-			const moodIndex = Math.trunc(Date.now() / 7200000);
-			const moodStart = moodIndex * 7200000;
-			const moodEnd = moodStart + 7200000;
-			window.refresh_duviri_at = moodEnd;
 			setDatum("duviri", osdict[[
 				"/Lotus/Language/Duviri/SadMoodTitleShort",
 				"/Lotus/Language/Duviri/ScaredMoodTitleShort",
 				"/Lotus/Language/Duviri/HappyMoodTitleShort",
 				"/Lotus/Language/Duviri/AngryMoodTitleShort",
 				"/Lotus/Language/Duviri/JealousMoodTitleShort"
-			][moodIndex % 5]], refresh_duviri_at);
+			][window.duviri_mood_index % 5]], window.duviri_expiry);
+		}
+
+		function updateDuviriMood()
+		{
+			const moodIndex = Math.trunc(Date.now() / 7200000);
+			const moodStart = moodIndex * 7200000;
+			const moodEnd = moodStart + 7200000;
+
+			window.duviri_mood_index = moodIndex;
+			window.duviri_expiry = moodEnd;
+			updateDuviriMoodLocalised();
+
+			setTimeout(updateDuviriMood, moodEnd - Date.now());
 		}
 		osdict_promise.then(() => updateDuviriMood());
 
@@ -1107,7 +1117,7 @@
 			onLanguageUpdate = function()
 			{
 				updateNames();
-				updateDuviriMood();
+				updateDuviriMoodLocalised();
 				if (window.bountyCycle)
 				{
 					updateBountyCycleLocalised();
@@ -1155,14 +1165,6 @@
 
 		setInterval(function()
 		{
-			if (Date.now() >= window.refresh_vallis_at)
-			{
-				updateVallis();
-			}
-			if (window.refresh_duviri_at && Date.now() >= window.refresh_duviri_at)
-			{
-				updateDuviriMood();
-			}
 			if (window.refresh_day_night_cycle_at && Date.now() >= window.refresh_day_night_cycle_at)
 			{
 				updateDayNightCycle();
