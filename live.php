@@ -400,7 +400,7 @@
 				await ExportRegions_promise;
 				await ExportChallenges_promise;
 				updateBountyCycleLocalised();
-				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry) + 3000;
+				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry) + 5000;
 			});
 		}
 
