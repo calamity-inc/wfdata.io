@@ -693,7 +693,7 @@
 			"SORTIE_MODIFIER_HAZARD_RADIATION": "Radiation Hazard",
 			"SORTIE_MODIFIER_HAZARD_MAGNETIC": "Electromagnetic Anomalies",
 			"SORTIE_MODIFIER_HAZARD_FOG": "Dense Fog",
-			"SORTIE_MODIFIER_HAZARD_FIRE": "Fire",
+			"SORTIE_MODIFIER_HAZARD_FIRE": "Fire Hazard",
 			"SORTIE_MODIFIER_HAZARD_ICE": "Cryogenic Leakage",
 			"SORTIE_MODIFIER_HAZARD_COLD": "Extreme Cold",
 			"SORTIE_MODIFIER_ARMOR": "Augmented Enemy Armor",
