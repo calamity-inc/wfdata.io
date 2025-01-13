@@ -1152,6 +1152,10 @@
 			{
 				updateInvasions();
 			}
+			if (window.refresh_weekly_at && Date.now() >= window.refresh_weekly_at)
+			{
+				updateWeekly();
+			}
 		}, 500);
 
 		function sendNotification(text)
