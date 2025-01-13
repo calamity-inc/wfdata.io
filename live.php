@@ -701,7 +701,8 @@
 		{
 			if (Date.now() > expiry)
 			{
-				expiry = Date.now() + 3000;
+				console.trace("World state already expired");
+				expiry = Date.now() + 30000;
 			}
 			if (!window.refresh_world_state_at || refresh_world_state_at > expiry)
 			{
