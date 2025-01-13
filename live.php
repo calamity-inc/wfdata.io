@@ -94,6 +94,10 @@
 							<div class="card-body" id="litesortie-body">Fetching data...</div>
 						</div>
 						<div class="card mb-3">
+							<h5 class="card-header" id="teshin-header">Steel Path Honors</h5>
+							<div class="card-body" id="teshin-body"></div>
+						</div>
+						<div class="card mb-3">
 							<h5 class="card-header" id="baro-header">Baro Ki'Teer</h5>
 							<div class="card-body">
 								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
@@ -913,6 +917,27 @@
 				document.getElementById("alerts-body").textContent = "None right now.";
 			}
 		}
+
+		function updateTeshin()
+		{
+			const EPOCH = 1736121600 * 1000;
+			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
+			const weekStart = EPOCH + week * 604800000;
+			const weekEnd = weekStart + 604800000;
+			setDatum("teshin-header", "Steel Path Honors", weekEnd);
+			document.getElementById("teshin-body").textContent = [
+				"Umbra Forma Blueprint",
+				"50,000x Kuva",
+				"Kitgun Riven Mod",
+				"3x Forma",
+				"Zaw Riven Mod",
+				"30,000x Endo",
+				"Rifle Riven Mod",
+				"Shotgun Riven Mod"
+			][week % 8];
+			setTimeout(updateTeshin, weekEnd - Date.now());
+		}
+		updateTeshin();
 
 		function loadScriptPromise(src)
 		{
