@@ -476,7 +476,7 @@
 				const td = document.createElement("td");
 				const abbr = document.createElement("abbr");
 				abbr.textContent = osdict["/Lotus/Language/Conquest/PersonalMod_" + fv];
-				addTooltip(abbr, osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"]);
+				addTooltip(abbr, osdict["/Lotus/Language/Conquest/PersonalMod_" + fv + "_Desc"].replaceAll(/<[^>]+>/g, ""));
 				td.appendChild(abbr);
 				document.getElementById("labConquest-fv").appendChild(td);
 			}
