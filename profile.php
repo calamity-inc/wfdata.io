@@ -639,21 +639,28 @@
 								title.textContent = dict[syndicate.name];
 								body.appendChild(title);
 							}
+							const level = (affiliation?.Title ?? 0);
+							const title = syndicate.titles?.find(x => x.level == level);
 							{
 								const subtitle = document.createElement("h6");
 								subtitle.className = "card-subtitle mb-2 text-body-secondary";
-								subtitle.textContent = "Rank " + (affiliation?.Title ?? 0);
-								const title = syndicate.titles?.find(x => x.level == affiliation?.Title ?? 0);
+								subtitle.textContent = "Rank " + level;
 								if (title)
 								{
-									subtitle.textContent += " · " + dict[title.name];
+									subtitle.textContent += " · " + toTitleCase(dict[title.name]);
 								}
 								body.appendChild(subtitle);
 							}
 							{
+								const standing = affiliation?.Standing ?? 0;
+								const minStanding = (level < 0 ? title?.maxStanding : title?.minStanding) ?? 0;
 								const text = document.createElement("p");
 								text.className = "card-text";
-								text.textContent = "Standing: " + (affiliation?.Standing ?? 0).toLocaleString();
+								text.textContent = "Standing: " + (standing - minStanding).toLocaleString();
+								if (minStanding != 0)
+								{
+									text.textContent += " (" + standing.toLocaleString() + " in total)";
+								}
 								body.appendChild(text);
 							}
 							row.appendChild(body);
