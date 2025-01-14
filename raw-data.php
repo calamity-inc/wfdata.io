@@ -53,8 +53,11 @@
 			<li><a href="warframe-public-export-plus/ExportWarframes.json" target="_blank">ExportWarframes</a></li>
 			<li><a href="warframe-public-export-plus/ExportWeapons.json" target="_blank">ExportWeapons</a></li>
 		</ul>
-		<h3>Arbitration Data</h3>
+		<h2>Arbitrations</h2>
 		<p>The data behind the <a href="/arbys" target="_blank">arbitration schedule</a> is stored in the <a href="arbys.txt" target="_blank">arbys.txt</a>. Furthermore, the data prior to Update 37 is also still available in the <a href="arbys-old.txt" target="_blank">arbys-old.txt</a>.</p>
+		<h2>Live World State</h2>
+		<p>For our <a href="/live" target="_blank">live world state tracker</a>, we have created <a href="https://oracle.browse.wf" target="_blank">the oracle</a>, which has many services, including providing current bounty challenges, invasion mission types, and deep archimedea modifiers.</p>
+		<p>Additionally, there's the steel path incursions schedule in the <a href="sp-incursions.txt" target="_blank">sp-incursions.txt</a>.</p>
 	</div>
 	<?php require "components/commonjs.html"; ?>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
