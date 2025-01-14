@@ -63,13 +63,11 @@
 								Loading...
 							</div>
 						</div>
-						<div class="card">
+						<div class="card mb-3">
 							<h5 class="card-header">Alerts</h5>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
-					</div>
-					<div class="col-xl-12 col-md-6">
-						<div class="card mb-3">
+						<div class="card">
 							<h5 class="card-header" id="darvo-header">Darvo's Deal</h5>
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
@@ -79,6 +77,8 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<h5 class="card-header" id="sortie-header">Sortie</h5>
 							<div class="card-body">
@@ -92,6 +92,17 @@
 						<div class="card mb-3">
 							<h5 class="card-header" id="litesortie-header">Archon Hunt</h5>
 							<div class="card-body" id="litesortie-body">Fetching data...</div>
+						</div>
+						<div class="card mb-3">
+							<h5 class="card-header" id="incursions-header">Steel Path Incursions</h5>
+							<div class="card-body overflow-auto" id="incursions-body">
+								<span class="d-block mb-1"><b>Fetching data...</b></span>
+								<span class="d-block mb-1">&nbsp;</span>
+								<span class="d-block mb-1">&nbsp;</span>
+								<span class="d-block mb-1">&nbsp;</span>
+								<span class="d-block mb-1">&nbsp;</span>
+								<span class="d-block">&nbsp;</span>
+							</div>
 						</div>
 						<div class="card mb-3">
 							<h5 class="card-header" id="teshin-header">Steel Path Honors</h5>
@@ -234,7 +245,7 @@
 				<div class="card mb-3">
 					<h5 class="card-header" id="invasions-header">Invasions</h5>
 					<div class="card-body overflow-auto">
-						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tbody><tr><td>Loading...</td></tr></tbody></table>
+						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tr><td>Loading...</td></tr></table>
 					</div>
 				</div>
 				<div class="card mb-3">
@@ -458,6 +469,31 @@
 			updateArbyLocalised();
 			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
 			setTimeout(updateArby, arby_expiry - Date.now());
+		}
+
+		function updateIncursionsLocalised()
+		{
+			setDatum("incursions-header", toTitleCase(osdict["/Lotus/Language/Labels/SteelPathDailies"]), incursions_expiry);
+			const elms = document.querySelectorAll("#incursions-body span.d-block");
+			for (let i = 0; i != elms.length; ++i)
+			{
+				const node = ExportRegions[incursions_today[i]];
+				elms[i].innerHTML = "";
+				const b = document.createElement("b");
+				b.textContent = toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName];
+				elms[i].appendChild(b);
+				elms[i].innerHTML += " (" + (100 + node.minEnemyLevel) + "-" + (100 + node.maxEnemyLevel) + ")" + " @ " + dict[node.name] + ", " + dict[node.systemName];
+			}
+		}
+
+		function updateIncursions()
+		{
+			const today = Math.trunc(Date.now() / 86400000) * 86400;
+			const epochDay = incursions[0][0];
+			window.incursions_today = incursions[(today - epochDay) / 86400][1].split(",");
+			window.incursions_expiry = (today + 86400) * 1000;
+			updateIncursionsLocalised();
+			setTimeout(updateIncursions, incursions_expiry - Date.now());
 		}
 
 		function addTooltip(elm, title)
@@ -1139,6 +1175,10 @@
 				{
 					updateArbyLocalised();
 				}
+				if (window.incursions)
+				{
+					updateIncursionsLocalised();
+				}
 				if (window.weekly)
 				{
 					updateWeeklyLocalised();
@@ -1161,6 +1201,12 @@
 			{
 				window.arbys = arbys.split("\n").map(line => line.split(",")).filter(arr => arr.length == 2);
 				updateArby();
+			});
+
+			fetch("https://browse.wf/sp-incursions.txt").then(res => res.text()).then(async (incursions) => {
+				await ExportRegions_promise;
+				window.incursions = incursions.split("\n").map(line => line.split(";")).filter(arr => arr.length == 2);
+				updateIncursions();
 			});
 		});
 

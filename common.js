@@ -13,7 +13,7 @@ function getDictPromise()
 
 function getOSDictPromise()
 {
-	return fetch("https://oracle.browse.wf/dicts/" + (localStorage.getItem("lang") ?? "en") + ".json?5").then(res => res.json());
+	return fetch("https://oracle.browse.wf/dicts/" + (localStorage.getItem("lang") ?? "en") + ".json?6").then(res => res.json());
 }
 
 function setLanguage(code)
