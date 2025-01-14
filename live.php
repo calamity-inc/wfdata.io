@@ -790,6 +790,8 @@
 			const sortie = worldState.Sorties.find(x => Date.now() >= x.Activation.$date.$numberLong && Date.now() < x.Expiry.$date.$numberLong);
 			setWorldStateExpiry(sortie.Expiry.$date.$numberLong);
 			setDatum("sortie-header", toTitleCase(osdict["/Lotus/Language/Menu/SortieMissionName"]), sortie.Expiry.$date.$numberLong);
+			document.getElementById("sortie-header").innerHTML += " ";
+			document.getElementById("sortie-header").appendChild(createCompletionToggle(sortie._id.$oid));
 			const tbody = document.createElement("tbody");
 			for (const variant of sortie.Variants)
 			{
@@ -808,6 +810,8 @@
 			const litesortie = worldState.LiteSorties.find(x => Date.now() >= x.Activation.$date.$numberLong && Date.now() < x.Expiry.$date.$numberLong);
 			setWorldStateExpiry(litesortie.Expiry.$date.$numberLong);
 			setDatum("litesortie-header", osdict["/Lotus/Language/WorldStateWindow/LiteSortieMissionName"], litesortie.Expiry.$date.$numberLong);
+			document.getElementById("litesortie-header").innerHTML += " ";
+			document.getElementById("litesortie-header").appendChild(createCompletionToggle(litesortie._id.$oid));
 			const mission_names = [];
 			for (const mission of litesortie.Missions)
 			{
@@ -984,6 +988,9 @@
 			const weekStart = EPOCH + week * 604800000;
 			const weekEnd = weekStart + 604800000;
 			setDatum("teshin-header", "Steel Path Honors", weekEnd);
+			document.getElementById("teshin-header").innerHTML += " ";
+			document.getElementById("teshin-header").appendChild(createCompletionToggle("teshin" + week));
+
 			document.getElementById("teshin-body").textContent = [
 				"Umbra Forma Blueprint",
 				"50,000x Kuva",
