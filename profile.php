@@ -45,7 +45,7 @@
 		</form>
 		<div id="status" class="alert alert-light"><div class="spinner-border spinner-border-sm me-2"></div><span>Loading</span></div>
 		<h3 class="mb-0"><span id="profile-name"></span><span class="text-body-secondary" id="profile-discriminator"></span></h3>
-		<p id="mr" class="mb-1 d-none">Mastery Rank <b></b></p>
+		<p id="mr" class="mb-1 d-none">Mastery Rank <b></b>, Registered <span></span></p>
 		<p id="accolades" class="mb-1 d-none"><b>Accolades:</b> <span></span></p>
 		<p id="clan" class="mb-1 d-none"><b>Clan:</b> <span></span></p>
 		<ul id="profile-nav" class="nav nav-underline d-none">
@@ -560,6 +560,7 @@
 
 			document.querySelector("#mr").classList.remove("d-none");
 			document.querySelector("#mr b").textContent = (profile.Results[0].PlayerLevel ?? 0);
+			document.querySelector("#mr span").textContent = new Date(parseInt(profile.Results[0].AccountId.$oid.substr(0, 8), 16) * 1000).toLocaleDateString();
 
 			const accolades = [];
 			if (profile.Results[0].Staff)
