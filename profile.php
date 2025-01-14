@@ -764,9 +764,13 @@
 					if (node)
 					{
 						td.textContent = dict[node.name];
-						if (node.systemName)
+						if (node.systemName && node.systemIndex != 19)
 						{
-							td.textContent += " · " + (dict[node.systemName] ?? node.systemName);
+							td.textContent += ", " + (dict[node.systemName] ?? node.systemName);
+							if (node.missionIndex != 10)
+							{
+								td.textContent += " (" + toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName] + ")";
+							}
 						}
 					}
 					else
