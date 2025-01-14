@@ -318,8 +318,9 @@
 	<?php require "components/commonjs.html"; ?>
 	<script src="https://pluto-lang.org/wasm-builds/out/libpluto/0.9.5/libpluto.js"></script>
 	<script src="https://pluto-lang.org/PlutoScript/plutoscript.js"></script>
-	<script type="pluto" src="platform-suffix.pluto"></script>
 	<script>
+		const platform_suffix_pluto_promise = pluto_require("platform-suffix.pluto");
+
 		/*document.getElementById("username").onfocus = function()
 		{
 			this.select();
@@ -549,6 +550,7 @@
 			document.getElementById("profile-name").textContent = sanitisedName;
 			if (isXplatName(profile.Results[0].DisplayName))
 			{
+				await platform_suffix_pluto_promise;
 				document.getElementById("profile-discriminator").textContent = "#" + (await pluto_invoke("get_discriminator", sanitisedName, xplatNameToPlatformId(profile.Results[0].DisplayName))).toString().padStart(3, "0");
 			}
 			else
