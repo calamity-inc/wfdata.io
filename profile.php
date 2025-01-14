@@ -1092,6 +1092,7 @@
 											if (r == r2 && g == g2 && b == b2)
 											{
 												elm.querySelector(".palettes").textContent += " · " + dict[flavour.name];
+												break;
 											}
 										}
 									}
@@ -1103,6 +1104,7 @@
 											if (r == r2 && g == g2 && b == b2)
 											{
 												elm.querySelector(".palettes").textContent += " · " + dict[flavour.name] + " (Legacy)";
+												break;
 											}
 										}
 									}
