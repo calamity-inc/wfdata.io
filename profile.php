@@ -542,20 +542,20 @@
 			});
 		}
 
-		async function renderProfile()
+		function renderProfile()
 		{
 			document.querySelector("#status").classList.add("d-none");
 
 			const sanitisedName = sanitiseName(profile.Results[0].DisplayName);
 			document.getElementById("profile-name").textContent = sanitisedName;
+			document.getElementById("profile-discriminator").textContent = "";
 			if (isXplatName(profile.Results[0].DisplayName))
 			{
-				await platform_suffix_pluto_promise;
-				document.getElementById("profile-discriminator").textContent = "#" + (await pluto_invoke("get_discriminator", sanitisedName, xplatNameToPlatformId(profile.Results[0].DisplayName))).toString().padStart(3, "0");
-			}
-			else
-			{
-				document.getElementById("profile-discriminator").textContent = "";
+				platform_suffix_pluto_promise.then(() => {
+					pluto_invoke("get_discriminator", sanitisedName, xplatNameToPlatformId(profile.Results[0].DisplayName)).then(discriminator => {
+						document.getElementById("profile-discriminator").textContent = "#" + discriminator.toString().padStart(3, "0");
+					});
+				});
 			}
 
 			document.querySelector("#mr").classList.remove("d-none");
