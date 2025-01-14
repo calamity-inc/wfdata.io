@@ -129,6 +129,7 @@
 				<div class="card mb-3">
 					<h5 class="card-header" id="bounties-header">Bounties</h5>
 					<div class="card-body overflow-auto" id="bounties-body">
+						<p>Rotation <b id="bounty-rot">?</b> (<span id="bounty-rot-rewards">Loading</span>) &middot; Vault Rotation <b id="vault-rot">?</b> (<span id="vault-rot-rewards">Loading</span>)</p>
 						<h5 id="HexSyndicate-name">The Hex</h5>
 						<table class="table table-hover table-sm table-borderless mb-0" id="HexSyndicate-table">
 							<tr>
@@ -384,6 +385,18 @@
 			}
 		}
 
+		const rotRewards = {
+			A: ["/Lotus/Language/Suits/SentientSystemsComponentName", "/Lotus/Language/Weapons/ArchonWhipName"],
+			B: ["/Lotus/Language/Suits/SentientChassisComponentName", "/Lotus/Language/Weapons/ArchonDualDaggersName"],
+			C: ["/Lotus/Language/Suits/SentientHelmetComponentName", "/Lotus/Language/Weapons/ArchonTridentName"],
+		};
+
+		const vaultRotRewards = {
+			A: ["/Lotus/Language/Weapons/InfSniperRifleBarrel"],
+			B: ["/Lotus/Language/Weapons/InfSniperRifleReceiver"],
+			C: ["/Lotus/Language/Weapons/InfSniperRifleStock"],
+		};
+
 		const allyNames = {
 			"/Lotus/Types/Gameplay/1999Wf/ProtoframeAllies/AmirAllyAgent": "Amir",
 			"/Lotus/Types/Gameplay/1999Wf/ProtoframeAllies/AoiAllyAgent": "Aoi",
@@ -395,6 +408,8 @@
 
 		function updateBountyCycleLocalised()
 		{
+			document.getElementById("bounty-rot-rewards").textContent = rotRewards[bountyCycle.rot].map(x => dict[x]).join(", ");
+			document.getElementById("vault-rot-rewards").textContent = vaultRotRewards[bountyCycle.vaultRot].map(x => dict[x]).join(", ");
 			setDatum("zariman", dict[bountyCycle.zarimanFaction == "FC_GRINEER" ? "/Lotus/Language/Game/Faction_GrineerUC" : "/Lotus/Language/Game/Faction_CorpusUC"], bountyCycle.expiry);
 			setDatum("bounties-header", "Bounties", bountyCycle.expiry);
 			for (const syndicateTag of ["HexSyndicate", "EntratiLabSyndicate", "ZarimanSyndicate"])
@@ -434,6 +449,8 @@
 				await dicts_promise;
 				await ExportRegions_promise;
 				await ExportChallenges_promise;
+				document.getElementById("bounty-rot").textContent = bountyCycle.rot;
+				document.getElementById("vault-rot").textContent = bountyCycle.vaultRot;
 				updateBountyCycleLocalised();
 				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry) + 5000;
 			});
