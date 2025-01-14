@@ -1023,6 +1023,18 @@
 			}
 		}
 
+		const modularWeapons = {
+			"/Lotus/Weapons/SolarisUnited/Primary/LotusModularPrimary": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Primary/LotusModularPrimaryBeam": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Primary/LotusModularPrimaryLauncher": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Primary/LotusModularPrimaryShotgun": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Primary/LotusModularPrimarySniper": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Secondary/LotusModularSecondary": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Secondary/LotusModularSecondaryBeam": "Kitgun",
+			"/Lotus/Weapons/SolarisUnited/Secondary/LotusModularSecondaryShotgun": "Kitgun",
+			"/Lotus/Weapons/Ostron/Melee/LotusModularWeapon": "Zaw",
+		};
+
 		function updateFashion()
 		{
 			for (const category of ["Suits", "LongGuns", "Pistols", "Melee"])
@@ -1030,7 +1042,7 @@
 				const equipment = profile.Results[0].LoadOutInventory[category] ? profile.Results[0].LoadOutInventory[category][0] : { ItemType: "None", Configs: [] };
 				const config = equipment.Configs[document.getElementById(category + "-config").value];
 
-				document.getElementById(category + "-name").textContent = (dict[ExportWarframes[equipment.ItemType]?.name] ?? dict[ExportWeapons[equipment.ItemType]?.name] ?? equipment.ItemType);
+				document.getElementById(category + "-name").textContent = (dict[ExportWarframes[equipment.ItemType]?.name] ?? dict[ExportWeapons[equipment.ItemType]?.name] ?? modularWeapons[equipment.ItemType] ?? equipment.ItemType);
 				if (equipment.ItemName && equipment.ItemName != document.getElementById(category + "-name").textContent)
 				{
 					if (equipment.ItemName.indexOf("|") === -1) // e.g. for a stock Tenet Arca Plasmor, the ItemName would be "/Lotus/Language/Weapons/CrpBEArcaPlasmorName|PARVI LISSIDPHA" with the respective Lich/Sister name.
