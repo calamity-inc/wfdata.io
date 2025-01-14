@@ -449,7 +449,7 @@
 
 		function updateArby()
 		{
-			const currentHour = Math.trunc((Date.now() / 1000) / 3600) * 3600;
+			const currentHour = Math.trunc(Date.now() / 3600000) * 3600;
 			const epochHour = arbys[0][0];
 			const currentHourIndex = (currentHour - epochHour) / 3600;
 			const arr = arbys[currentHourIndex];
