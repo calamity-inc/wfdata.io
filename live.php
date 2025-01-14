@@ -313,7 +313,7 @@
 		function createExpiryBadge(expiry)
 		{
 			const span = document.createElement("span");
-			span.setAttribute("data-timestamp", expiry);
+			span.setAttribute("data-expiry", expiry);
 			span.className = "badge text-bg-secondary";
 			span.textContent = formatExpiry(expiry);
 			return span;
@@ -1216,9 +1216,9 @@
 
 		setInterval(function()
 		{
-			for (const elm of document.querySelectorAll(".badge[data-timestamp]"))
+			for (const elm of document.querySelectorAll(".badge[data-expiry]"))
 			{
-				elm.textContent = formatExpiry(elm.getAttribute("data-timestamp"));
+				elm.textContent = formatExpiry(elm.getAttribute("data-expiry"));
 			}
 		}, 100);
 
