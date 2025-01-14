@@ -44,8 +44,8 @@
 			<input type="submit" class="btn btn-primary" />
 		</form>
 		<div id="status" class="alert alert-light"><div class="spinner-border spinner-border-sm me-2"></div><span>Loading</span></div>
-		<h3 id="profile-name" class="mb-0"></h3>
-		<p id="mr" class="mb-1 text-body-secondary"></p>
+		<h3 class="mb-0"><span id="profile-name"></span><span class="text-body-secondary" id="profile-discriminator"></span></h3>
+		<p id="mr" class="mb-1 d-none">Mastery Rank <b></b></p>
 		<p id="accolades" class="mb-1 d-none"><b>Accolades:</b> <span></span></p>
 		<p id="clan" class="mb-1 d-none"><b>Clan:</b> <span></span></p>
 		<ul id="profile-nav" class="nav nav-underline d-none">
@@ -316,6 +316,9 @@
 		</div>
 	</div>
 	<?php require "components/commonjs.html"; ?>
+	<script src="https://pluto-lang.org/wasm-builds/out/libpluto/0.9.5/libpluto.js"></script>
+	<script src="https://pluto-lang.org/PlutoScript/plutoscript.js"></script>
+	<script type="pluto" src="platform-suffix.pluto"></script>
 	<script>
 		/*document.getElementById("username").onfocus = function()
 		{
@@ -491,6 +494,16 @@
 			};
 		});
 
+		function isXplatName(name)
+		{
+			return name.charCodeAt(name.length - 1) >= 0xE000;
+		}
+
+		function xplatNameToPlatformId(name)
+		{
+			return name.charCodeAt(name.length - 1) - 0xE000;
+		}
+
 		function sanitiseName(name)
 		{
 			if (name.charCodeAt(name.length - 1) >= 0xE000)
@@ -528,12 +541,23 @@
 			});
 		}
 
-		function renderProfile()
+		async function renderProfile()
 		{
 			document.querySelector("#status").classList.add("d-none");
 
-			document.getElementById("profile-name").textContent = sanitiseName(profile.Results[0].DisplayName); // Note: In case the name needs to be sanitised, there is also a "PlatformNames" field. Example user: Voltage
-			document.getElementById("mr").textContent = platformNames[profile.platform] + " Account, Mastery Rank " + (profile.Results[0].PlayerLevel ?? 0);
+			const sanitisedName = sanitiseName(profile.Results[0].DisplayName);
+			document.getElementById("profile-name").textContent = sanitisedName;
+			if (isXplatName(profile.Results[0].DisplayName))
+			{
+				document.getElementById("profile-discriminator").textContent = "#" + (await pluto_invoke("get_discriminator", sanitisedName, xplatNameToPlatformId(profile.Results[0].DisplayName))).toString().padStart(3, "0");
+			}
+			else
+			{
+				document.getElementById("profile-discriminator").textContent = "";
+			}
+
+			document.querySelector("#mr").classList.remove("d-none");
+			document.querySelector("#mr b").textContent = (profile.Results[0].PlayerLevel ?? 0);
 
 			const accolades = [];
 			if (profile.Results[0].Staff)
