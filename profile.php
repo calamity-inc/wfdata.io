@@ -775,9 +775,9 @@
 						if (node.systemName && node.systemIndex != 19)
 						{
 							td.textContent += ", " + (dict[node.systemName] ?? node.systemName);
-							if (node.missionIndex != 10)
+							if (node.missionIndex != 10 && node.factionName)
 							{
-								td.textContent += " (" + toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName] + ")";
+								td.textContent += " (" + toTitleCase(dict[node.missionName]) + " - " + toTitleCase(dict[node.factionName]) + ")";
 							}
 						}
 					}
