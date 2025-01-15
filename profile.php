@@ -775,9 +775,14 @@
 						if (node.systemName && node.systemIndex != 19)
 						{
 							td.textContent += ", " + (dict[node.systemName] ?? node.systemName);
-							if (node.missionIndex != 10 && node.factionName)
+							if (node.missionIndex != 10)
 							{
-								td.textContent += " (" + toTitleCase(dict[node.missionName]) + " - " + toTitleCase(dict[node.factionName]) + ")";
+								td.textContent += " (" + toTitleCase(dict[node.missionName])
+								if (node.factionName && node.systemIndex != 21)
+								{
+									td.textContent += " - " + toTitleCase(dict[node.factionName]);
+								}
+								td.textContent += ")";
 							}
 						}
 					}

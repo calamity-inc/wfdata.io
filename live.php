@@ -509,7 +509,11 @@
 				const node = ExportRegions[incursions_today[i]];
 				elms[i].innerHTML = "";
 				const b = document.createElement("b");
-				b.textContent = toTitleCase(dict[node.missionName]) + " - " + dict[node.factionName];
+				b.textContent = toTitleCase(dict[node.missionName]);
+				if (node.systemIndex != 21)
+				{
+					b.textContent += " - " + dict[node.factionName];
+				}
 				elms[i].appendChild(b);
 				elms[i].innerHTML += " (" + (100 + node.minEnemyLevel) + "-" + (100 + node.maxEnemyLevel) + ")" + " @ " + dict[node.name] + ", " + dict[node.systemName];
 			}
