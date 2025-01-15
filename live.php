@@ -286,11 +286,18 @@
 		{
 			expiry -= expiry % 1000; expiry += 1000; // normalise the ms so everything ticks at the same time
 			const time = Date.now();
-			let delta = expiry - time;
+			const delta = expiry - time;
 			if (delta < 1_000)
 			{
 				return "Updating...";
 			}
+			return deltaToUnits(delta).join(" ");
+		}
+
+		function deltaToUnits(delta)
+		{
+			delta = Math.abs(delta);
+
 			let units = [];
 			if (delta >= 86_400_000)
 			{
@@ -308,7 +315,12 @@
 				delta %= 60_000;
 			}
 			units.push(Math.trunc(delta / 1_000).toString().padStart(2, "0") + "s");
-			return units.join(" ");
+			return units;
+		}
+
+		function formatActivation(activation)
+		{
+			return deltaToUnits(Date.now() - activation)[0];
 		}
 
 		function createExpiryBadge(expiry)
@@ -652,19 +664,32 @@
 			for (let i = 0; i != items.length; ++i)
 			{
 				const p = document.createElement("p");
-				p.className = "card-text mb-1 text-" + items[i].type;
-				if (items[i].link)
+				p.className = "card-text mb-1";
 				{
-					const a = document.createElement("a");
-					a.className = "text-" + items[i].type;
-					a.textContent = items[i].data;
-					a.href = items[i].link;
-					a.target = "_blank";
-					p.appendChild(a);
+					const span = document.createElement("span");
+					span.className = "badge text-bg-secondary";
+					span.setAttribute("data-activation", items[i].time * 1000);
+					span.textContent = formatActivation(items[i].time * 1000);
+					p.appendChild(span);
 				}
-				else
 				{
-					p.textContent = items[i].data;
+					const span = document.createElement("span");
+					span.className = "text-" + items[i].type;
+					span.textContent = " ";
+					if (items[i].link)
+					{
+						const a = document.createElement("a");
+						a.className = "text-" + items[i].type;
+						a.textContent = items[i].data;
+						a.href = items[i].link;
+						a.target = "_blank";
+						span.appendChild(a);
+					}
+					else
+					{
+						span.textContent += items[i].data;
+					}
+					p.appendChild(span);
 				}
 				document.getElementById("news-body").appendChild(p);
 			}
@@ -1243,6 +1268,10 @@
 			for (const elm of document.querySelectorAll(".badge[data-expiry]"))
 			{
 				elm.textContent = formatExpiry(elm.getAttribute("data-expiry"));
+			}
+			for (const elm of document.querySelectorAll(".badge[data-activation]"))
+			{
+				elm.textContent = formatActivation(elm.getAttribute("data-activation"));
 			}
 		}, 100);
 
