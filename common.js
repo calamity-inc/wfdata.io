@@ -4,6 +4,12 @@ if (this_page_nav_link)
 	this_page_nav_link.onclick = event => event.preventDefault();
 }
 
+// The raw data may be requested without TLS, but the user-facing stuff really shouldn't.
+if (location.host == "browse.wf" && location.protocol == "http:")
+{
+	location.protocol = "https:";
+}
+
 // Localisation
 
 function getDictPromise()
