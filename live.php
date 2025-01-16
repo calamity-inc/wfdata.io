@@ -1172,6 +1172,14 @@
 				}
 				{
 					const td = document.createElement("td");
+					if (invasion.allyPay[0].ItemType != "/Lotus/Types/Items/Research/EnergyComponent"
+						&& invasion.allyPay[0].ItemType != "/Lotus/Types/Items/Research/ChemComponent"
+						&& invasion.allyPay[0].ItemType != "/Lotus/Types/Items/Research/BioComponent"
+						&& invasion.allyPay[0].ItemType != "/Lotus/Types/Items/MiscItems/InfestedAladCoordinate"
+						)
+					{
+						td.className = "fw-bolder";
+					}
 					td.textContent = invasion.allyPay[0].ItemCount + "x " + await getItemNamePromise(invasion.allyPay[0].ItemType);
 					tr.appendChild(td);
 				}
