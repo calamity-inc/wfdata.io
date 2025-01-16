@@ -1367,11 +1367,12 @@
 					{
 						const span = document.createElement("span");
 						const baselvl = fissure.Hard ? 100 : 0;
+						span.textContent = " (" + (node.minEnemyLevel + baselvl) + "-" + (node.maxEnemyLevel + baselvl) + ")";
 						if (node.systemIndex != 21)
 						{
-							span.textContent = " - " + dict[node.factionName]
+							span.textContent += " - " + dict[node.factionName];
 						}
-						span.textContent += " (" + (node.minEnemyLevel + baselvl) + "-" + (node.maxEnemyLevel + baselvl) + ") ";
+						span.textContent += " ";
 						td.appendChild(span);
 					}
 					td.appendChild(createExpiryBadge(fissure.Expiry.$date.$numberLong));
