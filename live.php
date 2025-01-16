@@ -135,7 +135,7 @@
 					<div class="card-body overflow-auto" id="bounties-body">
 						<p>Rotation <b id="bounty-rot">?</b> (<span id="bounty-rot-rewards">Loading</span>) &middot; Vault Rotation <b id="vault-rot">?</b> (<span id="vault-rot-rewards">Loading</span>)</p>
 						<h5 id="HexSyndicate-name">The Hex</h5>
-						<table class="table table-hover table-sm table-borderless mb-0" id="HexSyndicate-table">
+						<table class="table table-hover table-sm table-borderless" id="HexSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
@@ -179,8 +179,8 @@
 								<td>6000/<wbr/>9000</td>
 							</tr>
 						</table>
-						<h5 id="EntratiLabSyndicate-name" class="mt-3">Cavia</h5>
-						<table class="table table-hover table-sm table-borderless mb-0" id="EntratiLabSyndicate-table">
+						<h5 id="EntratiLabSyndicate-name">Cavia</h5>
+						<table class="table table-hover table-sm table-borderless" id="EntratiLabSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
@@ -212,7 +212,7 @@
 								<td>5000/<wbr/>7500</td>
 							</tr>
 						</table>
-						<h5 id="ZarimanSyndicate-name" class="mt-3">The Holdfasts</h5>
+						<h5 id="ZarimanSyndicate-name">The Holdfasts</h5>
 						<table class="table table-hover table-sm table-borderless mb-0" id="ZarimanSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
