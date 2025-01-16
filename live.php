@@ -24,7 +24,7 @@
 						<div class="card mb-3">
 							<div class="card-header d-flex">
 								<h5 class="mb-0">Environments</h5>
-								<a class="m-auto me-2" data-notif-toggle="nightfall"></a>
+								<a class="m-auto me-0" data-notif-toggle="nightfall"></a>
 							</div>
 							<div class="card-body overflow-auto">
 								<table class="table table-hover table-sm table-borderless mb-0">
@@ -54,7 +54,7 @@
 						<div class="card mb-3">
 							<div class="card-header d-flex">
 								<h5 class="mb-0">News</h5>
-								<a class="m-auto me-2" data-notif-toggle="news"></a>
+								<a class="m-auto me-0" data-notif-toggle="news"></a>
 							</div>
 							<div class="card-body overflow-auto" id="news-body" style="height:200px">
 								Loading...
@@ -63,7 +63,7 @@
 						<div class="card mb-3">
 							<div class="card-header d-flex">
 								<h5 class="mb-0" id="darvo-header">Darvo's Deal</h5>
-								<a class="m-auto me-2" data-notif-toggle="darvo"></a>
+								<a class="m-auto me-0" data-notif-toggle="darvo"></a>
 							</div>
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
@@ -82,7 +82,7 @@
 						<div class="card mb-3">
 							<div class="card-header d-flex">
 								<h5 class="mb-0">Alerts</h5>
-								<a class="m-auto me-2" data-notif-toggle="alerts"></a>
+								<a class="m-auto me-0" data-notif-toggle="alerts"></a>
 							</div>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
@@ -131,7 +131,7 @@
 						<div class="card mb-3">
 							<div class="card-header d-flex">
 								<h5 class="mb-0" id="baro-header">Baro Ki'Teer</h5>
-								<a class="m-auto me-2" data-notif-toggle="baro"></a>
+								<a class="m-auto me-0" data-notif-toggle="baro"></a>
 							</div>
 							<div class="card-body">
 								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
@@ -152,7 +152,7 @@
 				<div class="card mb-3">
 					<div class="card-header d-flex">
 						<h5 class="mb-0" id="bounties-header">Bounties</h5>
-						<a class="m-auto me-2" data-notif-toggle="bounties"></a>
+						<a class="m-auto me-0" data-notif-toggle="bounties"></a>
 					</div>
 					<div class="card-body overflow-auto" id="bounties-body">
 						<p>Rotation <b id="bounty-rot">?</b> (<span id="bounty-rot-rewards">Loading</span>) &middot; Vault Rotation <b id="vault-rot">?</b> (<span id="vault-rot-rewards">Loading</span>)</p>
