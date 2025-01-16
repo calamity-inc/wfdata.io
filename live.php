@@ -641,6 +641,8 @@
 		function updateWeeklyLocalised()
 		{
 			setDatum("labConquest-header", osdict["/Lotus/Language/Conquest/SolarMapLabConquestNode"], refresh_weekly_at);
+			document.getElementById("labConquest-header").innerHTML += " ";
+			document.getElementById("labConquest-header").appendChild(createCompletionToggle("labconquest-" + refresh_weekly_at));
 			const tbody = document.createElement("tbody");
 			for (const mission of weekly.labConquestMissions)
 			{
