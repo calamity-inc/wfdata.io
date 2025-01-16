@@ -536,11 +536,11 @@
 			window.refresh_bounty_cycle_at = undefined;
 			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(async (bountyCycle) =>
 			{
-				window.bountyCycle = bountyCycle;
-				if (window.bountyCycleExpiry && window.bountyCycleExpiry != bountyCycle.expiry && localStorage.getItem("live.notif.bounties"))
+				if (window.bountyCycle && window.bountyCycle.expiry != bountyCycle.expiry && localStorage.getItem("live.notif.bounties"))
 				{
 					sendNotification("New bounties are available.");
 				}
+				window.bountyCycle = bountyCycle;
 				window.bountyCycleExpiry = bountyCycle.expiry;
 				updateDayNightCycle();
 				await dicts_promise;
