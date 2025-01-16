@@ -1307,7 +1307,6 @@
 		async function updateFissures()
 		{
 			await dict_promise;
-			await eMissionType_promise;
 			await ExportRegions_promise;
 
 			const fissures = [];
