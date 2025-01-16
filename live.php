@@ -129,7 +129,10 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="baro-header">Baro Ki'Teer</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="baro-header">Baro Ki'Teer</h5>
+								<a class="m-auto me-2" data-notif-toggle="baro"></a>
+							</div>
 							<div class="card-body">
 								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
 								<div id="baro-now" class="d-none">
@@ -1042,6 +1045,15 @@
 				}
 				document.getElementById("baro-table").innerHTML = "";
 				document.getElementById("baro-table").appendChild(tbody);
+
+				if (window.last_baro_expiry
+					&& window.last_baro_expiry != worldState.VoidTraders[0].Expiry.$date.$numberLong
+					&& localStorage.getItem("live.notif.baro")
+					)
+				{
+					sendNotification("Baro Ki'Teer has arrived at " + document.querySelector(".baro-where").textContent + ".");
+				}
+				window.last_baro_expiry = worldState.VoidTraders[0].Expiry.$date.$numberLong;
 			}
 			else
 			{
@@ -1049,7 +1061,9 @@
 				document.getElementById("baro-now").classList.add("d-none");
 
 				setWorldStateExpiry(worldState.VoidTraders[0].Activation.$date.$numberLong);
-				setDatum("baro-header", "Baro Ki'Teer", worldState.VoidTraders[0].Activation.$date.$numberLong);				
+				setDatum("baro-header", "Baro Ki'Teer", worldState.VoidTraders[0].Activation.$date.$numberLong);
+
+				window.last_baro_expiry = 69;
 			}
 		}
 
