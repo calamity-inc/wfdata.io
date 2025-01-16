@@ -29,6 +29,10 @@
 							<div class="card-body overflow-auto">
 								<table class="table table-hover table-sm table-borderless mb-0">
 									<tr>
+										<th class="w-50">Earth</th>
+										<td id="earth" class="w-50"></td>
+									</tr>
+									<tr>
 										<th id="poe-name" class="w-50">Plains of Eidolon</th>
 										<td id="poe" class="w-50">Fetching data...</td>
 									</tr>
@@ -56,7 +60,7 @@
 								<h5 class="mb-0">News</h5>
 								<a class="m-auto me-0" data-notif-toggle="news"></a>
 							</div>
-							<div class="card-body overflow-auto" id="news-body" style="height:200px">
+							<div class="card-body overflow-auto" id="news-body" style="height:167px">
 								Loading...
 							</div>
 						</div>
@@ -411,6 +415,19 @@
 			elm.appendChild(createExpiryBadge(expiry));
 		}
 
+		function updateEarth()
+		{
+			const time = Date.now();
+			const cycle = Math.trunc(time / 28800000);
+			const cycleStart = cycle * 28800000;
+			const cycleEnd = cycleStart + 28800000;
+			const cycleDayStart = cycleStart + 14400000;
+			const stateEnd = (time > cycleDayStart ? cycleEnd : cycleDayStart);
+			setDatum("earth", time > cycleDayStart ? "🌑 Night" : "☀️ Day", stateEnd);
+			setTimeout(updateEarth, stateEnd - time);
+		}
+		updateEarth();
+
 		function updateVallis()
 		{
 			const EPOCH = new Date("November 10, 2018 08:13:48 UTC").getTime();
@@ -421,7 +438,7 @@
 			const cycleColdStart = cycleStart + 400000;
 			const stateEnd = (time > cycleColdStart ? cycleEnd : cycleColdStart);
 			setDatum("vallis", time > cycleColdStart ? "❄️ Cold" : "☀️ Warm", stateEnd);
-			setTimeout(updateVallis, stateEnd - Date.now());
+			setTimeout(updateVallis, stateEnd - time);
 		}
 		updateVallis();
 
@@ -1670,7 +1687,7 @@
 			const enabled = localStorage.getItem("live.notif." + elm.getAttribute("data-notif-toggle"));
 			const span = document.createElement("span");
 			span.textContent = enabled ? "🔕" : "🔔";
-			const name = elm.getAttribute("data-notif-toggle") == "nightfall" ? "Notifications (30s before nightfall)" : "Notifications";
+			const name = elm.getAttribute("data-notif-toggle") == "nightfall" ? "Notifications (30s before Plains of Eidolon nightfall)" : "Notifications";
 			addTooltip(span, (enabled ? "Disable " : "Enable ") + name);
 			elm.querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			elm.innerHTML = "";
