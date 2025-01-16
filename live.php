@@ -93,7 +93,10 @@
 					</div>
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
-							<h5 class="card-header" id="sortie-header">Sortie</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="sortie-header">Sortie</h5>
+								<a class="m-auto me-0" data-notif-toggle="sortie"></a>
+							</div>
 							<div class="card-body">
 								<table class="table table-sm table-borderless table-hover mb-0" id="sortie-table">
 									<tr><th>Fetching data...</th></tr>
@@ -965,6 +968,11 @@
 			}
 			document.getElementById("sortie-table").innerHTML = "";
 			document.getElementById("sortie-table").appendChild(tbody);
+			if (window.last_sortie && window.last_sortie != sortie._id.$oid && localStorage.getItem("live.notif.sortie"))
+			{
+				sendNotification("A new sortie is available.");
+			}
+			window.last_sortie = sortie._id.$oid;
 
 			const litesortie = worldState.LiteSorties.find(x => Date.now() >= x.Activation.$date.$numberLong && Date.now() < x.Expiry.$date.$numberLong);
 			setWorldStateExpiry(litesortie.Expiry.$date.$numberLong);
