@@ -1372,6 +1372,10 @@
 						{
 							span.textContent += " - " + dict[node.factionName];
 						}
+						if (fissure.Category != "rj-fissures")
+						{
+							span.textContent += " @ " + dict[node.name] + ", " + dict[node.systemName];
+						}
 						span.textContent += " ";
 						td.appendChild(span);
 					}
