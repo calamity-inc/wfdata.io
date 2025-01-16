@@ -1076,18 +1076,26 @@
 
 		async function getItemNamePromise(uniqueName)
 		{
-			const item_data = await getItemDataPromise(uniqueName);
-			if (item_data.resultType)
+			try
 			{
-				const result_name = await getItemNamePromise(item_data.resultType);
-				return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(result_name);
+				const item_data = await getItemDataPromise(uniqueName);
+				if (item_data.resultType)
+				{
+					const result_name = await getItemNamePromise(item_data.resultType);
+					return dict["/Lotus/Language/Items/BlueprintAndItem"].split("|ITEM|").join(result_name);
+				}
+				if (item_data.category && item_data.era)
+				{
+					return dict["/Lotus/Language/Relics/VoidProjectionName"].split("|ERA|").join(item_data.era).split("|CATEGORY|").join(item_data.category);
+				}
+				await dicts_promise;
+				return dict[item_data.name] ?? item_data.name;
 			}
-			if (item_data.category && item_data.era)
+			catch (e)
 			{
-				return dict["/Lotus/Language/Relics/VoidProjectionName"].split("|ERA|").join(item_data.era).split("|CATEGORY|").join(item_data.category);
+				console.error(e);
+				return uniqueName;
 			}
-			await dicts_promise;
-			return dict[item_data.name];
 		}
 
 		async function getFactionNamePromise(tag)
