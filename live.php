@@ -1313,7 +1313,7 @@
 			for (const fissure of worldState.ActiveMissions)
 			{
 				fissures.push({
-					Category: fissure.Hard ? "fissures" : "sp-fissures",
+					Category: fissure.Hard ? "sp-fissures" : "fissures",
 					Hard: fissure.Hard,
 					Activation: fissure.Activation,
 					Expiry: fissure.Expiry,
