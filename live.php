@@ -113,6 +113,13 @@
 							<div class="card-body" id="teshin-body"></div>
 						</div>
 						<div class="card mb-3">
+							<h5 class="card-header" id="circuit-header">The Circuit</h5>
+							<div class="card-body">
+								<p class="mb-2" id="circuit-frames">Loading...</p>
+								<p class="mb-0" id="circuit-weapons">&nbsp;</p>
+							</div>
+						</div>
+						<div class="card mb-3">
 							<h5 class="card-header" id="baro-header">Baro Ki'Teer</h5>
 							<div class="card-body">
 								<p id="baro-soon" class="mb-0">Baro's next visit will be at <b class="baro-where">Loading...</b>.</p>
@@ -1111,6 +1118,51 @@
 		}
 		updateTeshin();
 
+		const frameChoices = [
+			["/Lotus/Language/Suits/InfestationName", "/Lotus/Language/Suits/BardName", "/Lotus/Language/Suits/PriestName"],
+			["/Lotus/Language/Suits/GlassName", "/Lotus/Language/Suits/KhoraName", "/Lotus/Language/Suits/RevenantName"],
+			["/Lotus/Language/Suits/GarudaName", "/Lotus/Language/Suits/PacifistName", "/Lotus/Language/Suits/IronFrameName"],
+			["/Lotus/Language/Suits/ExcaliburName", "/Lotus/Language/Suits/TrinityName", "/Lotus/Language/Suits/EmberName"],
+			["/Lotus/Language/Suits/LokiName", "/Lotus/Language/Suits/MagName", "/Lotus/Language/Suits/RhinoName"],
+			["/Lotus/Language/Suits/AshName", "/Lotus/Language/Suits/FrostName", "/Lotus/Language/Suits/NyxName"],
+			["/Lotus/Language/Suits/SarynName", "/Lotus/Language/Suits/VaubanName", "/Lotus/Language/Suits/NovaName"],
+			["/Lotus/Language/Suits/NekrosName", "/Lotus/Language/Suits/ValkyrName", "/Lotus/Language/Suits/OberonName"],
+			["/Lotus/Language/Suits/HydroidName", "/Lotus/Language/Suits/MirageName", "/Lotus/Language/Suits/LimboName"],
+			["/Lotus/Language/Suits/MesaName", "/Lotus/Language/Suits/ChromaName", "/Lotus/Language/Suits/AtlasName"],
+			["/Lotus/Language/Suits/IvaraName", "/Lotus/Language/Suits/InarosName", "/Lotus/Language/Suits/TitaniaName"]
+		];
+
+		const weaponChoices = [
+			["/Lotus/Language/Items/AutoShotgunName", "/Lotus/Language/Items/ReconnasorName", "/Lotus/Language/Items/CorpusHandRocketLauncherName", "/Lotus/Language/Items/HeavyRifleName", "/Lotus/Language/Items/ParisScytheName"],
+			["/Lotus/Language/Items/StaffName", "/Lotus/Language/Items/SemiAutoRifleName", "/Lotus/Language/Items/AutoPistolName", "/Lotus/Language/Items/FistName", "/Lotus/Language/Items/ShotgunName"],
+			["/Lotus/Language/Locations/Lex", "/Lotus/Language/Items/PaladinMaceName", "/Lotus/Language/Items/BoltoRifleName", "/Lotus/Language/Items/HandCannonName", "/Lotus/Language/Items/CeramicDaggerName"],
+			["/Lotus/Language/ClanTech/Torid", "/Lotus/Language/Items/InfestedLexName", "/Lotus/Language/Weapons/InfestedDualAxeName", "/Lotus/Language/Items/GrineerSawbladeGunName", "/Lotus/Language/Items/GrnHeatGunName"],
+			["/Lotus/Language/Items/RegorAxeShieldName", "/Lotus/Language/Items/TennoAssaultRifleName", "/Lotus/Language/Items/TennoRevolverName", "/Lotus/Language/Items/NamiSoloName", "/Lotus/Language/Items/BurstRifleName"],
+			["/Lotus/Language/Weapons/SybarisPistolName", "/Lotus/Language/Items/IceHammerName", "/Lotus/Language/Items/StalkerBowName", "/Lotus/Language/Items/StalkerKunaiName", "/Lotus/Language/Items/StalkerScytheName"],
+			["/Lotus/Language/Items/EnergyRifleName", "/Lotus/Language/Items/TennoLeverActionRifleName", "/Lotus/Language/Items/CorpusMinigunName", "/Lotus/Language/Items/BurstPistolName", "/Lotus/Language/Items/TennoSaiName"],
+			["/Lotus/Language/Items/RifleName", "/Lotus/Language/Items/PistolName", "/Lotus/Language/Items/LongSwordName", "/Lotus/Language/Items/HuntingBowName", "/Lotus/Language/Items/KunaiName"]
+		];
+
+		function updateCircuitLocalised()
+		{
+			const EPOCH = 1734307200 * 1000;
+			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
+			document.getElementById("circuit-frames").textContent = [...frameChoices[week % frameChoices.length]].map(x => dict[x]).join(" · ");
+			document.getElementById("circuit-weapons").textContent = [...weaponChoices[week % weaponChoices.length]].map(x => dict[x]).join(" · ");
+		}
+
+		function updateCircuit()
+		{
+			const EPOCH = 1734307200 * 1000;
+			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
+			const weekStart = EPOCH + week * 604800000;
+			const weekEnd = weekStart + 604800000;
+			setDatum("circuit-header", "The Circuit", weekEnd);
+			updateCircuitLocalised();
+			setTimeout(updateCircuit, weekEnd - Date.now());
+		}
+		dict_promise.then(updateCircuit);
+
 		function loadScriptPromise(src)
 		{
 			return new Promise((resolve, reject) =>
@@ -1403,6 +1455,7 @@
 			{
 				updateNames();
 				updateDuviriMoodLocalised();
+				updateCircuitLocalised();
 				if (window.bountyCycle)
 				{
 					updateBountyCycleLocalised();
