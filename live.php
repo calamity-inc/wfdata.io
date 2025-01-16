@@ -77,7 +77,10 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header">Alerts</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0">Alerts</h5>
+								<a class="m-auto me-2" data-notif-toggle="alerts"></a>
+							</div>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
 						<div class="card">
@@ -1086,6 +1089,13 @@
 			{
 				document.getElementById("alerts-body").textContent = "None right now.";
 			}
+
+			if ("last_alert_count" in window && worldState.Alerts.length > window.last_alert_count && localStorage.getItem("live.notif.alerts"))
+			{
+				const diff = (worldState.Alerts.length - window.last_alert_count);
+				sendNotification(diff == 1 ? "A new alert is live." : diff + " new alerts are live.");
+			}
+			window.last_alert_count = worldState.Alerts.length;
 		}
 
 		async function updateGoals()
