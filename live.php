@@ -22,7 +22,10 @@
 				<div class="row g-3">
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
-							<h5 class="card-header">Environments</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0">Environments</h5>
+								<a class="m-auto me-2" data-notif-toggle="nightfall"></a>
+							</div>
 							<div class="card-body overflow-auto">
 								<table class="table table-hover table-sm table-borderless mb-0">
 									<tr>
@@ -445,6 +448,15 @@
 			{
 				sundown_update_queued = true;
 				setTimeout(updateDayNightCycle, cycleNightStart - Date.now());
+
+				const notifyAt = cycleNightStart - 30 * 1000;
+				setTimeout(function()
+				{
+					if (localStorage.getItem("live.notif.nightfall"))
+					{
+						sendNotification("The sun sets in 30 seconds.");
+					}
+				}, notifyAt - Date.now());
 			}
 		}
 
@@ -1600,7 +1612,8 @@
 			const enabled = localStorage.getItem("live.notif." + elm.getAttribute("data-notif-toggle"));
 			const span = document.createElement("span");
 			span.textContent = enabled ? "🔕" : "🔔";
-			addTooltip(span, enabled ? "Disable Notifications" : "Enable Notifications");
+			const name = elm.getAttribute("data-notif-toggle") == "nightfall" ? "Notifications (30s before nightfall)" : "Notifications";
+			addTooltip(span, (enabled ? "Disable " : "Enable ") + name);
 			elm.querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			elm.innerHTML = "";
 			elm.appendChild(span);
