@@ -144,7 +144,10 @@
 			</div>
 			<div class="col-xl-8">
 				<div class="card mb-3">
-					<h5 class="card-header" id="bounties-header">Bounties</h5>
+					<div class="card-header d-flex">
+						<h5 class="mb-0" id="bounties-header">Bounties</h5>
+						<a class="m-auto me-2" data-notif-toggle="bounties"></a>
+					</div>
 					<div class="card-body overflow-auto" id="bounties-body">
 						<p>Rotation <b id="bounty-rot">?</b> (<span id="bounty-rot-rewards">Loading</span>) &middot; Vault Rotation <b id="vault-rot">?</b> (<span id="vault-rot-rewards">Loading</span>)</p>
 						<h5 id="ZarimanSyndicate-name">The Holdfasts</h5>
@@ -504,6 +507,10 @@
 			fetch("https://oracle.browse.wf/bounty-cycle").then(res => res.json()).then(async (bountyCycle) =>
 			{
 				window.bountyCycle = bountyCycle;
+				if (window.bountyCycleExpiry && window.bountyCycleExpiry != bountyCycle.expiry && localStorage.getItem("live.notif.bounties"))
+				{
+					sendNotification("New bounties are available.");
+				}
 				window.bountyCycleExpiry = bountyCycle.expiry;
 				updateDayNightCycle();
 				await dicts_promise;
