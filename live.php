@@ -58,7 +58,10 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="darvo-header">Darvo's Deal</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="darvo-header">Darvo's Deal</h5>
+								<a class="m-auto me-2" data-notif-toggle="darvo"></a>
+							</div>
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
 								<div class="card-body ps-1">
@@ -943,6 +946,15 @@
 			document.getElementById("darvo-ogprice").textContent = dailyDeal.OriginalPrice;
 			document.getElementById("darvo-price").textContent = dailyDeal.SalePrice;
 			document.getElementById("darvo-discount").textContent = dailyDeal.Discount;
+
+			if (window.last_darvo_deal
+				&& window.last_darvo_deal != dailyDeal.Activation.$date.$numberLong
+				&& localStorage.getItem("live.notif.darvo")
+				)
+			{
+				sendNotification("Darvo sells " + dict[item_data.name] + " for " + dailyDeal.SalePrice + " Platinum today.");
+			}
+			window.last_darvo_deal = dailyDeal.Activation.$date.$numberLong;
 		}
 
 		async function updateBaro()
