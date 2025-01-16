@@ -49,12 +49,6 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="arby-header">Arbitration</h5>
-							<div class="card-body">
-								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
-							</div>
-						</div>
-						<div class="card mb-3">
 							<div class="card-header d-flex">
 								<h5 class="mb-0">News</h5>
 								<a class="m-auto me-2" data-notif-toggle="news"></a>
@@ -64,14 +58,6 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header">Alerts</h5>
-							<div class="card-body" id="alerts-body">Loading...</div>
-						</div>
-						<div class="card mb-3">
-							<h5 class="card-header">Events</h5>
-							<div class="card-body" id="goals-body">Loading...</div>
-						</div>
-						<div class="card">
 							<h5 class="card-header" id="darvo-header">Darvo's Deal</h5>
 							<div class="d-flex">
 								<img style="height:64px;width:64px;margin:10px" id="darvo-icon" />
@@ -80,6 +66,20 @@
 									<p class="card-text"><del id="darvo-ogprice">0</del> <b id="darvo-price">0</b> Platinum (-<span id="darvo-discount">0</span>%)</p>
 								</div>
 							</div>
+						</div>
+						<div class="card mb-3">
+							<h5 class="card-header" id="arby-header">Arbitration</h5>
+							<div class="card-body">
+								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
+							</div>
+						</div>
+						<div class="card mb-3">
+							<h5 class="card-header">Alerts</h5>
+							<div class="card-body" id="alerts-body">Loading...</div>
+						</div>
+						<div class="card">
+							<h5 class="card-header">Events</h5>
+							<div class="card-body" id="goals-body">Loading...</div>
 						</div>
 					</div>
 					<div class="col-xl-12 col-md-6">
@@ -134,8 +134,74 @@
 					<h5 class="card-header" id="bounties-header">Bounties</h5>
 					<div class="card-body overflow-auto" id="bounties-body">
 						<p>Rotation <b id="bounty-rot">?</b> (<span id="bounty-rot-rewards">Loading</span>) &middot; Vault Rotation <b id="vault-rot">?</b> (<span id="vault-rot-rewards">Loading</span>)</p>
+						<h5 id="ZarimanSyndicate-name">The Holdfasts</h5>
+						<table class="table table-hover table-sm table-borderless" id="ZarimanSyndicate-table">
+							<tr>
+								<th class="mission">Fetching data...</th>
+								<td class="challenge"></td>
+								<td>50-55</td>
+								<td>1/2&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>60-65</td>
+								<td>2/3&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>70-75</td>
+								<td>3/5&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>90-95</td>
+								<td>4/6&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>110-115</td>
+								<td>5/8&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
+							</tr>
+						</table>
+						<h5 id="EntratiLabSyndicate-name">Cavia</h5>
+						<table class="table table-hover table-sm table-borderless" id="EntratiLabSyndicate-table">
+							<tr>
+								<th class="mission">Fetching data...</th>
+								<td class="challenge"></td>
+								<td>55-60</td>
+								<td>1000/<wbr/>1500</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>65-70</td>
+								<td>2000/<wbr/>3000</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>75-80</td>
+								<td>3000/<wbr/>4500</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>95-100</td>
+								<td>4000/<wbr/>6000</td>
+							</tr>
+							<tr>
+								<th class="mission"></th>
+								<td class="challenge"></td>
+								<td>115-120</td>
+								<td>5000/<wbr/>7500</td>
+							</tr>
+						</table>
 						<h5 id="HexSyndicate-name">The Hex</h5>
-						<table class="table table-hover table-sm table-borderless" id="HexSyndicate-table">
+						<table class="table table-hover table-sm table-borderless mb-0" id="HexSyndicate-table">
 							<tr>
 								<th class="mission">Fetching data...</th>
 								<td class="challenge"></td>
@@ -177,72 +243,6 @@
 								<td class="ally"></td>
 								<td>115-120</td>
 								<td>6000/<wbr/>9000</td>
-							</tr>
-						</table>
-						<h5 id="EntratiLabSyndicate-name">Cavia</h5>
-						<table class="table table-hover table-sm table-borderless" id="EntratiLabSyndicate-table">
-							<tr>
-								<th class="mission">Fetching data...</th>
-								<td class="challenge"></td>
-								<td>55-60</td>
-								<td>1000/<wbr/>1500</td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>65-70</td>
-								<td>2000/<wbr/>3000</td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>75-80</td>
-								<td>3000/<wbr/>4500</td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>95-100</td>
-								<td>4000/<wbr/>6000</td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>115-120</td>
-								<td>5000/<wbr/>7500</td>
-							</tr>
-						</table>
-						<h5 id="ZarimanSyndicate-name">The Holdfasts</h5>
-						<table class="table table-hover table-sm table-borderless mb-0" id="ZarimanSyndicate-table">
-							<tr>
-								<th class="mission">Fetching data...</th>
-								<td class="challenge"></td>
-								<td>50-55</td>
-								<td>1/2&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>60-65</td>
-								<td>2/3&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>70-75</td>
-								<td>3/5&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>90-95</td>
-								<td>4/6&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
-							</tr>
-							<tr>
-								<th class="mission"></th>
-								<td class="challenge"></td>
-								<td>110-115</td>
-								<td>5/8&nbsp;<abbr class="vq-abbr">VQ</abbr></td>
 							</tr>
 						</table>
 					</div>
