@@ -67,6 +67,10 @@
 							<h5 class="card-header">Alerts</h5>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
+						<div class="card mb-3">
+							<h5 class="card-header">Events</h5>
+							<div class="card-body" id="goals-body">Loading...</div>
+						</div>
 						<div class="card">
 							<h5 class="card-header" id="darvo-header">Darvo's Deal</h5>
 							<div class="d-flex">
@@ -713,7 +717,7 @@
 				const meta = await fetch("https://oracle.browse.wf/min").then(res => res.json());
 				if (window.worldState)
 				{
-					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent || worldState.Alerts.length != meta.alerts);
+					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent || worldState.Alerts.length != meta.alerts || worldState.Goals.length != meta.goals);
 				}
 				if (window.redtext)
 				{
@@ -756,6 +760,7 @@
 			updateDarvosDeal();
 			updateBaro();
 			updateAlerts();
+			updateGoals();
 		}
 
 		function updateWorldState()
@@ -1024,6 +1029,24 @@
 			else
 			{
 				document.getElementById("alerts-body").textContent = "None right now.";
+			}
+		}
+
+		async function updateGoals()
+		{
+			if (worldState.Goals.length != 0)
+			{
+				await osdict_promise;
+				const goal_names = [];
+				for (const goal of worldState.Goals)
+				{
+					goal_names.push(osdict[goal.Desc] ? toTitleCase(osdict[goal.Desc]) : goal.Desc);
+				}
+				document.getElementById("goals-body").textContent = goal_names.join(", ");
+			}
+			else
+			{
+				document.getElementById("goals-body").textContent = "None right now.";
 			}
 		}
 
