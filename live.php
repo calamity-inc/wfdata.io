@@ -3,6 +3,7 @@
 <head>
 	<title>Live World State | browse.wf</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="This tool shows you everything that's going on in Warframe right now in a hopefully useful way.">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="icon" href="https://browse.wf/Lotus/Interface/Icons/Categories/GrimoireModIcon.png">
 	<style>
@@ -16,7 +17,6 @@
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
 	<div class="container-fluid pt-3">
-		<p>This tool shows you everything that's going on in Warframe <i>right now</i> in a hopefully useful way. It is still in active development, so, if you have feedback, <a href="https://github.com/calamity-inc/browse.wf/issues/15" target="_blank">please let us know</a>.</p>
 		<div class="row g-3 mb-xl-3">
 			<div class="col-xl-4">
 				<div class="row g-3">
