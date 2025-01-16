@@ -424,7 +424,7 @@
 			const cycleDayStart = cycleStart + 14400000;
 			const stateEnd = (time > cycleDayStart ? cycleEnd : cycleDayStart);
 			setDatum("earth", time > cycleDayStart ? "🌑 Night" : "☀️ Day", stateEnd);
-			setTimeout(updateEarth, stateEnd - time);
+			window.refresh_earth_at = stateEnd;
 		}
 		updateEarth();
 
@@ -438,7 +438,7 @@
 			const cycleColdStart = cycleStart + 400000;
 			const stateEnd = (time > cycleColdStart ? cycleEnd : cycleColdStart);
 			setDatum("vallis", time > cycleColdStart ? "❄️ Cold" : "☀️ Warm", stateEnd);
-			setTimeout(updateVallis, stateEnd - time);
+			window.refresh_vallis_at = stateEnd;
 		}
 		updateVallis();
 
@@ -463,11 +463,10 @@
 			window.duviri_expiry = moodEnd;
 			updateDuviriMoodLocalised();
 
-			setTimeout(updateDuviriMood, moodEnd - Date.now());
+			window.refresh_duviri_at = moodEnd;
 		}
 		osdict_promise.then(() => updateDuviriMood());
 
-		let sundown_update_queued = false;
 		function updateDayNightCycle()
 		{
 			const time = Date.now();
@@ -477,21 +476,12 @@
 			setDatum("deimos", time >= cycleNightStart ? "🌑 Vome" : "☀️ Fass", stateEnd);
 			if (time >= cycleNightStart)
 			{
-				sundown_update_queued = false;
+				window.update_day_night_cycle_at = undefined;
 			}
-			else if (!sundown_update_queued)
+			else if (!window.update_day_night_cycle_at)
 			{
-				sundown_update_queued = true;
-				setTimeout(updateDayNightCycle, cycleNightStart - Date.now());
-
-				const notifyAt = cycleNightStart - 30 * 1000;
-				setTimeout(function()
-				{
-					if (localStorage.getItem("live.notif.nightfall"))
-					{
-						sendNotification("The sun sets in 30 seconds.");
-					}
-				}, notifyAt - Date.now());
+				window.update_day_night_cycle_at = cycleNightStart;
+				window.nightfall_immiment_at = cycleNightStart - 30 * 1000;
 			}
 		}
 
@@ -599,7 +589,7 @@
 			window.arby_expiry = (currentHour + 3600) * 1000;
 			updateArbyLocalised();
 			document.getElementById("arby-tier").textContent = arbyTiers[arr[1]] ?? "F";
-			setTimeout(updateArby, arby_expiry - Date.now());
+			window.refresh_arby_at = arby_expiry;
 		}
 
 		function updateIncursionsLocalised()
@@ -628,7 +618,7 @@
 			window.incursions_today = incursions[(today - epochDay) / 86400][1].split(",");
 			window.incursions_expiry = (today + 86400) * 1000;
 			updateIncursionsLocalised();
-			setTimeout(updateIncursions, incursions_expiry - Date.now());
+			window.refresh_incursions_at = incursions_expiry;
 		}
 
 		function addTooltip(elm, title)
@@ -1232,7 +1222,6 @@
 				"Rifle Riven Mod",
 				"Shotgun Riven Mod"
 			][week % 8];
-			setTimeout(updateTeshin, weekEnd - Date.now());
 		}
 		updateTeshin();
 
@@ -1279,7 +1268,6 @@
 			const weekEnd = weekStart + 604800000;
 			setDatum("circuit-header", "The Circuit", weekEnd);
 			updateCircuitLocalised();
-			setTimeout(updateCircuit, weekEnd - Date.now());
 		}
 		dict_promise.then(updateCircuit);
 
@@ -1637,29 +1625,64 @@
 
 		setInterval(function()
 		{
-			if (window.refresh_bounty_cycle_at && Date.now() >= window.refresh_bounty_cycle_at)
+			const time = Date.now();
+			if (time >= window.refresh_earth_at)
+			{
+				updateEarth();
+			}
+			if (time >= window.refresh_vallis_at)
+			{
+				updateVallis();
+			}
+			if (window.refresh_duviri_at && time >= window.refresh_duviri_at)
+			{
+				updateDuviriMood();
+			}
+			if (window.update_day_night_cycle_at && time >= window.update_day_night_cycle_at)
+			{
+				updateDayNightCycle();
+			}
+			if (window.nightfall_immiment_at && time >= window.nightfall_immiment_at)
+			{
+				window.nightfall_immiment_at = undefined;
+				if (localStorage.getItem("live.notif.nightfall"))
+				{
+					sendNotification("The sun sets in 30 seconds.");
+				}
+			}
+			if (window.refresh_arby_at && time >= window.refresh_arby_at)
+			{
+				updateArby();
+			}
+			if (window.refresh_incursions_at && time >= window.refresh_incursions_at)
+			{
+				updateIncursions();
+			}
+			if (window.refresh_bounty_cycle_at && time >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
 			}
-			if (window.refresh_fissures_at && Date.now() >= window.refresh_fissures_at)
+			if (window.refresh_fissures_at && time >= window.refresh_fissures_at)
 			{
 				updateFissures();
 			}
-			if (window.refresh_news_sources_at && Date.now() >= window.refresh_news_sources_at)
+			if (window.refresh_news_sources_at && time >= window.refresh_news_sources_at)
 			{
 				updateNewsSources();
 			}
-			if (window.refresh_world_state_at && Date.now() >= window.refresh_world_state_at)
+			if (window.refresh_world_state_at && time >= window.refresh_world_state_at)
 			{
 				updateWorldState();
 			}
-			if (window.refresh_invasions_at && Date.now() >= window.refresh_invasions_at)
+			if (window.refresh_invasions_at && time >= window.refresh_invasions_at)
 			{
 				updateInvasions();
 			}
-			if (window.refresh_weekly_at && Date.now() >= window.refresh_weekly_at)
+			if (window.refresh_weekly_at && time >= window.refresh_weekly_at)
 			{
 				updateWeekly();
+				updateTeshin();
+				updateCircuit();
 			}
 		}, 500);
 
