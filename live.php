@@ -1263,8 +1263,10 @@
 		{
 			const EPOCH = 1734307200 * 1000;
 			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
-			document.getElementById("circuit-frames").textContent = [...frameChoices[week % frameChoices.length]].map(x => dict[x]).join(" · ");
-			document.getElementById("circuit-weapons").textContent = [...weaponChoices[week % weaponChoices.length]].map(x => dict[x]).join(" · ");
+			document.getElementById("circuit-frames").textContent = [...frameChoices[week % frameChoices.length]].map(x => dict[x]).join(" · ") + " ";
+			document.getElementById("circuit-frames").appendChild(createCompletionToggle("circuit-normal-" + week));
+			document.getElementById("circuit-weapons").textContent = [...weaponChoices[week % weaponChoices.length]].map(x => dict[x]).join(" · ") + " ";
+			document.getElementById("circuit-weapons").appendChild(createCompletionToggle("circuit-hard-" + week));
 		}
 
 		function updateCircuit()
