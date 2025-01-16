@@ -247,25 +247,56 @@
 						</table>
 					</div>
 				</div>
-				<div class="card mb-3">
-					<h5 class="card-header" id="invasions-header">Invasions</h5>
-					<div class="card-body overflow-auto">
-						<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tr><td>Loading...</td></tr></table>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card mb-3">
+							<h5 class="card-header">Void Fissures (Normal)</h5>
+							<div class="card-body overflow-auto">
+								<table class="table table-sm table-hover table-borderless mb-0" id="fissures-table"><tr><th>Loading...</th></tr></table>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="card mb-3">
+							<h5 class="card-header">Void Fissures (Steel Path)</h5>
+							<div class="card-body overflow-auto">
+								<table class="table table-sm table-hover table-borderless mb-0" id="sp-fissures-table"><tr><th>Loading...</th></tr></table>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="card mb-3">
-					<h5 class="card-header" id="labConquest-header">Deep Archimedea</h5>
-					<div class="card-body overflow-auto">
-						<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
-							<tr><th>Fetching data...</th></tr>
-							<tr><td>&nbsp;</td></tr>
-							<tr><td>&nbsp;</td></tr>
-						</table>
-						<table class="table table-sm table-borderless mb-0">
-							<tr id="labConquest-fv"><td>&nbsp;</td></tr>
-						</table>
+				<div class="row">
+					<div class="col-xxl-8">
+						<div class="card mb-3">
+							<h5 class="card-header" id="invasions-header">Invasions</h5>
+							<div class="card-body overflow-auto">
+								<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tr><td>Loading...</td></tr></table>
+							</div>
+						</div>
+						<div class="card mb-3">
+							<h5 class="card-header" id="labConquest-header">Deep Archimedea</h5>
+							<div class="card-body overflow-auto">
+								<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
+									<tr><th>Fetching data...</th></tr>
+									<tr><td>&nbsp;</td></tr>
+									<tr><td>&nbsp;</td></tr>
+								</table>
+								<table class="table table-sm table-borderless mb-0">
+									<tr id="labConquest-fv"><td>&nbsp;</td></tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-xxl-4">
+						<div class="card mb-3">
+							<h5 class="card-header">Void Storms (Railjack)</h5>
+							<div class="card-body overflow-auto">
+								<table class="table table-sm table-hover table-borderless mb-0" id="rj-fissures-table"><tr><th>Loading...</th></tr></table>
+							</div>
+						</div>
 					</div>
 				</div>
+				
 			</div>
 		</div>
 		<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
@@ -293,7 +324,7 @@
 			const delta = expiry - time;
 			if (delta < 1_000)
 			{
-				return "Updating...";
+				return "Pending update";
 			}
 			return deltaToUnits(delta).join(" ");
 		}
@@ -717,7 +748,12 @@
 				const meta = await fetch("https://oracle.browse.wf/min").then(res => res.json());
 				if (window.worldState)
 				{
-					sourcesToUpdate.events = (window.events_earmark != meta.latestEvent || worldState.Alerts.length != meta.alerts || worldState.Goals.length != meta.goals);
+					sourcesToUpdate.events = (
+						window.events_earmark != meta.latestEvent
+						|| worldState.Alerts.length != meta.alerts
+						|| worldState.Goals.length != meta.goals
+						|| (window.num_fissures && window.num_fissures != meta.fissures)
+						);
 				}
 				if (window.redtext)
 				{
@@ -761,6 +797,7 @@
 			updateBaro();
 			updateAlerts();
 			updateGoals();
+			updateFissures();
 		}
 
 		function updateWorldState()
@@ -1185,14 +1222,14 @@
 					}
 					tr.appendChild(th);
 				}
-				{
+				/*{
 					const td = document.createElement("td");
 					const span = document.createElement("span");
 					span.textContent = dict[invasion.ally == "FC_GRINEER" ? "/Lotus/Language/Game/Faction_GrineerUC" : "/Lotus/Language/Game/Faction_CorpusUC"];
 					addTooltip(span, "Your ally");
 					td.appendChild(span);
 					tr.appendChild(td);
-				}
+				}*/
 				{
 					const td = document.createElement("td");
 					const span = document.createElement("span");
@@ -1248,6 +1285,105 @@
 
 				updateInvasionsLocalised();
 			});
+		}
+
+		function setFissuresExpiry(expiry)
+		{
+			if (!window.refresh_fissures_at || refresh_fissures_at > expiry)
+			{
+				window.refresh_fissures_at = expiry;
+			}
+		}
+
+		const fissureTiers = {
+			VoidT1: "Lith",
+			VoidT2: "Meso",
+			VoidT3: "Neo",
+			VoidT4: "Axi",
+			VoidT5: "Requiem",
+			VoidT6: "Omnia",
+		};
+
+		async function updateFissures()
+		{
+			await dict_promise;
+			await eMissionType_promise;
+			await ExportRegions_promise;
+
+			const fissures = [];
+			for (const fissure of worldState.ActiveMissions)
+			{
+				fissures.push({
+					Category: fissure.Hard ? "fissures" : "sp-fissures",
+					Hard: fissure.Hard,
+					Activation: fissure.Activation,
+					Expiry: fissure.Expiry,
+					Node: fissure.Node,
+					Modifier: fissure.Modifier,
+				});
+			}
+			for (const fissure of worldState.VoidStorms)
+			{
+				fissures.push({
+					Category: "rj-fissures",
+					Hard: false,
+					Activation: fissure.Activation,
+					Expiry: fissure.Expiry,
+					Node: fissure.Node,
+					Modifier: fissure.ActiveMissionTier,
+				});
+			}
+			fissures.sort((a, b) => a.Modifier.charCodeAt(5) - b.Modifier.charCodeAt(5));
+
+			window.num_fissures = 0;
+			const tbody = {
+				"fissures": document.createElement("tbody"),
+				"sp-fissures": document.createElement("tbody"),
+				"rj-fissures": document.createElement("tbody"),
+			}
+			let last_tier = {};
+			for (const fissure of fissures)
+			{
+				if (Date.now() < fissure.Activation.$date.$numberLong)
+				{
+					setFissuresExpiry(fissure.Activation.$date.$numberLong);
+				}
+				else if (Date.now() < fissure.Expiry.$date.$numberLong)
+				{
+					const tr = document.createElement("tr");
+					const th = document.createElement("th");
+					if (fissure.Modifier != last_tier[fissure.Hard])
+					{
+						th.textContent = fissureTiers[fissure.Modifier] ?? fissure.Modifier;
+						last_tier[fissure.Hard] = fissure.Modifier;
+					}
+					tr.appendChild(th);
+					const td = document.createElement("td");
+					const node = ExportRegions[fissure.Node];
+					{
+						const b = document.createElement("b");
+						b.textContent = toTitleCase(dict[node.missionName]);
+						td.appendChild(b);
+					}
+					{
+						const span = document.createElement("span");
+						const baselvl = fissure.Hard ? 100 : 0;
+						span.textContent = " - " + dict[node.factionName] + " (" + (node.minEnemyLevel + baselvl) + "-" + (node.maxEnemyLevel + baselvl) + ") ";
+						td.appendChild(span);
+					}
+					td.appendChild(createExpiryBadge(fissure.Expiry.$date.$numberLong));
+					tr.appendChild(td);
+					tbody[fissure.Category].appendChild(tr);
+					setFissuresExpiry(fissure.Expiry.$date.$numberLong);
+					++window.num_fissures;
+				}
+			}
+			document.getElementById("fissures-table").innerHTML = "";
+			document.getElementById("fissures-table").appendChild(tbody["fissures"]);
+			document.getElementById("sp-fissures-table").innerHTML = "";
+			document.getElementById("sp-fissures-table").appendChild(tbody["sp-fissures"]);
+			document.getElementById("rj-fissures-table").innerHTML = "";
+			document.getElementById("rj-fissures-table").appendChild(tbody["rj-fissures"]);
 		}
 
 		updateBountyCycle();
@@ -1323,6 +1459,10 @@
 			if (window.refresh_bounty_cycle_at && Date.now() >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
+			}
+			if (window.refresh_fissures_at && Date.now() >= window.refresh_fissures_at)
+			{
+				updateFissures();
 			}
 			if (window.refresh_news_sources_at && Date.now() >= window.refresh_news_sources_at)
 			{
