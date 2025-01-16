@@ -103,7 +103,10 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="litesortie-header">Archon Hunt</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="litesortie-header">Archon Hunt</h5>
+								<a class="m-auto me-0" data-notif-toggle="litesortie"></a>
+							</div>
 							<div class="card-body" id="litesortie-body">Fetching data...</div>
 						</div>
 						<div class="card mb-3">
@@ -118,11 +121,17 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="teshin-header">Steel Path Honors</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="teshin-header">Steel Path Honors</h5>
+								<a class="m-auto me-0" data-notif-toggle="teshin"></a>
+							</div>
 							<div class="card-body" id="teshin-body"></div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="circuit-header">The Circuit</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="circuit-header">The Circuit</h5>
+								<a class="m-auto me-0" data-notif-toggle="circuit"></a>
+							</div>
 							<div class="card-body">
 								<p class="mb-2" id="circuit-frames">Loading...</p>
 								<p class="mb-0" id="circuit-weapons">&nbsp;</p>
@@ -296,7 +305,10 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="labConquest-header">Deep Archimedea</h5>
+							<div class="card-header d-flex">
+								<h5 class="mb-0" id="labConquest-header">Deep Archimedea</h5>
+								<a class="m-auto me-0" data-notif-toggle="labconquest"></a>
+							</div>
 							<div class="card-body overflow-auto">
 								<table class="table table-sm table-borderless table-hover mb-2" id="labConquest-missions">
 									<tr><th>Fetching data...</th></tr>
@@ -668,6 +680,30 @@
 				dicts_promise
 			]).then(([weekly]) =>
 			{
+				if (window.weekly)
+				{
+					const weekly_notifications_subscribed_to = [];
+					if (localStorage.getItem("live.notif.litesortie"))
+					{
+						weekly_notifications_subscribed_to.push("Archon Hunt");
+					}
+					if (localStorage.getItem("live.notif.teshin"))
+					{
+						weekly_notifications_subscribed_to.push("Steel Path Honors");
+					}
+					if (localStorage.getItem("live.notif.circuit"))
+					{
+						weekly_notifications_subscribed_to.push("The Circuit");
+					}
+					if (localStorage.getItem("live.notif.labconquest"))
+					{
+						weekly_notifications_subscribed_to.push("Deep Archimedea");
+					}
+					if (weekly_notifications_subscribed_to.length != 0)
+					{
+						sendNotification("It's a new week. " + weekly_notifications_subscribed_to.join(", ") + " refreshed.");
+					}
+				}
 				window.weekly = weekly;
 				window.refresh_weekly_at = weekly.expiry * 1000;
 				updateWeeklyLocalised();
