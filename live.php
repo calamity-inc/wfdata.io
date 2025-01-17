@@ -1333,7 +1333,7 @@
 			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb3-" + week));
 			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb4-" + week));
 			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb5-" + week));
-			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb5-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb6-" + week));
 
 			setTimeout(updateCircuit, weekEnd - Date.now());
 		}
