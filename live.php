@@ -22,9 +22,6 @@
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
 	<div class="container-fluid pt-3">
-		<div id="incompetence" class="d-none alert alert-warning">
-			It looks like your browser may have misexecuted some of the code on the page resulting in a lack of updates on some or all components. <b><a href="/live">Refreshing the page</a> should fix it.</b>
-		</div>
 		<div class="row g-3 mb-xl-3">
 			<div class="col-xl-4">
 				<div class="row g-3">
@@ -429,13 +426,6 @@
 			elm.textContent = value + " ";
 			elm.appendChild(createExpiryBadge(expiry));
 		}
-
-		function updateIncompetence()
-		{
-			window.incompetence_threshold = Date.now() + 5000;
-			setTimeout(updateIncompetence, 1000);
-		}
-		updateIncompetence();
 
 		function updateEarth()
 		{
@@ -1713,10 +1703,6 @@
 
 		setInterval(function()
 		{
-			if (Date.now() >= window.incompetence_threshold)
-			{
-				document.getElementById("incompetence").classList.remove("d-none");
-			}
 			if (window.refresh_bounty_cycle_at && Date.now() >= window.refresh_bounty_cycle_at)
 			{
 				updateBountyCycle();
