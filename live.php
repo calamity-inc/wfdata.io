@@ -132,10 +132,13 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="teshin-header">Steel Path Honors</h5>
+								<h5 class="mb-0" id="vendors-header">Vendors</h5>
 								<a class="m-auto me-0" data-notif-toggle="teshin"></a>
 							</div>
-							<div class="card-body" id="teshin-body"></div>
+							<div class="card-body">
+								<p class="mb-2">Steel Path Honors: <b id="teshin-offer"></b> <span id="teshin-check"></span></p>
+								<p class="mb-0">Iron Wake <span id="ironwake-check"></span></p>
+							</div>
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
@@ -721,7 +724,7 @@
 					}
 					if (localStorage.getItem("live.notif.teshin"))
 					{
-						weekly_notifications_subscribed_to.push("Steel Path Honors");
+						weekly_notifications_subscribed_to.push("Vendors");
 					}
 					if (localStorage.getItem("live.notif.circuit"))
 					{
@@ -1228,11 +1231,9 @@
 			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
 			const weekStart = EPOCH + week * 604800000;
 			const weekEnd = weekStart + 604800000;
-			setDatum("teshin-header", "Steel Path Honors", weekEnd);
-			document.getElementById("teshin-header").innerHTML += " ";
-			document.getElementById("teshin-header").appendChild(createCompletionToggle("teshin" + week));
+			setDatum("vendors-header", "Vendors", weekEnd);
 
-			document.getElementById("teshin-body").textContent = [
+			document.getElementById("teshin-offer").textContent = [
 				"Umbra Forma Blueprint",
 				"50,000x Kuva",
 				"Kitgun Riven Mod",
@@ -1242,6 +1243,12 @@
 				"Rifle Riven Mod",
 				"Shotgun Riven Mod"
 			][week % 8];
+			document.getElementById("teshin-check").innerHTML = "";
+			document.getElementById("teshin-check").appendChild(createCompletionToggle("teshin" + week));
+
+			document.getElementById("ironwake-check").innerHTML = "";
+			document.getElementById("ironwake-check").appendChild(createCompletionToggle("ironwake" + week));
+
 			setTimeout(updateTeshin, weekEnd - Date.now());
 		}
 		updateTeshin();
