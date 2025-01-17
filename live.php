@@ -12,6 +12,11 @@
 		[data-notif-toggle], [data-notif-toggle] > span, .completion-check { text-decoration:none;cursor:pointer;color:inherit }
 		.completion-check { display: inline-block; width: 15px }
 		.card-block:not(:last-child) { margin-bottom: .5rem; }
+		[data-collapse-toggle], [data-collapse-toggle] > span { cursor:pointer }
+		.card:has([data-collapse-toggle].engaged) {
+			& .card-header { border-bottom: none }
+			& > :not(.card-header) { display: none !important }
+		}
 	</style>
 </head>
 <body data-bs-theme="dark">
@@ -26,7 +31,7 @@
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0">Environments</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="environments"></span> Environments</h5>
 								<a class="m-auto me-0" data-notif-toggle="nightfall"></a>
 							</div>
 							<div class="card-body overflow-auto">
@@ -60,7 +65,7 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0">News</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="news"></span> News</h5>
 								<a class="m-auto me-0" data-notif-toggle="news"></a>
 							</div>
 							<div class="card-body overflow-auto" id="news-body" style="height:167px">
@@ -69,7 +74,7 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="darvo-header">Darvo's Deal</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="darvo"></span> <span id="darvo-header">Darvo's Deal</span></h5>
 								<a class="m-auto me-0" data-notif-toggle="darvo"></a>
 							</div>
 							<div class="d-flex">
@@ -81,27 +86,27 @@
 							</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="arby-header">Arbitration</h5>
+							<h5 class="card-header"><span data-collapse-toggle="arby"></span> <span id="arby-header">Arbitration</span></h5>
 							<div class="card-body">
 								<p class="card-text"><b id="arby-what">Loading...</b> <span id="arby-where"></span> (<span id="arby-tier">F</span> Tier)</p>
 							</div>
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0">Alerts</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="alerts"></span> Alerts</h5>
 								<a class="m-auto me-0" data-notif-toggle="alerts"></a>
 							</div>
 							<div class="card-body" id="alerts-body">Loading...</div>
 						</div>
 						<div class="card">
-							<h5 class="card-header">Events</h5>
+							<h5 class="card-header"><span data-collapse-toggle="goals"></span> Events</h5>
 							<div class="card-body" id="goals-body">Loading...</div>
 						</div>
 					</div>
 					<div class="col-xl-12 col-md-6">
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="sortie-header">Sortie</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="sortie"></span> <span id="sortie-header">Sortie</span></h5>
 								<a class="m-auto me-0" data-notif-toggle="sortie"></a>
 							</div>
 							<div class="card-body">
@@ -114,13 +119,13 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="litesortie-header">Archon Hunt</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="litesortie"></span> <span id="litesortie-header">Archon Hunt</h5>
 								<a class="m-auto me-0" data-notif-toggle="litesortie"></a>
 							</div>
 							<div class="card-body" id="litesortie-body">Fetching data...</div>
 						</div>
 						<div class="card mb-3">
-							<h5 class="card-header" id="incursions-header">Steel Path Incursions</h5>
+							<h5 class="card-header"><span data-collapse-toggle="incursions"></span> <span id="incursions-header">Steel Path Incursions</h5>
 							<div class="card-body overflow-auto" id="incursions-body">
 								<span class="d-block mb-1"><b>Fetching data...</b></span>
 								<span class="d-block mb-1">&nbsp;</span>
@@ -132,7 +137,7 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="vendors-header">Vendors</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="vendors"></span> <span id="vendors-header">Vendors</h5>
 								<a class="m-auto me-0" data-notif-toggle="teshin"></a>
 							</div>
 							<div class="card-body">
@@ -142,7 +147,7 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="circuit-header">Weekly Missions</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="weekly-missions"></span> <span id="circuit-header">Weekly Missions</h5>
 								<a class="m-auto me-0" data-notif-toggle="circuit"></a>
 							</div>
 							<div class="card-body">
@@ -155,7 +160,7 @@
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="baro-header">Baro Ki'Teer</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="baro"></span> <span id="baro-header">Baro Ki'Teer</h5>
 								<a class="m-auto me-0" data-notif-toggle="baro"></a>
 							</div>
 							<div class="card-body">
@@ -167,7 +172,7 @@
 							</div>
 						</div>
 						<div class="card">
-							<h5 class="card-header">KinePage</h5>
+							<h5 class="card-header"><span data-collapse-toggle="pgr"></span> KinePage</h5>
 							<div class="card-body" id="pgr">No new messages. Scanning...</div>
 						</div>
 					</div>
@@ -176,7 +181,7 @@
 			<div class="col-xl-8">
 				<div class="card mb-3">
 					<div class="card-header d-flex">
-						<h5 class="mb-0" id="bounties-header">Bounties</h5>
+						<h5 class="mb-0"><span data-collapse-toggle="bounties"></span> <span id="bounties-header">Bounties</h5>
 						<a class="m-auto me-0" data-notif-toggle="bounties"></a>
 					</div>
 					<div class="card-body overflow-auto" id="bounties-body">
@@ -297,7 +302,7 @@
 				<div class="row g-3">
 					<div class="col-md-6">
 						<div class="card mb-3">
-							<h5 class="card-header">Void Fissures (Normal)</h5>
+							<h5 class="card-header"><span data-collapse-toggle="fissures"></span> Void Fissures (Normal)</h5>
 							<div class="card-body overflow-auto">
 								<table class="table table-sm table-hover table-borderless mb-0" id="fissures-table"><tr><th>Loading...</th></tr></table>
 							</div>
@@ -305,7 +310,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="card mb-3">
-							<h5 class="card-header">Void Fissures (Steel Path)</h5>
+							<h5 class="card-header"><span data-collapse-toggle="sp-fissures"></span> Void Fissures (Steel Path)</h5>
 							<div class="card-body overflow-auto">
 								<table class="table table-sm table-hover table-borderless mb-0" id="sp-fissures-table"><tr><th>Loading...</th></tr></table>
 							</div>
@@ -315,14 +320,14 @@
 				<div class="row g-3 mb-3">
 					<div class="col-xxl-8">
 						<div class="card mb-3">
-							<h5 class="card-header" id="invasions-header">Invasions</h5>
+							<h5 class="card-header"><span data-collapse-toggle="invasions"></span> <span id="invasions-header">Invasions</h5>
 							<div class="card-body overflow-auto">
 								<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tr><td>Loading...</td></tr></table>
 							</div>
 						</div>
 						<div class="card">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="labConquest-header">Deep Archimedea</h5>
+								<h5 class="mb-0"><span data-collapse-toggle="labconquest"></span> <span id="labConquest-header">Deep Archimedea</h5>
 								<a class="m-auto me-0" data-notif-toggle="labconquest"></a>
 							</div>
 							<div class="card-body overflow-auto">
@@ -339,7 +344,7 @@
 					</div>
 					<div class="col-xxl-4">
 						<div class="card mb-3">
-							<h5 class="card-header">Void Storms (Railjack)</h5>
+							<h5 class="card-header"><span data-collapse-toggle="rj-fissures"></span> Void Storms (Railjack)</h5>
 							<div class="card-body overflow-auto">
 								<table class="table table-sm table-hover table-borderless mb-0" id="rj-fissures-table"><tr><th>Loading...</th></tr></table>
 							</div>
@@ -1718,6 +1723,43 @@
 				updateWeekly();
 			}
 		}, 500);
+
+		function refreshCollapseStatus(elm)
+		{
+			const engaged = localStorage.getItem("live.collapse." + elm.getAttribute("data-collapse-toggle"));
+			const span = document.createElement("span");
+			span.textContent = engaged ? "▼" : "▲";
+			if (engaged)
+			{
+				elm.classList.add("engaged");
+			}
+			else
+			{
+				elm.classList.remove("engaged");
+			}
+			addTooltip(span, engaged ? "Expand" : "Collapse");
+			elm.querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			elm.innerHTML = "";
+			elm.appendChild(span);
+		}
+
+		document.querySelectorAll("[data-collapse-toggle]").forEach(elm =>
+		{
+			elm.classList.add("text-secondary");
+			refreshCollapseStatus(elm);
+			elm.onclick = function()
+			{
+				if (localStorage.getItem("live.collapse." + elm.getAttribute("data-collapse-toggle")))
+				{
+					localStorage.removeItem("live.collapse." + elm.getAttribute("data-collapse-toggle"));
+				}
+				else
+				{
+					localStorage.setItem("live.collapse." + elm.getAttribute("data-collapse-toggle"), "1");
+				}
+				refreshCollapseStatus(elm);
+			};
+		});
 
 		function sendNotification(text)
 		{
