@@ -136,18 +136,21 @@
 								<a class="m-auto me-0" data-notif-toggle="teshin"></a>
 							</div>
 							<div class="card-body">
-								<p class="mb-2">Steel Path Honors: <b id="teshin-offer"></b> <span id="teshin-check"></span></p>
+								<p class="mb-1">Steel Path Honors: <b id="teshin-offer"></b> <span id="teshin-check"></span></p>
 								<p class="mb-0">Iron Wake <span id="ironwake-check"></span></p>
 							</div>
 						</div>
 						<div class="card mb-3">
 							<div class="card-header d-flex">
-								<h5 class="mb-0" id="circuit-header">The Circuit</h5>
+								<h5 class="mb-0" id="circuit-header">Weekly Missions</h5>
 								<a class="m-auto me-0" data-notif-toggle="circuit"></a>
 							</div>
 							<div class="card-body">
-								<p class="mb-2" id="circuit-frames">Loading...</p>
-								<p class="mb-0" id="circuit-weapons">&nbsp;</p>
+								<p class="mb-1">Help Clem <span id="clem-check"></span></p>
+								<p class="mb-1">Ayatan Treasure Hunt <span id="maroo-check"></span></p>
+								<p class="mb-1">The Circuit (Normal): <b id="circuit-frames">Loading...</b> <span id="circuit-frames-check"></span></p>
+								<p class="mb-1">The Circuit (Steel Path): <b id="circuit-weapons"></b> <span id="circuit-weapons-check"></span></p>
+								<p class="mb-0">Break Narmer <span id="kahl-checks"></span></p>
 							</div>
 						</div>
 						<div class="card mb-3">
@@ -731,7 +734,7 @@
 					}
 					if (localStorage.getItem("live.notif.circuit"))
 					{
-						weekly_notifications_subscribed_to.push("The Circuit");
+						weekly_notifications_subscribed_to.push("Weekly Missions");
 					}
 					if (localStorage.getItem("live.notif.labconquest"))
 					{
@@ -1288,12 +1291,8 @@
 		{
 			const EPOCH = 1734307200 * 1000;
 			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
-			document.getElementById("circuit-frames").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("circuit-frames").textContent = [...frameChoices[week % frameChoices.length]].map(x => dict[x]).join(" · ") + " ";
-			document.getElementById("circuit-frames").appendChild(createCompletionToggle("circuit-normal-" + week));
-			document.getElementById("circuit-weapons").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("circuit-weapons").textContent = [...weaponChoices[week % weaponChoices.length]].map(x => dict[x]).join(" · ") + " ";
-			document.getElementById("circuit-weapons").appendChild(createCompletionToggle("circuit-hard-" + week));
 		}
 
 		function updateCircuit()
@@ -1302,8 +1301,30 @@
 			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
 			const weekStart = EPOCH + week * 604800000;
 			const weekEnd = weekStart + 604800000;
-			setDatum("circuit-header", "The Circuit", weekEnd);
+			setDatum("circuit-header", "Weekly Missions", weekEnd);
 			updateCircuitLocalised();
+
+			document.getElementById("clem-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("clem-check").appendChild(createCompletionToggle("clem" + week));
+
+			document.getElementById("maroo-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("maroo-check").appendChild(createCompletionToggle("maroo" + week));
+
+			document.getElementById("circuit-frames-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("circuit-frames-check").appendChild(createCompletionToggle("circuit-normal-" + week));
+
+			document.getElementById("circuit-weapons-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("circuit-weapons-check").appendChild(createCompletionToggle("circuit-hard-" + week));
+
+			document.getElementById("kahl-checks").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahl-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb1-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb2-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb3-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb4-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb5-" + week));
+			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb5-" + week));
+
 			setTimeout(updateCircuit, weekEnd - Date.now());
 		}
 		dict_promise.then(updateCircuit);
@@ -1388,15 +1409,21 @@
 
 		function createCompletionToggle(oid)
 		{
+			let what = "completed";
+			if (oid.substr(0, 5) == "kahlb")
+			{
+				what += " (Bonus Objective #" + oid.substr(5, 1) + ")";
+			}
+
 			const a = document.createElement("a");
 			a.className = "completion-check";
 			a.textContent = isOidMarkedAsCompleted(oid) ? "🗹" : "☐";
-			const tooltip = addTooltip(a, isOidMarkedAsCompleted(oid) ? "Unmark as completed" : "Mark as completed");
+			const tooltip = addTooltip(a, (isOidMarkedAsCompleted(oid) ? "Unmark as " : "Mark as ") + what);
 			a.onclick = function()
 			{
 				toggleOidCompletion(oid);
 				a.textContent = isOidMarkedAsCompleted(oid) ? "🗹" : "☐";
-				tooltip.setContent({ ".tooltip-inner": isOidMarkedAsCompleted(oid) ? "Unmark as completed" : "Mark as completed" });
+				tooltip.setContent({ ".tooltip-inner": (isOidMarkedAsCompleted(oid) ? "Unmark as " : "Mark as ") + what });
 			};
 			return a;
 		}
