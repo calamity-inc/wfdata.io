@@ -294,7 +294,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row g-3">
 					<div class="col-md-6">
 						<div class="card mb-3">
 							<h5 class="card-header">Void Fissures (Normal)</h5>
@@ -312,7 +312,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row g-3 mb-3">
 					<div class="col-xxl-8">
 						<div class="card mb-3">
 							<h5 class="card-header" id="invasions-header">Invasions</h5>
@@ -320,7 +320,7 @@
 								<table class="table table-sm table-hover table-borderless mb-0" id="invasions-table"><tr><td>Loading...</td></tr></table>
 							</div>
 						</div>
-						<div class="card mb-3">
+						<div class="card">
 							<div class="card-header d-flex">
 								<h5 class="mb-0" id="labConquest-header">Deep Archimedea</h5>
 								<a class="m-auto me-0" data-notif-toggle="labconquest"></a>
