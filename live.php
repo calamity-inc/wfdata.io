@@ -589,6 +589,10 @@
 				document.getElementById("vault-rot").textContent = bountyCycle.vaultRot;
 				updateBountyCycleLocalised();
 				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry) + 5000;
+			}).catch(e =>
+			{
+				console.error(e);
+				updateBountyCycle();
 			});
 		}
 
@@ -753,6 +757,10 @@
 				window.weekly = weekly;
 				window.refresh_weekly_at = weekly.expiry * 1000;
 				updateWeeklyLocalised();
+			}).catch(e =>
+			{
+				console.error(e);
+				updateWeekly();
 			});
 		}
 
@@ -857,32 +865,39 @@
 			window.refresh_news_sources_at = undefined;
 
 			const sourcesToUpdate = {
-				events: true,
-				redtext: true,
+				events: !window.worldState,
+				redtext: !window.redtext,
 			};
 			if (window.worldState || window.redtext)
 			{
-				const meta = await fetch("https://oracle.browse.wf/min").then(res => res.json());
-				if (window.worldState)
+				try
 				{
-					sourcesToUpdate.events = (
-						window.events_earmark != meta.latestEvent
-						|| worldState.Alerts.length != meta.alerts
-						|| worldState.Goals.length != meta.goals
-						|| (window.num_fissures && window.num_fissures != meta.fissures)
-						);
+					const meta = await fetch("https://oracle.browse.wf/min").then(res => res.json());
+					if (window.worldState)
+					{
+						sourcesToUpdate.events = (
+							window.events_earmark != meta.latestEvent
+							|| worldState.Alerts.length != meta.alerts
+							|| worldState.Goals.length != meta.goals
+							|| (window.num_fissures && window.num_fissures != meta.fissures)
+							);
+					}
+					if (window.redtext)
+					{
+						sourcesToUpdate.redtext = (window.redtext[window.redtext.length - 1].time != meta.latestRedtext);
+					}
+					if (window.dailyDeal)
+					{
+						document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - meta.darvoSold) + "/" + dailyDeal.AmountTotal;
+					}
+					if (window.num_invasions && window.num_invasions != meta.invasions)
+					{
+						updateInvasions();
+					}
 				}
-				if (window.redtext)
+				catch (e)
 				{
-					sourcesToUpdate.redtext = (window.redtext[window.redtext.length - 1].time != meta.latestRedtext);
-				}
-				if (window.dailyDeal)
-				{
-					document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - meta.darvoSold) + "/" + dailyDeal.AmountTotal;
-				}
-				if (window.num_invasions && window.num_invasions != meta.invasions)
-				{
-					updateInvasions();
+					console.error(e);
 				}
 			}
 
@@ -1513,6 +1528,10 @@
 				window.refresh_invasions_at = res.expiry * 1000;
 
 				updateInvasionsLocalised();
+			}).catch(e =>
+			{
+				console.error(e);
+				updateInvasions();
 			});
 		}
 
