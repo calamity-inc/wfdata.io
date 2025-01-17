@@ -417,6 +417,7 @@
 		function setDatum(name, value, expiry)
 		{
 			const elm = document.getElementById(name);
+			elm.querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			elm.textContent = value + " ";
 			elm.appendChild(createExpiryBadge(expiry));
 		}
@@ -684,8 +685,10 @@
 				}
 				tbody.appendChild(tr);
 			}
+			document.getElementById("labConquest-missions").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("labConquest-missions").innerHTML = "";
 			document.getElementById("labConquest-missions").appendChild(tbody);
+			document.getElementById("labConquest-fv").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("labConquest-fv").innerHTML = "";
 			for (const fv of weekly.labConquestFrameVariables)
 			{
@@ -1158,6 +1161,7 @@
 				}
 				await Promise.all(promises);
 
+				document.getElementById("alerts-body").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 				document.getElementById("alerts-body").innerHTML = "";
 				for (const alert of worldState.Alerts)
 				{
@@ -1243,9 +1247,11 @@
 				"Rifle Riven Mod",
 				"Shotgun Riven Mod"
 			][week % 8];
+			document.getElementById("teshin-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("teshin-check").innerHTML = "";
 			document.getElementById("teshin-check").appendChild(createCompletionToggle("teshin" + week));
 
+			document.getElementById("ironwake-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("ironwake-check").innerHTML = "";
 			document.getElementById("ironwake-check").appendChild(createCompletionToggle("ironwake" + week));
 
@@ -1282,8 +1288,10 @@
 		{
 			const EPOCH = 1734307200 * 1000;
 			const week = Math.trunc((Date.now() - EPOCH) / 604800000);
+			document.getElementById("circuit-frames").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("circuit-frames").textContent = [...frameChoices[week % frameChoices.length]].map(x => dict[x]).join(" · ") + " ";
 			document.getElementById("circuit-frames").appendChild(createCompletionToggle("circuit-normal-" + week));
+			document.getElementById("circuit-weapons").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
 			document.getElementById("circuit-weapons").textContent = [...weaponChoices[week % weaponChoices.length]].map(x => dict[x]).join(" · ") + " ";
 			document.getElementById("circuit-weapons").appendChild(createCompletionToggle("circuit-hard-" + week));
 		}
