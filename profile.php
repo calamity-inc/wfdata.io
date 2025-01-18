@@ -558,9 +558,10 @@
 				});
 			}
 
+			const createdAt = parseInt(profile.Results[0].AccountId.$oid.substr(0, 8), 16);
 			document.querySelector("#mr").classList.remove("d-none");
 			document.querySelector("#mr b").textContent = (profile.Results[0].PlayerLevel ?? 0);
-			document.querySelector("#mr span").textContent = new Date(parseInt(profile.Results[0].AccountId.$oid.substr(0, 8), 16) * 1000).toLocaleDateString();
+			document.querySelector("#mr span").textContent = new Date(createdAt * 1000).toLocaleDateString();
 
 			const accolades = [];
 			if (profile.Results[0].Staff)
@@ -584,6 +585,10 @@
 				if (profile.Results[0].Partner)
 				{
 					accolades.push("Warframe Creator");
+				}
+				if (createdAt < 1363651200)
+				{
+					accolades.push("Closed Beta Player");
 				}
 				if (profile.Results[0].Accolades?.Heirloom)
 				{
