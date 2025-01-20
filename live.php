@@ -1315,18 +1315,23 @@
 			updateCircuitLocalised();
 
 			document.getElementById("clem-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("clem-check").innerHTML = "";
 			document.getElementById("clem-check").appendChild(createCompletionToggle("clem" + week));
 
 			document.getElementById("maroo-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("maroo-check").innerHTML = "";
 			document.getElementById("maroo-check").appendChild(createCompletionToggle("maroo" + week));
 
 			document.getElementById("circuit-frames-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("circuit-frames-check").innerHTML = "";
 			document.getElementById("circuit-frames-check").appendChild(createCompletionToggle("circuit-normal-" + week));
 
 			document.getElementById("circuit-weapons-check").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("circuit-weapons-check").innerHTML = "";
 			document.getElementById("circuit-weapons-check").appendChild(createCompletionToggle("circuit-hard-" + week));
 
 			document.getElementById("kahl-checks").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
+			document.getElementById("kahl-checks").innerHTML = "";
 			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahl-" + week));
 			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb1-" + week));
 			document.getElementById("kahl-checks").appendChild(createCompletionToggle("kahlb2-" + week));
