@@ -5,7 +5,7 @@ if (location.host == "browse.wf" && location.protocol == "http:")
 }
 
 // Disable navbar links that point back to this page.
-document.querySelectorAll(".nav-link.active, .dropdown-item.active:not([data-lang])").forEach(elm =>
+document.querySelectorAll(".navbar-nav .nav-link.active, .navbar-nav .dropdown-item.active").forEach(elm =>
 {
 	elm.onclick = (event) => { event.preventDefault() };
 });
