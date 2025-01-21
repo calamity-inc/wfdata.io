@@ -156,7 +156,7 @@
 		function doSubmit()
 		{
 			const request = {
-				n: document.getElementById("username").value,
+				n: document.getElementById("username").value.split("#")[0],
 				s: [],
 				p: document.getElementById("peek").checked
 			};
