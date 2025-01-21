@@ -30,7 +30,7 @@ $ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 					</ul>
 				</li>
 				<?php endif; ?>
-				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 9) == "/raw-data" ? " active" : ""); ?>" href="/raw-data<?=$ext;?>">Raw Data</a>
+				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 6) == "/about" ? " active" : ""); ?>" href="/about<?=$ext;?>">About</a>
 			</div>
 			<div class="nav-item dropdown mb-2 mb-lg-0">
 				<a id="lang-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">English</a>

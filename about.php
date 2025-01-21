@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Raw Data | browse.wf</title>
+	<title>About browse.wf</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="icon" href="https://browse.wf/Lotus/Interface/Icons/Categories/GrimoireModIcon.png">
 </head>
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
 	<div class="container p-3">
+		<p>browse.wf is an <a href="https://github.com/calamity-inc/browse.wf" target="_blank">open-source</a> website providing various tools for Warframe.</p>
+		<h2>Raw Data</h2>
 		<p>This domain aims to resolve Warframe's internal paths, returning data relevant to the queried object, with some examples being:</p>
 		<ul>
 			<li><a href="/Lotus/Language/Locations/Moon" target="_blank">/Lotus/Language/Locations/Moon</a> (Language tag)</li>
@@ -16,7 +19,7 @@
 			<!--<li><a href="/Lotus/Powersuits/PowersuitAbilities/HelminthEfficiencyAbility" target="_blank">/Lotus/Powersuits/PowersuitAbilities/HelminthEfficiencyAbility</a> (Ability)</li>-->
 			<li><a href="/Lotus/Interface/Icons/Player/LotusSymbol.png" target="_blank">/Lotus/Interface/Icons/Player/LotusSymbol.png</a> (Image)</li>
 		</ul>
-		<h2>Data Exploration</h2>
+		<h3>Data Exploration</h3>
 		<p>The <a href="https://github.com/callumlocke/json-formatter" target="_blank">JSON Formatter</a> extension is recommended, as it allows you to click on paths (strings starting with a slash).</p>
 		<p>The following files from the <a href="https://github.com/calamity-inc/warframe-public-export-plus" target="_blank">warframe-public-export-plus</a> project are excellent starting points for data exploration:</p>
 		<ul>
@@ -53,9 +56,9 @@
 			<li><a href="warframe-public-export-plus/ExportWarframes.json" target="_blank">ExportWarframes</a></li>
 			<li><a href="warframe-public-export-plus/ExportWeapons.json" target="_blank">ExportWeapons</a></li>
 		</ul>
-		<h2>Arbitrations</h2>
+		<h3>Arbitrations</h3>
 		<p>The data behind the <a href="/arbys" target="_blank">arbitration schedule</a> is stored in the <a href="arbys.txt" target="_blank">arbys.txt</a>. Furthermore, the data prior to Update 37 is also still available in the <a href="arbys-old.txt" target="_blank">arbys-old.txt</a>.</p>
-		<h2>Live World State</h2>
+		<h3>Live World State</h3>
 		<p>For our <a href="/live" target="_blank">live world state tracker</a>, we have created <a href="https://oracle.browse.wf" target="_blank">the oracle</a>, which has many services, including providing current bounty challenges, invasion mission types, and deep archimedea modifiers.</p>
 		<p>Additionally, there's the steel path incursions schedule in the <a href="sp-incursions.txt" target="_blank">sp-incursions.txt</a>.</p>
 	</div>
