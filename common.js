@@ -26,20 +26,19 @@ function setLanguage(code)
 {
 	setLanguageIndicator(code);
 	localStorage.setItem("lang", code);
-	const promises = [ getDictPromise() ];
+	const promises = [];
+	if (window.dict)
+	{
+		promises.push(getDictPromise().then(dict => { window.dict = dict; }));
+	}
 	if (window.osdict)
 	{
-		promises.push(getOSDictPromise());
+		promises.push(getOSDictPromise().then(osdict => { window.osdict = osdict; }));
 	}
-	Promise.all(promises).then(([ dict, osdict ]) =>
+	if ("onLanguageUpdate" in window)
 	{
-		window.dict = dict;
-		window.osdict = osdict;
-		if ("onLanguageUpdate" in window)
-		{
-			onLanguageUpdate();
-		}
-	});
+		Promise.all(promises).then(() => { onLanguageUpdate(); });
+	}
 }
 
 function setLanguageIndicator(code)
