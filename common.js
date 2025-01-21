@@ -1,14 +1,14 @@
-const this_page_nav_link = document.querySelector(".nav-link.active");
-if (this_page_nav_link)
-{
-	this_page_nav_link.onclick = event => event.preventDefault();
-}
-
 // The raw data may be requested without TLS, but the user-facing stuff really shouldn't.
 if (location.host == "browse.wf" && location.protocol == "http:")
 {
 	location.protocol = "https:";
 }
+
+// Disable navbar links that point back to this page.
+document.querySelectorAll(".nav-link.active, .dropdown-item.active").forEach(elm =>
+{
+	elm.onclick = (event) => { event.preventDefault() };
+});
 
 // Localisation
 
