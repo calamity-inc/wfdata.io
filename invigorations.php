@@ -16,7 +16,7 @@
 				<label class="form-check-label" for="peek">I've already visited Helminth this week</label>
 			</div>
 			<h5 id="input-header">Previous Offerings</h5>
-			<div class="row g-2 mb-3">
+			<div class="row g-2 mb-2">
 				<div class="col-4">
 					<select class="form-control suit-select"></select>
 				</div>
@@ -27,6 +27,8 @@
 					<select class="form-control suit-select"></select>
 				</div>
 			</div>
+			<p id="inventory-upsell">You can <a href="/inventory#for=invigorations">sync your inventory with browse.wf</a> to fill in the offerings automatically.</p>
+			<p id="inventory-status" class="d-none">Offerings were automatically filled in from your inventory. <a href="/inventory#for=invigorations">Need to update your inventory?</a></p>
 			<input type="submit" class="btn btn-primary mb-3" value="Calculate Offerings" />
 			<div id="results" class="d-none">
 				<h4 class="mb-0">Current Offerings</h4>
@@ -97,6 +99,30 @@
 				});
 			};
 			onLanguageUpdate();
+
+			if (localStorage.getItem("inventory"))
+			{
+				document.getElementById("inventory-upsell").classList.add("d-none");
+				document.getElementById("inventory-status").classList.remove("d-none");
+
+				const inventory = JSON.parse(localStorage.getItem("inventory"));
+				if (inventory.InfestedFoundry)
+				{
+					if (inventory.InfestedFoundry.InvigorationIndex)
+					{
+						document.getElementById("peek").checked = (inventory.InfestedFoundry.InvigorationIndex == Math.trunc(((Date.now() / 1000) - 1391990400) / 604800));
+						document.getElementById("peek").onchange();
+					}
+					if (inventory.InfestedFoundry.InvigorationSuitOfferings)
+					{
+						const selects = document.querySelectorAll(".suit-select");
+						for (let i = 0; i != 3; ++i)
+						{
+							selects[i].value = inventory.InfestedFoundry.InvigorationSuitOfferings[i];
+						}
+					}
+				}
+			}
 		});
 
 		document.getElementById("peek").onchange = function()
