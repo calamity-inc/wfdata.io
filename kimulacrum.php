@@ -41,7 +41,7 @@
 </head>
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
-	<div class="container container-fluid pt-3">
+	<div class="container container-fluid pt-3 pb-3">
 		<table class="text-center w-100">
 			<tr>
 				<td>
