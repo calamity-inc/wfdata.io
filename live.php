@@ -1446,14 +1446,14 @@
 		async function updateInvasionsLocalised()
 		{
 			const tbody = document.createElement("tbody");
-			let last_node = "";
+			let last_id = "";
 			window.num_invasions = 0;
 			for (const invasion of invasions)
 			{
 				const tr = document.createElement("tr");
 				{
 					const th = document.createElement("th");
-					if (last_node != invasion.node)
+					if (last_id != invasion.id)
 					{
 						++num_invasions;
 						const node = ExportRegions[invasion.node];
@@ -1492,14 +1492,14 @@
 				}
 				{
 					const td = document.createElement("td");
-					if (last_node != invasion.node)
+					if (last_id != invasion.id)
 					{
 						td.appendChild(createCompletionToggle(invasion.id));
 					}
 					tr.appendChild(td);
 				}
 				tbody.appendChild(tr);
-				last_node = invasion.node;
+				last_id = invasion.id;
 			}
 			setDatum("invasions-header", toTitleCase(osdict["/Lotus/Language/Menu/WorldStatePanel_Invasions"]), refresh_invasions_at);
 			document.getElementById("invasions-table").querySelectorAll("[data-bs-toggle=tooltip]").forEach(x => bootstrap.Tooltip.getInstance(x).dispose());
