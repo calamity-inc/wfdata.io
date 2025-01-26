@@ -89,15 +89,6 @@ if (substr($path, 0, 24) == "/Lotus/Types/DropTables/")
 	}
 	exit;
 }
-if (substr($path, 0, 22) == "/Lotus/Upgrades/Focus/")
-{
-	$ExportFocusUpgrades = json_decode(file_get_contents("warframe-public-export-plus/ExportFocusUpgrades.json"), true);
-	if (array_key_exists($path, $ExportFocusUpgrades))
-	{
-		finishWithData($ExportFocusUpgrades[$path]);
-	}
-	exit;
-}
 if (substr($path, 0, 24) == "/Lotus/Weapons/CrewShip/")
 {
 	$ExportRailjackWeapons = json_decode(file_get_contents("warframe-public-export-plus/ExportRailjackWeapons.json"), true);
@@ -242,6 +233,14 @@ else if (substr($path, 0, 13) == "/Lotus/Types/")
 	if (array_key_exists($path, $ExportGear))
 	{
 		finishWithData($ExportGear[$path]);
+	}
+}
+else if (substr($path, 0, 22) == "/Lotus/Upgrades/Focus/")
+{
+	$ExportFocusUpgrades = json_decode(file_get_contents("warframe-public-export-plus/ExportFocusUpgrades.json"), true);
+	if (array_key_exists($path, $ExportFocusUpgrades))
+	{
+		finishWithData($ExportFocusUpgrades[$path]);
 	}
 }
 
