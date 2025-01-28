@@ -578,7 +578,7 @@
 				document.getElementById("bounty-rot").textContent = bountyCycle.rot;
 				document.getElementById("vault-rot").textContent = bountyCycle.vaultRot;
 				updateBountyCycleLocalised();
-				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry) + 5000;
+				window.refresh_bounty_cycle_at = Math.max(Date.now(), bountyCycleExpiry);
 			}).catch(e =>
 			{
 				console.error(e);
