@@ -1167,9 +1167,19 @@
 				for (const alert of worldState.Alerts)
 				{
 					promises.push(getFactionNamePromise(alert.MissionInfo.faction));
-					for (const reward of alert.MissionInfo.missionReward.items)
+					if (alert.MissionInfo.missionReward.items)
 					{
-						promises.push(getItemNamePromise(reward));
+						for (const reward of alert.MissionInfo.missionReward.items)
+						{
+							promises.push(getItemNamePromise(reward));
+						}
+					}
+					if (alert.MissionInfo.missionReward.countedItems)
+					{
+						for (const reward of alert.MissionInfo.missionReward.countedItems)
+						{
+							promises.push(getItemNamePromise(reward.ItemType));
+						}
 					}
 				}
 				await Promise.all(promises);
@@ -1201,12 +1211,25 @@
 						span.textContent = alert.MissionInfo.missionReward.credits.toLocaleString() + " Credits";
 						block.appendChild(span);
 					}
-					for (const reward of alert.MissionInfo.missionReward.items)
+					if (alert.MissionInfo.missionReward.items)
 					{
-						const span = document.createElement("span");
-						span.className = "d-block";
-						span.textContent = await getItemNamePromise(reward);
-						block.appendChild(span);
+						for (const reward of alert.MissionInfo.missionReward.items)
+						{
+							const span = document.createElement("span");
+							span.className = "d-block";
+							span.textContent = await getItemNamePromise(reward);
+							block.appendChild(span);
+						}
+					}
+					if (alert.MissionInfo.missionReward.countedItems)
+					{
+						for (const reward of alert.MissionInfo.missionReward.countedItems)
+						{
+							const span = document.createElement("span");
+							span.className = "d-block";
+							span.textContent = reward.ItemCount + "X " + await getItemNamePromise(reward.ItemType);
+							block.appendChild(span);
+						}
 					}
 					document.getElementById("alerts-body").appendChild(block);
 				}
