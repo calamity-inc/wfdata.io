@@ -36,21 +36,7 @@
 	};
 
 	Promise.all([
-		fetch("https://kim.browse.wf/dicts/en.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/de.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/es.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/fr.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/it.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/ja.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/ko.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/pl.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/pt.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/ru.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/tc.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/th.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/tr.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/uk.json").then(res => res.json()),
-		fetch("https://kim.browse.wf/dicts/zh.json").then(res => res.json()),
+		fetch("https://kim.browse.wf/dicts/" + (localStorage.getItem("lang") ?? "en") + ".json").then(res => res.json()),
 		fetch("https://kim.browse.wf/ArthurDialogue_rom.dialogue.json").then(res => res.json()),
 		fetch("https://kim.browse.wf/EleanorDialogue_rom.dialogue.json").then(res => res.json()),
 		fetch("https://kim.browse.wf/LettieDialogue_rom.dialogue.json").then(res => res.json()),
@@ -58,27 +44,8 @@
 		fetch("https://kim.browse.wf/AoiDialogue_rom.dialogue.json").then(res => res.json()),
 		fetch("https://kim.browse.wf/QuincyDialogue_rom.dialogue.json").then(res => res.json()),
 		fetch("https://kim.browse.wf/HexDialogue_rom.dialogue.json").then(res => res.json())
-	]).then(([
-		dict_en, dict_de, dict_es, dict_fr, dict_it, dict_ja, dict_ko, dict_pl, dict_pt, dict_ru, dict_tc, dict_th, dict_tr, dict_uk, dict_zh,
-		ArthurDialogue_rom, EleanorDialogue_rom, LettieDialogue_rom, JabirDialogue_rom, AoiDialogue_rom, QuincyDialogue_rom, HexDialogue_rom
-	]) => {
-		window.dicts = {
-			en: dict_en,
-			de: dict_de,
-			es: dict_es,
-			fr: dict_fr,
-			it: dict_it,
-			ja: dict_ja,
-			ko: dict_ko,
-			pl: dict_pl,
-			pt: dict_pt,
-			ru: dict_ru,
-			tc: dict_tc,
-			th: dict_th,
-			tr: dict_tr,
-			uk: dict_uk,
-			zh: dict_zh,
-		};
+	]).then(([ dict, ArthurDialogue_rom, EleanorDialogue_rom, LettieDialogue_rom, JabirDialogue_rom, AoiDialogue_rom, QuincyDialogue_rom, HexDialogue_rom ]) => {
+		window.kim_dict = dict;
 		window.chatrooms = {
 			"ArthurDialogue_rom.dialogue": { nodes: ArthurDialogue_rom, convos: {} },
 			"EleanorDialogue_rom.dialogue": { nodes: EleanorDialogue_rom, convos: {} },
@@ -142,6 +109,15 @@
 		document.getElementById("content").classList.remove("d-none");
 	});
 
+	onLanguageUpdate = function()
+	{
+		fetch("https://kim.browse.wf/dicts/" + (localStorage.getItem("lang") ?? "en") + ".json").then(res => res.json()).then(dict =>
+		{
+			window.kim_dict = dict;
+			doLocate();
+		})
+	};
+
 	function node_id_to_convo(chatroom, node_id)
 	{
 		for (const [convo, convo_node_ids] of Object.entries(chatroom.convos))
@@ -177,12 +153,12 @@
 				{
 					if (node.type == "/EE/Types/Engine/DialogueNode" || node.type == "/EE/Types/Engine/PlayerChoiceDialogueNode")
 					{
-						let text = dicts[lang][node.name] ?? node.name;
+						let text = kim_dict[node.name] ?? node.name;
 						if (node.vars)
 						{
 							for (const [k, v] of Object.entries(node.vars))
 							{
-								text = text.split("|"+k+"|").join(dicts[lang][v] ?? v);
+								text = text.split("|"+k+"|").join(kim_dict[v] ?? v);
 							}
 						}
 						text = text.split("<RETRO_EMOJI_HEART>").join("<3");
@@ -198,9 +174,9 @@
 								if (node.nickname_override)
 								{
 									sender_name = node.nickname_override;
-									if (dicts[lang][sender_name])
+									if (kim_dict[sender_name])
 									{
-										sender_name = dicts[lang][sender_name];
+										sender_name = kim_dict[sender_name];
 									}
 								}
 							}
@@ -243,7 +219,6 @@
 			document.getElementById("results").innerHTML = "<p>Please enter at least 3 characters.</p>";
 		}
 	}
-	onLanguageUpdate = doLocate;
 	document.getElementById("query").oninput = doLocate;
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
