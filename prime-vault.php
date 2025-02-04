@@ -140,7 +140,7 @@
 				{
 					const a = document.createElement("a");
 					a.textContent = "(Wiki)";
-					a.href = "https://warframe.fandom.com/wiki/" + encodeURIComponent(item.name);
+					a.href = "https://wiki.warframe.com/w/" + encodeURIComponent(item.name);
 					a.target = "_blank";
 					li.appendChild(a);
 				}
