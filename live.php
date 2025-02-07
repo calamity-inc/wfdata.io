@@ -1058,7 +1058,7 @@
 			const item_data = await getItemDataPromise(dailyDeal.StoreItem);
 			await dicts_promise;
 			document.getElementById("darvo-item").textContent = dict[item_data.name];
-			document.getElementById("darvo-icon").src = "https://browse.wf/" + item_data.icon;
+			document.getElementById("darvo-icon").src = "https://browse.wf" + item_data.icon;
 			document.getElementById("darvo-stock").textContent = (dailyDeal.AmountTotal - dailyDeal.AmountSold) + "/" + dailyDeal.AmountTotal;
 			document.getElementById("darvo-ogprice").textContent = dailyDeal.OriginalPrice;
 			document.getElementById("darvo-price").textContent = dailyDeal.SalePrice;
