@@ -31,8 +31,11 @@
 <body data-bs-theme="dark">
 	<?php require "components/navbar.php"; ?>
 	<div class="container pt-3">
+		<div class="alert alert-warning" role="alert">
+			As of update 38.0.8, it is no longer possible to get profile information via username. To use this tool, you now need an account id. To find your own account id, open your EE.log (<code>%localappdata%\Warframe\EE.log</code>) and look for "Logged in" — your account id will be in the parentheses.
+		</div>
 		<form class="input-group mb-3" onsubmit="event.preventDefault();doLookup();">
-			<input id="username" type="text" class="form-control" value="" placeholder="Username" aria-label="Username" />
+			<input id="username" type="text" class="form-control" value="" placeholder="Account ID" />
 			<span class="input-group-text">on</span>
 			<select id="platform" class="form-control">
 				<option value="pc">PC</option>
@@ -419,7 +422,7 @@
 		let initialDataUrl = "supplemental-data/profile-[DE]Rebecca.json";
 		if (params.has("account"))
 		{
-			initialDataUrl = "https://conduit.browse.wf/profile?account=" + encodeURIComponent(params.get("account"));
+			initialDataUrl = "https://conduit.browse.wf/profilebyid?account=" + encodeURIComponent(params.get("account"));
 			window.hashprefix = "account=" + encodeURIComponent(params.get("account")) + "&";
 			if (params.has("platform"))
 			{
@@ -525,18 +528,22 @@
 			lookup_in_progress = true;
 			document.querySelector("#status span").textContent = "Fetching data for " + document.getElementById("username").value;
 			document.querySelector("#status").classList.remove("d-none");
-			fetch("https://conduit.browse.wf/profile?account=" + encodeURIComponent(document.getElementById("username").value) + "&platform=" + document.getElementById("platform").value).then(res => res.json()).then(data =>
+			fetch("https://conduit.browse.wf/profilebyid?account=" + encodeURIComponent(document.getElementById("username").value) + "&platform=" + document.getElementById("platform").value).then(res => res.json()).then(data =>
 			{
 				if (data)
 				{
 					window.profile = data;
-					window.hashprefix = "account=" + encodeURIComponent(sanitiseName(profile.Results[0].DisplayName)) + "&platform=" + profile.platform + "&";
+					window.hashprefix = "account=" + encodeURIComponent(sanitiseName(profile.Results[0].AccountId.$oid)) + "&platform=" + profile.platform + "&";
 					location.hash = hashprefix + "tab=fashion"; // default tab
 				}
 				else
 				{
 					alert("Failed to load data for " + document.getElementById("username").value);
 				}
+				renderProfile();
+				lookup_in_progress = false;
+			}).catch(() => {
+				alert("Bad request. Please note that you need to input an account id.");
 				renderProfile();
 				lookup_in_progress = false;
 			});
