@@ -12,6 +12,7 @@ $ext = substr($_SERVER["SERVER_SOFTWARE"] ?? "", 0, 3) == "PHP" ? ".php" : "";
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 5) == "/live" ? " active" : ""); ?>" href="/live<?=$ext;?>">Live</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 6) == "/arbys" ? " active" : ""); ?>" href="/arbys<?=$ext;?>">Arbitration Schedule</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 10) == "/rivencalc" ? " active" : ""); ?>" href="/rivencalc<?=$ext;?>">Riven Calculator</a>
+				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 8) == "/profile" ? " active" : ""); ?>" href="/profile<?=$ext;?>">Profile Viewer</a>
 				<a class="nav-link<?=(substr($_SERVER["REQUEST_URI"], 0, 13) == "/color-picker" ? " active" : ""); ?>" href="/color-picker<?=$ext;?>">Color Picker</a>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle<?=((substr($_SERVER["REQUEST_URI"], 0, 11) == "/kimulacrum" || substr($_SERVER["REQUEST_URI"], 0, 18) == "/kim-convo-locator") ? " active" : ""); ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">KIM</a>
