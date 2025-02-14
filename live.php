@@ -783,17 +783,21 @@
 			}
 			if (window.redtext)
 			{
+				const cutoff = (Date.now() / 1000) - (30 * 86400);
 				for (const event of window.redtext)
 				{
-					if (event.time > highest_time)
+					if (event.time > cutoff)
 					{
-						highest_time = event.time;
+						if (event.time > highest_time)
+						{
+							highest_time = event.time;
+						}
+						items.push({
+							type: "danger",
+							data: event.data.split("WALLOPS :")[1],
+							time: event.time
+						});
 					}
-					items.push({
-						type: "danger",
-						data: event.data.split("WALLOPS :")[1],
-						time: event.time
-					});
 				}
 			}
 			items.sort((a, b) => b.time - a.time);
