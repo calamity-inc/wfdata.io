@@ -582,7 +582,7 @@
 			}).catch(e =>
 			{
 				console.error(e);
-				updateBountyCycle();
+				setTimeout(updateBountyCycle, 5000);
 			});
 		}
 
@@ -750,7 +750,7 @@
 			}).catch(e =>
 			{
 				console.error(e);
-				updateWeekly();
+				setTimeout(updateWeekly, 5000);
 			});
 		}
 
@@ -1553,7 +1553,7 @@
 			}).catch(e =>
 			{
 				console.error(e);
-				updateInvasions();
+				setTimeout(updateInvasions, 5000);
 			});
 		}
 
